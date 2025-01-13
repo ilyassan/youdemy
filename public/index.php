@@ -18,6 +18,6 @@
     $router = new Router();
     $request = new Request();
 
-    $router->add('GET', '/', 'HomePage@index', ["visitor", "client"]);
+    $router->add('GET', '/', 'HomePage@index', ["visitor", "student"]);
 
     $router->dispatch($request);

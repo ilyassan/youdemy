@@ -15,10 +15,10 @@
             else if (isLoggedIn() && user()->isAdmin()) {
                 $path = APPROOT . "View/admin" . $path . ".php";
             }else{
-                $path = APPROOT . "View/client" . $path . ".php";
+                $path = APPROOT . "View/student" . $path . ".php";
             }
 
-            $role = "client";
+            $role = "student";
             if (isLoggedIn() && user()->isAdmin()) {
                 $role = "admin";
             }
