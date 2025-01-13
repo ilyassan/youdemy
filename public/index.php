@@ -9,7 +9,9 @@
 
     // Require all core files
     require_all_files(__DIR__ . '/../app/Core');
-
+    $db = new Database();
+    BaseClass::setDatabase($db);
+    
     // Define the routes
     $router = new Router();
     $request = new Request();
