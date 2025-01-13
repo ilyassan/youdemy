@@ -11,7 +11,9 @@
     require_all_files(__DIR__ . '/../app/Core');
     $db = new Database();
     BaseClass::setDatabase($db);
-    
+
+    require_all_files(__DIR__ . '/../app/Helpers');
+
     // Define the routes
     $router = new Router();
     $request = new Request();
