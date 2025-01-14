@@ -20,5 +20,6 @@
 
     $router->add('GET', '/', 'HomePage@index', ["visitor", "student"]);
     $router->add('GET', '/courses', 'CoursesPage@index', ["visitor", "student"]);
+    $router->add('GET', '/my-courses', 'MyCoursesPage@index', ["visitor", "student"]);
 
     $router->dispatch($request);
