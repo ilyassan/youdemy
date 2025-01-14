@@ -13,7 +13,7 @@
     <aside id="sidebar" class="fixed top-0 left-0 h-screen w-64 bg-white shadow-lg transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40">
         <!-- Logo -->
         <div class="flex items-center justify-center h-16 border-b">
-            <span class="text-red-600 font-bold text-2xl">EDUCARE ADMIN</span>
+            <span class="text-indigo-600 font-bold text-2xl">EDUCARE ADMIN</span>
         </div>
     
         <!-- Navigation Menu -->
@@ -29,7 +29,7 @@
             <!-- Sidebar Links -->
             <div class="px-4 space-y-1">
                 <!-- Dashboard -->
-                <a href="/admin/dashboard" class="flex items-center gap-3 px-4 py-2 text-red-600 bg-red-50 rounded-lg">
+                <a href="/admin/dashboard" class="flex items-center gap-3 px-4 py-2 text-indigo-600 bg-indigo-50 rounded-lg">
                     <i class="fas fa-tachometer-alt"></i>
                     <span>Dashboard</span>
                 </a>
@@ -118,7 +118,7 @@
                                 <i class="fas fa-user-clock text-yellow-500 text-xl"></i>
                             </div>
                         </div>
-                        <span class="text-sm font-medium text-red-600 flex items-center gap-1 mt-1">
+                        <span class="text-sm font-medium text-indigo-600 flex items-center gap-1 mt-1">
                             <i class="fas fa-exclamation-circle text-xs"></i> Requires attention
                         </span>
                     </div>
@@ -146,8 +146,8 @@
                                 <p class="text-xs font-medium text-gray-500">Banned Users</p>
                                 <h3 class="text-2xl font-bold text-gray-800 mt-2">23</h3>
                             </div>
-                            <div class="bg-red-50 p-3 rounded-lg">
-                                <i class="fas fa-user-slash text-red-500 text-xl"></i>
+                            <div class="bg-indigo-50 p-3 rounded-lg">
+                                <i class="fas fa-user-slash text-indigo-500 text-xl"></i>
                             </div>
                         </div>
                         <span class="text-sm font-medium text-gray-600 flex items-center gap-1 mt-1">
@@ -190,14 +190,14 @@
                             <button class="ml-auto bg-blue-500 text-white px-4 py-2 rounded-lg text-sm">Review</button>
                         </div>
                         <div class="flex items-center gap-4">
-                            <div class="bg-red-100 p-2 rounded-full">
-                                <i class="fas fa-flag text-red-600"></i>
+                            <div class="bg-indigo-100 p-2 rounded-full">
+                                <i class="fas fa-flag text-indigo-600"></i>
                             </div>
                             <div>
                                 <p class="text-gray-800">Report submitted against course "Advanced Python"</p>
                                 <p class="text-sm text-gray-500">5 hours ago</p>
                             </div>
-                            <button class="ml-auto bg-red-500 text-white px-4 py-2 rounded-lg text-sm">Investigate</button>
+                            <button class="ml-auto bg-indigo-500 text-white px-4 py-2 rounded-lg text-sm">Investigate</button>
                         </div>
                         <div class="flex items-center gap-4">
                             <div class="bg-green-100 p-2 rounded-full">
@@ -219,7 +219,7 @@
                 <h1 class="text-xl font-semibold text-gray-800">Admin Dashboard</h1>
                 
                 <div class="flex items-center gap-4">
-                    <button id="sidebarToggle" class="lg:hidden bg-red-600 text-white p-2 rounded-lg">
+                    <button id="sidebarToggle" class="lg:hidden bg-indigo-600 text-white p-2 rounded-lg">
                         <i class="fas fa-bars"></i>
                     </button>
                 </div>

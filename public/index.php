@@ -31,5 +31,6 @@
     // $router->add('GET', '/students', 'StudentsTeacherPage@index', ["visitor", "student"]);
 
     $router->add('GET', '/', 'DashboardAdminPage@index', ["visitor", "student"]);
+    $router->add('GET', '/students', 'StudentsAdminPage@index', ["visitor", "student"]);
 
     $router->dispatch($request);
