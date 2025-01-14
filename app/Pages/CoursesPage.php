@@ -6,4 +6,9 @@
         {
             $this->render("/courses/index");
         }
+
+        public function show($id)
+        {
+            $this->render("/courses/show");
+        }
     }
