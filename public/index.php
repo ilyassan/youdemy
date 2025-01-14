@@ -27,5 +27,6 @@
 
     $router->add('GET', '/', 'DashboardTeacherPage@index', ["visitor", "student"]);
     $router->add('GET', '/courses/create', 'CoursesTeacherPage@create', ["visitor", "student"]);
+    $router->add('GET', '/courses/edit/{id}', 'CoursesTeacherPage@edit/{id}', ["visitor", "student"]);
 
     $router->dispatch($request);

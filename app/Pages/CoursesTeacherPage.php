@@ -11,4 +11,9 @@
         {
             $this->render("/teacher/courses/create");
         }
+
+        public function edit($id)
+        {
+            $this->render("/teacher/courses/edit");
+        }
     }
