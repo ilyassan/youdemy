@@ -25,10 +25,11 @@
     // $router->add('GET', '/my-courses', 'MyCoursesPage@index', ["visitor", "student"]);
 
 
-    $router->add('GET', '/', 'DashboardTeacherPage@index', ["visitor", "student"]);
-    $router->add('GET', '/courses', 'CoursesTeacherPage@index', ["visitor", "student"]);
-    $router->add('GET', '/courses/create', 'CoursesTeacherPage@create', ["visitor", "student"]);
-    $router->add('GET', '/courses/edit/{id}', 'CoursesTeacherPage@edit', ["visitor", "student"]);
-    $router->add('GET', '/students', 'StudentsTeacherPage@index', ["visitor", "student"]);
+    // $router->add('GET', '/courses', 'CoursesTeacherPage@index', ["visitor", "student"]);
+    // $router->add('GET', '/courses/create', 'CoursesTeacherPage@create', ["visitor", "student"]);
+    // $router->add('GET', '/courses/edit/{id}', 'CoursesTeacherPage@edit', ["visitor", "student"]);
+    // $router->add('GET', '/students', 'StudentsTeacherPage@index', ["visitor", "student"]);
+
+    $router->add('GET', '/', 'DashboardAdminPage@index', ["visitor", "student"]);
 
     $router->dispatch($request);
