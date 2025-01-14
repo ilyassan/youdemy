@@ -9,8 +9,7 @@
     <link href=<?= URLASSETS ."css/output.css"?> rel="stylesheet" />
 </head>
 <body class="bg-gray-50">
-    <!-- Enhanced Navbar with Learning Dashboard -->
-    <nav class="bg-white shadow-lg relative z-50">
+    <!-- <nav class="bg-white shadow-lg relative z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <div class="flex items-center">
@@ -19,14 +18,12 @@
                     </a>
                 </div>
 
-                <!-- Mobile Menu Button -->
                 <div class="md:hidden flex items-center">
                     <button id="mobile-menu-button" class="text-gray-500 hover:text-gray-600 focus:outline-none focus:text-gray-600" aria-label="Open navigation">
                         <i class="fas fa-bars fa-lg"></i>
                     </button>
                 </div>
 
-                <!-- Desktop Menu -->
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="#" class="text-gray-700 hover:text-indigo-600 flex items-center">
                         <i class="fas fa-compass mr-2"></i>
@@ -43,7 +40,6 @@
             </div>
         </div>
 
-        <!-- Mobile Menu (Hidden by default) -->
         <div class="mobile-menu absolute top-full left-0 w-full bg-white shadow-md z-50 hidden md:hidden" id="mobile-menu">
             <div class="px-4 py-2 border-b border-gray-200">
                 <input type="text" class="w-full px-4 py-2 rounded-md bg-gray-100 focus:ring-2 focus:ring-indigo-500" placeholder="Search...">
@@ -54,4 +50,4 @@
                 Get Started
             </button>
         </div>
-    </nav>
+    </nav> -->
