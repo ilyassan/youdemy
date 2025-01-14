@@ -36,5 +36,6 @@
     $router->add('GET', '/banned-students', 'BannedStudentsAdminPage@index', ["visitor", "student"]);
     $router->add('GET', '/unverified-teachers', 'UnverifiedTeachersAdminPage@index', ["visitor", "student"]);
     $router->add('GET', '/categories', 'CategoriesAdminPage@index', ["visitor", "student"]);
+    $router->add('GET', '/tags', 'TagsAdminPage@index', ["visitor", "student"]);
 
     $router->dispatch($request);
