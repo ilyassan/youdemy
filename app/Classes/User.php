@@ -12,7 +12,7 @@ class User extends BaseClass
     static public $studentRoleId = 2;
     static public $teacherRoleId = 3;
 
-    public function __construct($id, $first_name, $last_name, $email, $password, $role_id)
+    public function __construct($id = null, $first_name = null, $last_name = null, $email = null, $password = null, $role_id = null)
     {
         $this->id = $id;
         $this->first_name = $first_name;
@@ -70,23 +70,44 @@ class User extends BaseClass
                 return "visitor";
         }
     }
+
+    public function setFirstName($first_name)
+    {
+        $this->first_name = $first_name;
+    }
+
+    public function setLastName($last_name)
+    {
+        $this->last_name = $last_name;
+    }
+
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+    public function setPassword($password)
+    {
+        $this->password = $password;
+    }
+
+    public function setRoleId($role_id)
+    {
+        $this->role_id = $role_id;
+    }
     
 
     public function save()
     {
-        $sql = "INSERT INTO users (first_name, last_name, email, password_hash, role_id) VALUES (:first_name, :last_name, :email, :password_hash, :role_id)";
+        $sql = "INSERT INTO users (first_name, last_name, email, password, role_id) VALUES (:first_name, :last_name, :email, :password, :role_id)";
         self::$db->query($sql);
         self::$db->bind(':first_name', $this->first_name);
         self::$db->bind(':last_name', $this->last_name);
         self::$db->bind(':email', $this->email);
-        self::$db->bind(':password_hash', $this->password);
+        self::$db->bind(':password', $this->password);
         self::$db->bind(':role_id', $this->role_id);
 
-        if (self::$db->execute()) {
-            return true;
-        } else {
-            return false;
-        }
+        return self::$db->execute();
     }
 
     public static function find($id)
