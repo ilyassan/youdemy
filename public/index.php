@@ -38,4 +38,8 @@
     $router->add('GET', '/categories', 'CategoriesAdminPage@index', ["visitor", "student"]);
     $router->add('GET', '/tags', 'TagsAdminPage@index', ["visitor", "student"]);
 
+
+
+    $router->add('GET', '/login', 'LoginPage@index', ["visitor", "student"]);
+
     $router->dispatch($request);
