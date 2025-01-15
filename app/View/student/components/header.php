@@ -9,7 +9,7 @@
     <link href=<?= URLASSETS ."css/output.css"?> rel="stylesheet" />
 </head>
 <body class="bg-gray-50">
-    <!-- <nav class="bg-white shadow-lg relative z-50">
+    <nav class="bg-white shadow-lg relative z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
                 <div class="flex items-center">
@@ -50,4 +50,4 @@
                 Get Started
             </button>
         </div>
-    </nav> -->
+    </nav>

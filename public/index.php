@@ -13,6 +13,7 @@
     BaseClass::setDatabase($db);
 
     require_all_files(__DIR__ . '/../app/Helpers');
+    require_all_files(__DIR__ . '/../app/Classes');
 
     // Define the routes
     $router = new Router();
@@ -42,5 +43,6 @@
 
     $router->add('GET', '/login', 'LoginPage@index', ["visitor", "student"]);
     $router->add('GET', '/signup', 'SignupPage@index', ["visitor", "student"]);
+    $router->add('POST', '/signup', 'SignupPage@signup', ["visitor", "student"]);
 
     $router->dispatch($request);
