@@ -35,8 +35,17 @@
             // Make sure errors are empty (There's no errors)
             if(empty($errors['email_err']) && empty($errors['password_err']) ){
     
-                echo "valid";
-                return;
+                $user = User::findUserByEmail($data['email']);
+                
+                $pwdIsValid = password_verify($data["password"], $user->getPassword());
+                
+                if(!$pwdIsValid){
+                    flash('error', 'Email or password incorrect!');
+                    redirect("login");
+                }
+
+                $user->createSession();
+                redirect("");
             }
             else{
                 // Load view with errors
