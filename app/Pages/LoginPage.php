@@ -4,6 +4,6 @@
     {
         public function index()
         {
-            $this->render("/auth/login");
+            $this->render("/login");
         }
     }

@@ -21,7 +21,6 @@
             <form class="space-y-6" action="<?= URLROOT . 'signup' ?>" method="POST">
                 <!-- Role Toggle -->
                 <div class="flex justify-center space-x-4 mb-8">
-                    <input type="radio" name="role" class="hidden" value="visitor" checked>
                     <label class="relative cursor-pointer">
                         <input type="radio" name="role" value="student" class="peer sr-only">
                         <div class="w-40 px-4 py-3 bg-white border-2 border-gray-200 rounded-lg peer-checked:border-indigo-500 peer-checked:bg-indigo-50 transition-all duration-200">
@@ -148,6 +147,7 @@
                     <input
                         id="terms"
                         name="terms"
+                        value="accept"
                         type="checkbox"
                         class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                     >
@@ -174,7 +174,7 @@
             <!-- Already have account -->
             <p class="mt-6 text-center text-sm text-gray-600">
                 Already have an account?
-                <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">
+                <a href="<?= URLROOT . 'login' ?>" class="font-medium text-indigo-600 hover:text-indigo-500">
                     Login
                 </a>
             </p>
