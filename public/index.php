@@ -19,7 +19,7 @@
     $router = new Router();
     $request = new Request();
 
-    // $router->add('GET', '/', 'HomePage@index', ["visitor", "student"]);
+    $router->add('GET', '/', 'HomePage@index', ["visitor", "student"]);
     // $router->add('GET', '/courses', 'CoursesPage@index', ["visitor", "student"]);
     // $router->add('GET', '/courses/content/{id}', 'CourseContentPage@index', ["visitor", "student"]);
     // $router->add('GET', '/courses/{id}', 'CoursesPage@show', ["visitor", "student"]);
@@ -31,13 +31,13 @@
     // $router->add('GET', '/courses/edit/{id}', 'CoursesTeacherPage@edit', ["visitor", "student"]);
     // $router->add('GET', '/students', 'StudentsTeacherPage@index', ["visitor", "student"]);
 
-    $router->add('GET', '/', 'DashboardAdminPage@index', ["visitor", "student"]);
-    $router->add('GET', '/teachers', 'TeachersAdminPage@index', ["visitor", "student"]);
-    $router->add('GET', '/students', 'StudentsAdminPage@index', ["visitor", "student"]);
-    $router->add('GET', '/banned-students', 'BannedStudentsAdminPage@index', ["visitor", "student"]);
-    $router->add('GET', '/unverified-teachers', 'UnverifiedTeachersAdminPage@index', ["visitor", "student"]);
-    $router->add('GET', '/categories', 'CategoriesAdminPage@index', ["visitor", "student"]);
-    $router->add('GET', '/tags', 'TagsAdminPage@index', ["visitor", "student"]);
+    // $router->add('GET', '/', 'DashboardAdminPage@index', ["visitor", "student"]);
+    // $router->add('GET', '/teachers', 'TeachersAdminPage@index', ["visitor", "student"]);
+    // $router->add('GET', '/students', 'StudentsAdminPage@index', ["visitor", "student"]);
+    // $router->add('GET', '/banned-students', 'BannedStudentsAdminPage@index', ["visitor", "student"]);
+    // $router->add('GET', '/unverified-teachers', 'UnverifiedTeachersAdminPage@index', ["visitor", "student"]);
+    // $router->add('GET', '/categories', 'CategoriesAdminPage@index', ["visitor", "student"]);
+    // $router->add('GET', '/tags', 'TagsAdminPage@index', ["visitor", "student"]);
 
 
 
