@@ -1,4 +1,4 @@
-<!-- 
+
     <footer class="bg-gray-900 text-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -90,6 +90,34 @@
                 mobileMenu.classList.add('hidden');
             }
         });
+
+        let successMessage = <?= json_encode(flash("success")); ?>;
+        if (successMessage) {
+            Swal.fire("Success", successMessage, "success");
+        }
+
+        let errorMessage = <?= json_encode(flash("error")); ?>;
+        if (errorMessage) {
+            Swal.fire("Error", errorMessage, "error");
+        }
+
+        let warningMessage = <?= json_encode(flash("warning")); ?>;
+        if (warningMessage) {
+            Swal.fire("Warning", warningMessage, "warning");
+        }
+
+        let forms = document.querySelectorAll('form');
+        if (forms.length > 0) {
+            forms.forEach(form => {
+                if(form.method == "get") return;
+                let input = document.createElement('input');
+                input.setAttribute('type', 'hidden');
+                input.setAttribute('name', 'csrf_token');
+                input.value = "<?= generateCsrfToken() ?>";
+                form.appendChild(input);
+            });
+        }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
-</html> -->
+</html>
