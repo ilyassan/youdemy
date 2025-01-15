@@ -133,7 +133,7 @@ class User extends BaseClass
         $result = self::$db->single();
 
         if (self::$db->rowCount() > 0) {
-            return new self($result->id, $result->first_name, $result->last_name, $result->email, $result->password_hash, $result->role_id);
+            return new self($result["id"], $result["first_name"], $result["last_name"], $result["email"], $result["password"], $result["role_id"]);
         } else {
             return false;
         }

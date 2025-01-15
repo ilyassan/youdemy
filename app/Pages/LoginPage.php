@@ -21,7 +21,27 @@
                 'password_err' => '',
             ];
     
-            print_r($data);
-            return;
+            // Validate Email
+            if (empty($data['email'])) {
+                $errors['email_err'] = 'Please enter email.';
+            } elseif (!User::findUserByEmail($data['email'])) {
+                $errors['email_err'] = 'Email or password is incorrect!';
+            }
+            // validate password
+            if (empty($data['password'])) {
+                $errors['password_err'] = 'Please enter password.';
+            }
+    
+            // Make sure errors are empty (There's no errors)
+            if(empty($errors['email_err']) && empty($errors['password_err']) ){
+    
+                echo "valid";
+                return;
+            }
+            else{
+                // Load view with errors
+                flash("error", array_first_not_null_value($errors));
+                redirect('login');
+            }
         }
     }
