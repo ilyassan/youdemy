@@ -20,30 +20,31 @@
     $request = new Request();
 
     $router->add('GET', '/', 'HomePage@index', ["visitor", "student"]);
-    // $router->add('GET', '/courses', 'CoursesPage@index', ["visitor", "student"]);
-    // $router->add('GET', '/courses/content/{id}', 'CourseContentPage@index', ["visitor", "student"]);
-    // $router->add('GET', '/courses/{id}', 'CoursesPage@show', ["visitor", "student"]);
-    // $router->add('GET', '/my-courses', 'MyCoursesPage@index', ["visitor", "student"]);
+    $router->add('GET', '/courses', 'CoursesPage@index', ["visitor", "student"]);
+    $router->add('GET', '/courses/content/{id}', 'CourseContentPage@index', ["visitor", "student"]);
+    $router->add('GET', '/courses/{id}', 'CoursesPage@show', ["visitor", "student"]);
+    $router->add('GET', '/my-courses', 'MyCoursesPage@index', ["student"]);
 
 
-    // $router->add('GET', '/courses', 'CoursesTeacherPage@index', ["visitor", "student"]);
-    // $router->add('GET', '/courses/create', 'CoursesTeacherPage@create', ["visitor", "student"]);
-    // $router->add('GET', '/courses/edit/{id}', 'CoursesTeacherPage@edit', ["visitor", "student"]);
-    // $router->add('GET', '/students', 'StudentsTeacherPage@index', ["visitor", "student"]);
+    $router->add('GET', '/', 'DashboardTeacherPage@index', ["teacher"]);
+    $router->add('GET', '/courses', 'CoursesTeacherPage@index', ["teacher"]);
+    $router->add('GET', '/courses/create', 'CoursesTeacherPage@create', ["teacher"]);
+    $router->add('GET', '/courses/edit/{id}', 'CoursesTeacherPage@edit', ["teacher"]);
+    $router->add('GET', '/students', 'StudentsTeacherPage@index', ["teacher"]);
 
-    // $router->add('GET', '/', 'DashboardAdminPage@index', ["visitor", "student"]);
-    // $router->add('GET', '/teachers', 'TeachersAdminPage@index', ["visitor", "student"]);
-    // $router->add('GET', '/students', 'StudentsAdminPage@index', ["visitor", "student"]);
-    // $router->add('GET', '/banned-students', 'BannedStudentsAdminPage@index', ["visitor", "student"]);
-    // $router->add('GET', '/unverified-teachers', 'UnverifiedTeachersAdminPage@index', ["visitor", "student"]);
-    // $router->add('GET', '/categories', 'CategoriesAdminPage@index', ["visitor", "student"]);
-    // $router->add('GET', '/tags', 'TagsAdminPage@index', ["visitor", "student"]);
+    $router->add('GET', '/', 'DashboardAdminPage@index', ["admin"]);
+    $router->add('GET', '/teachers', 'TeachersAdminPage@index', ["admin"]);
+    $router->add('GET', '/students', 'StudentsAdminPage@index', ["admin"]);
+    $router->add('GET', '/banned-students', 'BannedStudentsAdminPage@index', ["admin"]);
+    $router->add('GET', '/unverified-teachers', 'UnverifiedTeachersAdminPage@index', ["admin"]);
+    $router->add('GET', '/categories', 'CategoriesAdminPage@index', ["admin"]);
+    $router->add('GET', '/tags', 'TagsAdminPage@index', ["admin"]);
 
 
 
-    $router->add('GET', '/login', 'LoginPage@index', ["visitor", "student"]);
-    $router->add('POST', '/login', 'LoginPage@login', ["visitor", "student"]);
-    $router->add('GET', '/signup', 'SignupPage@index', ["visitor", "student"]);
-    $router->add('POST', '/signup', 'SignupPage@signup', ["visitor", "student"]);
+    $router->add('GET', '/login', 'LoginPage@index', ["visitor"]);
+    $router->add('POST', '/login', 'LoginPage@login', ["visitor"]);
+    $router->add('GET', '/signup', 'SignupPage@index', ["visitor"]);
+    $router->add('POST', '/signup', 'SignupPage@signup', ["visitor"]);
 
     $router->dispatch($request);

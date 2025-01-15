@@ -9,8 +9,8 @@ class User extends BaseClass
     private $role_id;
 
     static public $adminRoleId = 1;
-    static public $studentRoleId = 2;
-    static public $teacherRoleId = 3;
+    static public $teacherRoleId = 2;
+    static public $studentRoleId = 3;
 
     public function __construct($id = null, $first_name = null, $last_name = null, $email = null, $password = null, $role_id = null)
     {
@@ -94,6 +94,21 @@ class User extends BaseClass
     public function setRoleId($role_id)
     {
         $this->role_id = $role_id;
+    }
+
+    public function isAdmin()
+    {
+        return $this->getRoleId() == self::$adminRoleId;
+    }
+
+    public function isTeacher()
+    {
+        return $this->getRoleId() == self::$teacherRoleId;
+    }
+
+    public function isStudent()
+    {
+        return $this->getRoleId() == self::$studentRoleId;
     }
     
 

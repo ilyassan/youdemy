@@ -1,348 +1,173 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Educational Dashboard</title>
-    <!-- Tailwind CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
-<body class="bg-gray-100">
+<form action="#" method="POST" enctype="multipart/form-data" class="bg-white shadow-lg rounded-lg p-6 max-w-3xl mx-auto">
+    <h1 class="text-2xl font-semibold text-gray-800 mb-6">Create a New Course</h1>
 
-    <!-- Sidebar -->
-    <aside id="sidebar" class="fixed top-0 left-0 h-screen w-64 bg-white shadow-lg transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40">
-        <!-- Logo -->
-        <div class="flex items-center justify-center h-16 border-b">
-            <span class="text-indigo-600 font-bold text-2xl">EDUCARE</span>
+    <!-- Thumbnail Upload with Dynamic Behavior -->
+    <div class="flex justify-center mb-6">
+        <div class="relative flex justify-center w-full md:w-96 h-60 border-2 border-gray-300 rounded-lg overflow-hidden">
+            <!-- Image Preview -->
+            <img
+                id="thumbnail-preview"
+                class="w-full h-full object-cover opacity-0"
+                src="https://via.placeholder.com/300x200?text=Thumbnail+Preview"
+                alt="Thumbnail Preview"
+            >
+            <!-- Title Overlay -->
+            <span
+                id="thumbnail-title"
+                class="absolute inset-0 flex items-center justify-center bg-gray-50 text-gray-500 font-medium rounded-lg opacity-75"
+            >
+                Upload Thumbnail
+            </span>
+            <!-- Hidden File Input -->
+            <label for="thumbnail" class="absolute inset-0 cursor-pointer rounded-lg">
+                <input type="file" id="thumbnail" name="thumbnail" class="hidden" accept="image/*" required>
+            </label>
         </div>
-    
-        <!-- Navigation Menu -->
-        <nav class="py-4">
-            <!-- User Info -->
-            <div class="px-4 mb-3">
-                <div class="flex items-center gap-3 px-4 py-2 text-gray-600">
-                    <i class="fas fa-user-circle text-xl"></i>
-                    <span class="font-medium">Teacher Name</span>
-                </div>
-            </div>
-    
-            <!-- Sidebar Links -->
-            <div class="px-4 space-y-1">
-                <!-- Dashboard -->
-                <a href="/teacher/dashboard" class="flex items-center gap-3 px-4 py-2 text-indigo-600 bg-indigo-100 rounded-lg">
-                    <i class="fas fa-tachometer-alt"></i>
-                    <span>Dashboard</span>
-                </a>
-    
-                <!-- Course Management Section -->
-                <div class="space-y-1 pt-2">
-                    <p class="px-4 text-xs font-semibold text-gray-400 uppercase">Courses</p>
-                    <a href="/teacher/courses" class="flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
-                        <i class="fas fa-book"></i>
-                        <span>My Courses</span>
-                    </a>
-                    <a href="/teacher/courses/create" class="flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
-                        <i class="fas fa-plus-circle"></i>
-                        <span>Create Course</span>
-                    </a>
-                </div>
-    
-                <!-- Student Management Section -->
-                <div class="space-y-1 pt-2">
-                    <p class="px-4 text-xs font-semibold text-gray-400 uppercase">Students</p>
-                    <a href="/teacher/students" class="flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
-                        <i class="fas fa-users"></i>
-                        <span>All Students</span>
-                    </a>
-                    <a href="/teacher/students/grades" class="flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
-                        <i class="fas fa-clipboard-list"></i>
-                        <span>Gradebook</span>
-                    </a>
-                </div>
-    
-                <!-- Resources Section -->
-                <div class="space-y-1 pt-2">
-                    <p class="px-4 text-xs font-semibold text-gray-400 uppercase">Resources</p>
-                    <a href="/teacher/resources" class="flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
-                        <i class="fas fa-folder-open"></i>
-                        <span>My Resources</span>
-                    </a>
-                    <a href="/teacher/resources/upload" class="flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
-                        <i class="fas fa-upload"></i>
-                        <span>Upload Resources</span>
-                    </a>
-                </div>
-    
-                <!-- Logout Section -->
-                <div class="space-y-1 pt-2">
-                    <p class="px-4 text-xs font-semibold text-gray-400 uppercase">Logout</p>
-                    <a href="/logout" class="flex items-center gap-3 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span>Logout</span>
-                    </a>
-                </div>
-            </div>
-        </nav>
-    </aside>
-    
-     <!-- Main Content -->
-     <main class="lg:ml-64 min-h-screen flex flex-col-reverse">
-     <div class="p-4 bg-gray-100">
-        <form action="#" method="POST" enctype="multipart/form-data" class="bg-white shadow-lg rounded-lg p-6 max-w-3xl mx-auto">
-            <h1 class="text-2xl font-semibold text-gray-800 mb-6">Create a New Course</h1>
+    </div>
 
-            <!-- Thumbnail Upload with Dynamic Behavior -->
-            <div class="flex justify-center mb-6">
-                <div class="relative flex justify-center w-full md:w-96 h-60 border-2 border-gray-300 rounded-lg overflow-hidden">
-                    <!-- Image Preview -->
-                    <img
-                        id="thumbnail-preview"
-                        class="w-full h-full object-cover opacity-0"
-                        src="https://via.placeholder.com/300x200?text=Thumbnail+Preview"
-                        alt="Thumbnail Preview"
-                    >
-                    <!-- Title Overlay -->
-                    <span
-                        id="thumbnail-title"
-                        class="absolute inset-0 flex items-center justify-center bg-gray-50 text-gray-500 font-medium rounded-lg opacity-75"
-                    >
-                        Upload Thumbnail
-                    </span>
-                    <!-- Hidden File Input -->
-                    <label for="thumbnail" class="absolute inset-0 cursor-pointer rounded-lg">
-                        <input type="file" id="thumbnail" name="thumbnail" class="hidden" accept="image/*" required>
-                    </label>
-                </div>
-            </div>
+    <!-- Course Title -->
+    <div class="mb-4">
+        <label for="title" class="block mb-2 text-sm font-medium text-gray-700">Course Title</label>
+        <input type="text" id="title" name="title" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Enter course title" required>
+    </div>
 
-            <!-- Course Title -->
-            <div class="mb-4">
-                <label for="title" class="block mb-2 text-sm font-medium text-gray-700">Course Title</label>
-                <input type="text" id="title" name="title" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Enter course title" required>
-            </div>
+    <!-- Description -->
+    <div class="mb-4">
+        <label for="description" class="block mb-2 text-sm font-medium text-gray-700">Description</label>
+        <textarea id="description" name="description" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Write a brief description" required></textarea>
+    </div>
 
-            <!-- Description -->
-            <div class="mb-4">
-                <label for="description" class="block mb-2 text-sm font-medium text-gray-700">Description</label>
-                <textarea id="description" name="description" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Write a brief description" required></textarea>
-            </div>
+    <!-- Category Dropdown -->
+    <div class="mb-4">
+        <label for="category" class="block mb-2 text-sm font-medium text-gray-700">Category</label>
+        <select id="category" name="category" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5 focus:ring-indigo-500 focus:border-indigo-500" required>
+            <option value="">Select a category</option>
+            <option value="web-development">Web Development</option>
+            <option value="design">Design</option>
+            <option value="data-science">Data Science</option>
+        </select>
+    </div>
 
-            <!-- Category Dropdown -->
-            <div class="mb-4">
-                <label for="category" class="block mb-2 text-sm font-medium text-gray-700">Category</label>
-                <select id="category" name="category" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5 focus:ring-indigo-500 focus:border-indigo-500" required>
-                    <option value="">Select a category</option>
-                    <option value="web-development">Web Development</option>
-                    <option value="design">Design</option>
-                    <option value="data-science">Data Science</option>
-                </select>
-            </div>
+    <!-- Tags -->
+    <div class="mb-4">
+        <label for="tags" class="block mb-2 text-sm font-medium text-gray-700">Tags</label>
+        <input type="text" id="tags" name="tags" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Add tags separated by commas" required>
+    </div>
 
-            <!-- Tags -->
-            <div class="mb-4">
-                <label for="tags" class="block mb-2 text-sm font-medium text-gray-700">Tags</label>
-                <input type="text" id="tags" name="tags" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Add tags separated by commas" required>
-            </div>
-
-            <!-- Course Content Section -->
-            <div class="mb-6">
-                <label class="block mb-2 text-sm font-medium text-gray-700">Course Content</label>
-                <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4 w-full">
-                    <!-- Upload Video Button -->
-                    <button type="button" id="select-video" class="w-full p-4 border border-gray-300 rounded-lg bg-gray-50 hover:bg-indigo-50 outline-none ring-indigo-500 ring-offset-2">
-                        <i class="fas fa-video text-indigo-500"></i>
-                        <span class="ml-2">Upload Video</span>
-                    </button>
-
-                    <!-- Upload Document Button -->
-                    <button type="button" id="select-document" class="w-full p-4 border border-gray-300 rounded-lg bg-gray-50 hover:bg-indigo-50 outline-none ring-indigo-500 ring-offset-2">
-                        <i class="fas fa-file-alt text-indigo-500"></i>
-                        <span class="ml-2">Upload Document</span>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Dynamic Upload Input -->
-            <div id="upload-section" class="hidden mb-6">
-                <!-- Video Upload Input -->
-                <div id="video-upload" class="hidden">
-                    <label for="video-content" class="block mb-2 text-sm font-medium text-gray-700">Upload Video</label>
-                    <div class="relative">
-                        <input type="file" id="video-content" name="video-content" class="hidden" accept="video/mp4" />
-                        <label for="video-content" class="flex items-center justify-between px-4 py-2 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg cursor-pointer hover:bg-indigo-50">
-                            <span id="video-file-name" class="text-sm text-gray-500">Choose a video file</span>
-                            <i class="fas fa-upload text-indigo-500"></i>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- Document Upload Input -->
-                <div id="document-upload" class="hidden">
-                    <label for="document-content" class="block mb-2 text-sm font-medium text-gray-700">Upload Document</label>
-                    <div class="relative">
-                        <input type="file" id="document-content" name="document-content" class="hidden" accept="application/pdf,application/msword" />
-                        <label for="document-content" class="flex items-center justify-between px-4 py-2 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg cursor-pointer hover:bg-indigo-50">
-                            <span id="document-file-name" class="text-sm text-gray-500">Choose a document file</span>
-                            <i class="fas fa-upload text-indigo-500"></i>
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Submit Button -->
-            <button type="submit" class="w-full py-2.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                Create Course
+    <!-- Course Content Section -->
+    <div class="mb-6">
+        <label class="block mb-2 text-sm font-medium text-gray-700">Course Content</label>
+        <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4 w-full">
+            <!-- Upload Video Button -->
+            <button type="button" id="select-video" class="w-full p-4 border border-gray-300 rounded-lg bg-gray-50 hover:bg-indigo-50 outline-none ring-indigo-500 ring-offset-2">
+                <i class="fas fa-video text-indigo-500"></i>
+                <span class="ml-2">Upload Video</span>
             </button>
-        </form>
 
-        <script>
-            const thumbnailInput = document.getElementById('thumbnail');
-            const thumbnailPreview = document.getElementById('thumbnail-preview');
-            const thumbnailTitle = document.getElementById('thumbnail-title');
+            <!-- Upload Document Button -->
+            <button type="button" id="select-document" class="w-full p-4 border border-gray-300 rounded-lg bg-gray-50 hover:bg-indigo-50 outline-none ring-indigo-500 ring-offset-2">
+                <i class="fas fa-file-alt text-indigo-500"></i>
+                <span class="ml-2">Upload Document</span>
+            </button>
+        </div>
+    </div>
 
-            // Update Thumbnail on File Upload
-            thumbnailInput.addEventListener('change', (event) => {
-                const file = event.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = () => {
-                        thumbnailPreview.src = reader.result;
-                        thumbnailPreview.classList.remove('opacity-0');
-                        thumbnailTitle.classList.add('hidden');
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-
-            const selectVideoBtn = document.getElementById('select-video');
-            const selectDocumentBtn = document.getElementById('select-document');
-            const videoUpload = document.getElementById('video-upload');
-            const documentUpload = document.getElementById('document-upload');
-            const uploadSection = document.getElementById('upload-section');
-
-            const videoInput = document.getElementById('video-content');
-            const documentInput = document.getElementById('document-content');
-            const videoFileName = document.getElementById('video-file-name');
-            const documentFileName = document.getElementById('document-file-name');
-
-            // Function to toggle between video and document upload
-            function toggleUpload(type) {
-                uploadSection.classList.remove('hidden');
-
-                if (type === 'video') {
-                    selectVideoBtn.classList.add("ring-2");
-                    selectDocumentBtn.classList.remove("ring-2");
-
-                    videoUpload.classList.remove('hidden');
-                    documentUpload.classList.add('hidden');
-                    documentInput.value = ''; // Clear document input
-                    documentFileName.textContent = 'Choose a document file';
-                } else if (type === 'document') {
-                    selectDocumentBtn.classList.add("ring-2");
-                    selectVideoBtn.classList.remove("ring-2");
-
-                    documentUpload.classList.remove('hidden');
-                    videoUpload.classList.add('hidden');
-                    videoInput.value = ''; // Clear video input
-                    videoFileName.textContent = 'Choose a video file';
-                }
-            }
-
-            // Event Listeners for buttons
-            selectVideoBtn.addEventListener('click', () => toggleUpload('video'));
-            selectDocumentBtn.addEventListener('click', () => toggleUpload('document'));
-
-            // Update file name display when a file is selected
-            videoInput.addEventListener('change', () => {
-                videoFileName.textContent = videoInput.files[0]?.name || 'Choose a video file';
-            });
-
-            documentInput.addEventListener('change', () => {
-                documentFileName.textContent = documentInput.files[0]?.name || 'Choose a document file';
-            });
-        </script>
-     </div>
-
-        <header class="bg-white shadow-sm">
-            <div class="flex h-16 items-center justify-between px-4 py-3">
-                <h1 class="text-xl font-semibold text-gray-800"><?= $titlePage ?? "Dashboard" ?></h1>
-                
-                <div class="flex items-center gap-4">
-                    <button id="sidebarToggle" class="lg:hidden bg-primary text-white p-2 rounded-lg">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                </div>
+    <!-- Dynamic Upload Input -->
+    <div id="upload-section" class="hidden mb-6">
+        <!-- Video Upload Input -->
+        <div id="video-upload" class="hidden">
+            <label for="video-content" class="block mb-2 text-sm font-medium text-gray-700">Upload Video</label>
+            <div class="relative">
+                <input type="file" id="video-content" name="video-content" class="hidden" accept="video/mp4" />
+                <label for="video-content" class="flex items-center justify-between px-4 py-2 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg cursor-pointer hover:bg-indigo-50">
+                    <span id="video-file-name" class="text-sm text-gray-500">Choose a video file</span>
+                    <i class="fas fa-upload text-indigo-500"></i>
+                </label>
             </div>
-        </header>
-     </main>
+        </div>
 
-    <!-- JavaScript for Charts -->
-    <script>
-        // Enrollment Chart Data
-        const enrollmentData = {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-            datasets: [{
-                label: 'Enrollments',
-                data: [100, 120, 150, 140, 160, 180],
-                borderColor: '#3B82F6',
-                tension: 0.4,
-                fill: true,
-                backgroundColor: 'rgba(59, 130, 246, 0.1)'
-            }]
-        };
-    
-        // Popularity Chart Data
-        const popularityData = {
-            labels: ['Data Science', 'Python Programming', 'Web Development', 'Machine Learning'],
-            datasets: [{
-                data: [200, 150, 180, 220],
-                backgroundColor: ['#3B82F6', '#10B981', '#F59E0B', '#7C3AED']
-            }]
-        };
-    
-        // Render Enrollment Chart
-        const enrollmentCtx = document.getElementById('enrollmentChart').getContext('2d');
-        new Chart(enrollmentCtx, {
-            type: 'line',
-            data: enrollmentData,
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return value.toLocaleString();
-                            }
-                        }
-                    }
-                }
-            }
-        });
-    
-        // Render Popularity Chart
-        const popularityCtx = document.getElementById('popularityChart').getContext('2d');
-        new Chart(popularityCtx, {
-            type: 'doughnut',
-            data: popularityData,
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'bottom'
-                    }
-                }
-            }
-        });
-    </script>
-</body>
-</html>
+        <!-- Document Upload Input -->
+        <div id="document-upload" class="hidden">
+            <label for="document-content" class="block mb-2 text-sm font-medium text-gray-700">Upload Document</label>
+            <div class="relative">
+                <input type="file" id="document-content" name="document-content" class="hidden" accept="application/pdf,application/msword" />
+                <label for="document-content" class="flex items-center justify-between px-4 py-2 bg-gray-50 border border-gray-300 text-gray-900 rounded-lg cursor-pointer hover:bg-indigo-50">
+                    <span id="document-file-name" class="text-sm text-gray-500">Choose a document file</span>
+                    <i class="fas fa-upload text-indigo-500"></i>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" class="w-full py-2.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+        Create Course
+    </button>
+</form>
+
+<script>
+    const thumbnailInput = document.getElementById('thumbnail');
+    const thumbnailPreview = document.getElementById('thumbnail-preview');
+    const thumbnailTitle = document.getElementById('thumbnail-title');
+
+    // Update Thumbnail on File Upload
+    thumbnailInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                thumbnailPreview.src = reader.result;
+                thumbnailPreview.classList.remove('opacity-0');
+                thumbnailTitle.classList.add('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    const selectVideoBtn = document.getElementById('select-video');
+    const selectDocumentBtn = document.getElementById('select-document');
+    const videoUpload = document.getElementById('video-upload');
+    const documentUpload = document.getElementById('document-upload');
+    const uploadSection = document.getElementById('upload-section');
+
+    const videoInput = document.getElementById('video-content');
+    const documentInput = document.getElementById('document-content');
+    const videoFileName = document.getElementById('video-file-name');
+    const documentFileName = document.getElementById('document-file-name');
+
+    // Function to toggle between video and document upload
+    function toggleUpload(type) {
+        uploadSection.classList.remove('hidden');
+
+        if (type === 'video') {
+            selectVideoBtn.classList.add("ring-2");
+            selectDocumentBtn.classList.remove("ring-2");
+
+            videoUpload.classList.remove('hidden');
+            documentUpload.classList.add('hidden');
+            documentInput.value = ''; // Clear document input
+            documentFileName.textContent = 'Choose a document file';
+        } else if (type === 'document') {
+            selectDocumentBtn.classList.add("ring-2");
+            selectVideoBtn.classList.remove("ring-2");
+
+            documentUpload.classList.remove('hidden');
+            videoUpload.classList.add('hidden');
+            videoInput.value = ''; // Clear video input
+            videoFileName.textContent = 'Choose a video file';
+        }
+    }
+
+    // Event Listeners for buttons
+    selectVideoBtn.addEventListener('click', () => toggleUpload('video'));
+    selectDocumentBtn.addEventListener('click', () => toggleUpload('document'));
+
+    // Update file name display when a file is selected
+    videoInput.addEventListener('change', () => {
+        videoFileName.textContent = videoInput.files[0]?.name || 'Choose a video file';
+    });
+
+    documentInput.addEventListener('change', () => {
+        documentFileName.textContent = documentInput.files[0]?.name || 'Choose a document file';
+    });
+</script>

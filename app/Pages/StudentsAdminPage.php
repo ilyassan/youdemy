@@ -3,6 +3,6 @@
     {
         public function index()
         {
-            $this->render("/admin/students/index");
+            $this->render("/students/index");
         }
     }
