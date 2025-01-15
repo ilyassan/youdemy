@@ -42,6 +42,7 @@
 
 
     $router->add('GET', '/login', 'LoginPage@index', ["visitor", "student"]);
+    $router->add('POST', '/login', 'LoginPage@login', ["visitor", "student"]);
     $router->add('GET', '/signup', 'SignupPage@index', ["visitor", "student"]);
     $router->add('POST', '/signup', 'SignupPage@signup', ["visitor", "student"]);
 
