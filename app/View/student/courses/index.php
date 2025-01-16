@@ -134,12 +134,96 @@
             <?php endforeach; ?>
         </div>
 
-        <!-- Load More Button -->
-        <div class="text-center mt-12">
-            <button class="px-8 py-3 bg-white text-indigo-600 rounded-lg font-medium border border-indigo-200 hover:bg-indigo-50 transition-all">
-                Load More Courses
-            </button>
+        <!-- Pagination -->
+        <div class="flex justify-center mt-8">
+            <nav role="navigation" aria-label="Pagination Navigation">
+                <ul class="flex items-center space-x-2">
+                    <?php
+                    $coursesPerPage = 10;
+                    $totalPages = ceil($coursesTotalCount / $coursesPerPage);
+                    $currentPage = (int) ($_GET['page'] ?? 1);
+
+                    if ($currentPage < 1) {
+                        $currentPage = 1;
+                    } elseif ($currentPage > $totalPages) {
+                        $currentPage = $totalPages;
+                    }
+
+                    $visiblePages = 5;
+                    $halfVisible = floor($visiblePages / 2);
+
+                    $startPage = max(1, $currentPage - $halfVisible);
+                    $endPage = min($totalPages, $currentPage + $halfVisible);
+
+                    if ($currentPage <= $halfVisible) {
+                        $endPage = min($visiblePages, $totalPages);
+                    } elseif ($currentPage + $halfVisible > $totalPages) {
+                        $startPage = max(1, $totalPages - $visiblePages + 1);
+                    }
+
+                    $previousPage = ($currentPage > 1) ? $currentPage - 1 : null;
+                    $nextPage = ($currentPage < $totalPages) ? $currentPage + 1 : null;
+                    ?>
+
+                    <!-- Previous Button -->
+                    <li>
+                        <a href="<?= $previousPage ? "?page=" . htmlspecialchars($previousPage) : '#' ?>"
+                           class="px-4 py-2 rounded-md bg-white text-gray-500 hover:bg-gray-100 <?= !$previousPage ? 'opacity-50 cursor-not-allowed' : '' ?>"
+                           <?= !$previousPage ? 'aria-disabled="true"' : '' ?>>
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+
+                    <!-- First Page -->
+                    <?php if ($startPage > 1): ?>
+                        <li>
+                            <a href="?page=1" class="px-4 py-2 rounded-md bg-white text-gray-700 hover:bg-gray-100">1</a>
+                        </li>
+                        <!-- Ellipsis -->
+                        <?php if ($startPage > 2): ?>
+                            <li>
+                                <span class="px-4 py-2 rounded-md bg-gray-100 text-gray-700">...</span>
+                            </li>
+                        <?php endif; ?>
+                    <?php endif; ?>
+
+                    <!-- Page Numbers -->
+                    <?php for ($i = $startPage; $i <= $endPage; $i++): ?>
+                        <li>
+                            <a href="?page=<?= htmlspecialchars($i) ?>"
+                               class="px-4 py-2 rounded-md <?= $i == $currentPage ? 'bg-indigo-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-100 border border-indigo-400' ?>">
+                                <?= htmlspecialchars($i) ?>
+                            </a>
+                        </li>
+                    <?php endfor; ?>
+
+                    <!-- Last Page -->
+                    <?php if ($endPage < $totalPages): ?>
+                        <!-- Ellipsis -->
+                        <?php if ($endPage < $totalPages - 1): ?>
+                            <li>
+                                <span class="px-4 py-2 rounded-md bg-gray-100 text-gray-700">...</span>
+                            </li>
+                        <?php endif; ?>
+                        <li>
+                            <a href="?page=<?= htmlspecialchars($totalPages) ?>" class="px-4 py-2 rounded-md bg-white text-gray-700 hover:bg-gray-100">
+                                <?= htmlspecialchars($totalPages) ?>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+
+                    <!-- Next Button -->
+                    <li>
+                        <a href="<?= $nextPage ? "?page=" . htmlspecialchars($nextPage) : '#' ?>"
+                           class="px-4 py-2 rounded-md bg-white text-gray-500 hover:bg-gray-100 <?= !$nextPage ? 'opacity-50 cursor-not-allowed' : '' ?>"
+                           <?= !$nextPage ? 'aria-disabled="true"' : '' ?>>
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
+
     </div>
 </section>
 

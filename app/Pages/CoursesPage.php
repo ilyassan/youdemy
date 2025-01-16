@@ -9,10 +9,17 @@
             $filters['min_price'] = $_GET['min_price'] ?? '';
             $filters['max_price'] = $_GET['max_price'] ?? '';
 
-            $courses = Course::all($filters);
+            $page = $_GET['page'] ?? 1;
+
+            if (! is_numeric($page) || $page < 1) {
+                redirect('courses');
+            }
+
+            $coursesTotalCount = Course::countByFilter($filters);
+            $courses = Course::paginate($page, 6, $filters);
             $categories = Category::all();
             
-            $this->render("/courses/index", compact('courses', 'categories'));
+            $this->render("/courses/index", compact('courses', 'categories', 'coursesTotalCount'));
         }
 
         public function show($id)
