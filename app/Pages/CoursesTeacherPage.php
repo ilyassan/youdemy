@@ -4,16 +4,16 @@
     {
         public function index()
         {
-            $this->render("/teacher/courses/index");
+            $this->render("/courses/index");
         }
 
         public function create()
         {
-            $this->render("/teacher/courses/create");
+            $this->render("/courses/create");
         }
 
         public function edit($id)
         {
-            $this->render("/teacher/courses/edit");
+            $this->render("/courses/edit");
         }
     }

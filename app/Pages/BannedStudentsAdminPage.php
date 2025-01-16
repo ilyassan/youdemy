@@ -4,6 +4,6 @@
     {
         public function index()
         {
-            $this->render("/admin/banned-students/index");
+            $this->render("/banned-students/index");
         }
     }

@@ -4,6 +4,6 @@
     {
         public function index()
         {
-            $this->render("/admin/categories/index");
+            $this->render("/categories/index");
         }
     }
