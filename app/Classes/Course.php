@@ -127,6 +127,8 @@ class Course extends BaseClass {
         return $this->tags;
     }
 
+    // Setters
+
     public function setRate($rate)
     {
         $this->rate = $rate;
@@ -356,7 +358,6 @@ class Course extends BaseClass {
         $sql = "SELECT * FROM courses WHERE teacher_id = :teacher_id";
         self::$db->query($sql);
         self::$db->bind(':teacher_id', $teacher_id);
-        self::$db->execute();
 
         $results = self::$db->results();
 
@@ -376,6 +377,46 @@ class Course extends BaseClass {
                 $result["created_at"],
                 $result["updated_at"]
             );
+        }
+
+        return $courses;
+    }
+
+    // Get student courses
+    public static function findByStudentId(int $student_id)
+    {
+        $sql = "SELECT c.*, ra.rate as rate, CONCAT(u.first_name, ' ', u.last_name) AS teacher_name
+                FROM enrollments e
+                JOIN courses c ON c.id = e.course_id
+                LEFT JOIN rates ra ON ra.course_id = c.id AND ra.student_id = :student_id
+                JOIN users u ON c.teacher_id = u.id
+                WHERE e.student_id = :student_id";
+                
+        self::$db->query($sql);
+        self::$db->bind(':student_id', $student_id);
+
+        $results = self::$db->results();
+
+        $courses = [];
+        foreach ($results as $result) {
+            $course = new self(
+                $result["id"],
+                $result["title"],
+                $result["description"],
+                $result["price"],
+                $result["thumbnail"],
+                $result["document_name"],
+                $result["video_name"],
+                $result["is_deleted"],
+                $result["teacher_id"],
+                $result["category_id"],
+                $result["created_at"],
+                $result["updated_at"]
+            );
+            $course->setRate($result["rate"]);
+            $course->setTeacherName($result['teacher_name']);
+
+            $courses[] = $course;
         }
 
         return $courses;
@@ -431,4 +472,5 @@ class Course extends BaseClass {
 
         return $courses;
     }
+
 }
