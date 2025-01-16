@@ -11,6 +11,9 @@
 
         public function show($id)
         {
-            $this->render("/courses/show");
+            $course = Course::find($id);
+            $relatedCourses = Course::limit(4);
+
+            $this->render("/courses/show", compact('course', 'relatedCourses'));
         }
     }

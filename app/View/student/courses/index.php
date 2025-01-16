@@ -93,7 +93,7 @@
                         </span>
                         <span class="flex items-center">
                             <i class="fas fa-user-graduate mr-2"></i>
-                            <?= $course->getRatesCount() ?> students
+                            <?= $course->getEnrollmentsCount() ?> students
                         </span>
                     </div>
                     <div class="flex items-center justify-between">

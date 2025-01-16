@@ -17,6 +17,8 @@ class Course extends BaseClass {
     private $rates_count;
     private $teacher_name;
     private $category_name;
+    private $enrollments_count;
+    private $tags;
 
     public function __construct($id, $title, $description, $price, $thumbnail, $document_name, $video_name, $is_deleted, $teacher_id, $category_id, $created_at, $updated_at)
     {
@@ -115,6 +117,16 @@ class Course extends BaseClass {
         return $this->category_name;
     }
 
+    public function getEnrollmentsCount()
+    {
+        return $this->enrollments_count;
+    }
+
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
     public function setRate($rate)
     {
         $this->rate = $rate;
@@ -135,6 +147,16 @@ class Course extends BaseClass {
         $this->category_name = $category_name;
     }
 
+    public function setEnrollmentsCount($enrollments_count)
+    {
+        $this->enrollments_count = $enrollments_count;
+    }
+
+    public function setTags(array $tags)
+    {
+        $this->tags = $tags;
+    }
+
     // Save a new course to the database
     public function save()
     {
@@ -149,6 +171,7 @@ class Course extends BaseClass {
         self::$db->bind(':video_name', $this->video_name);
         self::$db->bind(':teacher_id', $this->teacher_id);
         self::$db->bind(':category_id', $this->category_id);
+
         return self::$db->execute();
     }
 
@@ -164,26 +187,53 @@ class Course extends BaseClass {
     // Find a course by ID
     public static function find(int $id)
     {
-        $sql = "SELECT * FROM courses WHERE id = :id";
+        $sql = "SELECT
+                    c.*,
+                    COUNT(e.id) AS enrollments_count,
+                    COUNT(r.id) AS rates_count,
+                    AVG(r.rate) AS rate,
+                    CONCAT(u.first_name, ' ', u.last_name) AS teacher_name,
+                    ca.name AS category_name,
+                    GROUP_CONCAT(t.name) as tags
+                FROM courses c
+                LEFT JOIN enrollments e ON c.id = e.course_id
+                LEFT JOIN rates r ON c.id = r.course_id
+                JOIN users u ON c.teacher_id = u.id
+                JOIN categories ca ON c.category_id = ca.id
+                LEFT JOIN courses_tags ct ON ct.course_id = c.id
+                LEFT JOIN tags t ON t.id = ct.tag_id
+                WHERE c.id = :id
+                GROUP BY c.id
+                ";
+
         self::$db->query($sql);
         self::$db->bind(':id', $id);
 
         $result = self::$db->single();
 
-        return new self(
-            $result["id"],
-            $result["title"],
-            $result["description"],
-            $result["price"],
-            $result["thumbnail"],
-            $result["document_name"],
-            $result["video_name"],
-            $result["is_deleted"],
-            $result["teacher_id"],
-            $result["category_id"],
-            $result["created_at"],
-            $result["updated_at"]
-        );
+        $course = new self(
+                $result["id"],
+                $result["title"],
+                $result["description"],
+                $result["price"],
+                $result["thumbnail"],
+                $result["document_name"],
+                $result["video_name"],
+                $result["is_deleted"],
+                $result["teacher_id"],
+                $result["category_id"],
+                $result["created_at"],
+                $result["updated_at"]
+            );
+
+        $course->setEnrollmentsCount($result['enrollments_count']);
+        $course->setRate(number_format($result['rate'], 2));
+        $course->setRatesCount($result['rates_count']);
+        $course->setTeacherName($result['teacher_name']);
+        $course->setCategoryName($result['category_name']);
+        $course->setTags(explode(',', $result["tags"]) ?? []);
+
+        return $course;
     }
 
     // Get all courses
@@ -226,12 +276,44 @@ class Course extends BaseClass {
                 $result["updated_at"]
             );
 
+            $course->setEnrollmentsCount($result['enrollments_count']);
             $course->setRate(number_format($result['rate'], 2));
             $course->setRatesCount($result['rates_count']);
             $course->setTeacherName($result['teacher_name']);
             $course->setCategoryName($result['category_name']);
 
             $courses[] = $course;
+        }
+
+        return $courses;
+    }
+
+    // Get n courses
+    public static function limit(int $n)
+    {
+        $sql = "SELECT * FROM courses LIMIT :n";
+
+        self::$db->query($sql);
+        self::$db->bind(':n', $n);
+
+        $results = self::$db->results();
+
+        $courses = [];
+        foreach ($results as $result) {
+            $courses[] = new self(
+                $result["id"],
+                $result["title"],
+                $result["description"],
+                $result["price"],
+                $result["thumbnail"],
+                $result["document_name"],
+                $result["video_name"],
+                $result["is_deleted"],
+                $result["teacher_id"],
+                $result["category_id"],
+                $result["created_at"],
+                $result["updated_at"]
+            );
         }
 
         return $courses;
@@ -339,6 +421,7 @@ class Course extends BaseClass {
                 $result["updated_at"]
             );
 
+            $course->setEnrollmentsCount($result['enrollments_count']);
             $course->setRate(number_format($result['rate'], 2));
             $course->setRatesCount($result['rates_count']);
             $course->setTeacherName($result['teacher_name']);
