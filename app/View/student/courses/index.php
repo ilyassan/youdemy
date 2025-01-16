@@ -8,55 +8,70 @@
         </div>
 
         <!-- Filter Section -->
-        <div class="bg-white rounded-xl shadow-lg p-6 mb-12">
+        <form class="bg-white rounded-xl shadow-lg p-6 mb-12">
             <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-6 items-center">
                 <!-- Search Input -->
                 <div class="relative">
-                    <input type="text" placeholder="Search courses..." class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                    <span class="absolute left-3 top-3.5 text-gray-400">
+                    <input type="text" value="<?= $_GET['keyword'] ?? '' ?>" name="keyword" placeholder="Search courses..." class="w-full outline-none pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
                         <i class="fas fa-search"></i>
                     </span>
                 </div>
 
-                <!-- Topic Dropdown -->
+                <!-- Categories (Custom Dropdown) -->
                 <div class="relative">
-                    <select class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg appearance-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                        <option>All Topics</option>
-                        <option>Programming</option>
-                        <option>Data Science</option>
-                        <option>Design</option>
-                        <option>Business</option>
-                    </select>
-                    <span class="absolute left-3 top-3.5 text-gray-400">
-                        <i class="fas fa-book"></i>
-                    </span>
+                    <input id="category_id" type="hidden" name="category_id" value="">
+                    <button
+                        type="button"
+                        id="categoriesDropdown"
+                        class="flex items-center border border-gray-300 rounded-md px-4 py-2 w-full bg-white text-gray-500 focus:outline-none"
+                    >
+                        <i class="fas fa-layer-group text-gray-500 mr-2"></i>
+                        <span id="selectedCategories">
+                            <?= htmlspecialchars(($category = current(array_filter($categories, fn($cat) => $cat->getId() == ($_GET['category_id'] ?? 0)))) ? $category->getName() : "Categories") ?>
+                        </span>
+                        <i class="fas fa-chevron-down ml-auto text-gray-400"></i>
+                    </button>
+                    <!-- Dropdown Options -->
+                    <ul
+                        id="categoriesDropdownMenu"
+                        class="absolute dropdown-menu hidden bg-white shadow-md rounded-md w-full mt-2 z-10"
+                    >
+                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" onclick="selectOption('categoriesDropdown', 'selectedCategories', '<?= htmlspecialchars('All') ?>')"><?= htmlspecialchars("All") ?></li>
+                        <?php foreach ($categories as $category): ?>
+                            <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" onclick="selectOption('categoriesDropdown', 'selectedCategories', '<?= htmlspecialchars($category->getName()) ?>', '<?= htmlspecialchars($category->getId()) ?>')"><?= htmlspecialchars($category->getName()) ?></li>
+                        <?php endforeach; ?>
+                    </ul>
                 </div>
-
-                <!-- Level Dropdown -->
-                <div class="relative">
-                    <select class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg appearance-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                        <option>All Levels</option>
-                        <option>Beginner</option>
-                        <option>Intermediate</option>
-                        <option>Advanced</option>
-                    </select>
-                    <span class="absolute left-3 top-3.5 text-gray-400">
-                        <i class="fas fa-layer-group"></i>
-                    </span>
+                
+                <!-- Min Price -->
+                <div class="group">
+                    <div class="flex items-center border border-gray-300 rounded-md px-4 py-2 group-focus-within:ring-2 group-focus-within:ring-indigo-500 group-focus-within:border-indigo-500">
+                        <i class="fas fa-dollar-sign text-gray-500"></i>
+                        <input
+                            id="min_price"
+                            type="number"
+                            value="<?= $_GET['min_price'] ?? '' ?>"
+                            name="min_price"
+                            placeholder="Min Price"
+                            class="ml-2 text-gray-500 focus:outline-none w-full"
+                        />
+                    </div>
                 </div>
-
-                <!-- Duration Dropdown -->
-                <div class="relative">
-                    <select class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg appearance-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
-                        <option>Any Duration</option>
-                        <option>0-2 Hours</option>
-                        <option>2-5 Hours</option>
-                        <option>5-10 Hours</option>
-                        <option>10+ Hours</option>
-                    </select>
-                    <span class="absolute left-3 top-3.5 text-gray-400">
-                        <i class="fas fa-clock"></i>
-                    </span>
+                
+                <!-- Max Price -->
+                <div class="group">
+                    <div class="flex items-center border border-gray-300 rounded-md px-4 py-2 group-focus-within:ring-2 group-focus-within:ring-indigo-500 group-focus-within:border-indigo-500">
+                        <i class="fas fa-dollar-sign text-gray-500"></i>
+                        <input
+                            id="max_price"
+                            type="number"
+                            value="<?= $_GET['max_price'] ?? '' ?>"
+                            name="max_price"
+                            placeholder="Max Price"
+                            class="ml-2 text-gray-500 focus:outline-none w-full"
+                        />
+                    </div>
                 </div>
 
                 <!-- Filter Button -->
@@ -66,7 +81,7 @@
                     </button>
                 </div>
             </div>
-        </div>
+                        </form>
 
         <!-- Course Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -127,3 +142,35 @@
         </div>
     </div>
 </section>
+
+
+<script>
+        function toggleDropdown(dropdownId, menuId) {
+        closeAllDropdowns();
+        
+        const menu = document.getElementById(menuId);
+        menu.classList.toggle('hidden');
+    }
+
+    function selectOption(dropdownId, labelId, value, id = '') {
+        document.getElementById("category_id").value = id;
+        document.getElementById(labelId).innerText = value;
+        document.getElementById(`${dropdownId}Menu`).classList.add('hidden');
+    }
+
+    function closeAllDropdowns() {
+        document.querySelectorAll('.dropdown-menu').forEach(menu => {
+            menu.classList.add('hidden');
+        });
+    }
+
+    // Event listeners for dropdown toggles
+    document.getElementById('categoriesDropdown').addEventListener('click', function (event) {
+        event.stopPropagation();
+        toggleDropdown('categoriesDropdown', 'categoriesDropdownMenu');
+    });
+
+    document.addEventListener('click', function () {
+        closeAllDropdowns();
+    });
+</script>

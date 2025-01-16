@@ -239,7 +239,7 @@ class Course extends BaseClass {
     }
 
     // Get all courses
-    public static function all()
+    public static function all($filters = [])
     {
         $sql = "SELECT
                     c.*,
@@ -253,14 +253,42 @@ class Course extends BaseClass {
                 LEFT JOIN rates r ON c.id = r.course_id
                 JOIN users u ON c.teacher_id = u.id
                 JOIN categories ca ON c.category_id = ca.id
-                GROUP BY c.id
-                ORDER BY enrollments_count DESC
-                ";
-
+                WHERE 1=1 ";
+    
+        // Add dynamic filters
+        if (isset($filters['keyword']) && !empty($filters['keyword'])) {
+            $sql .= " AND (c.title LIKE :keyword OR c.description LIKE :keyword) ";
+        }
+        if (isset($filters['category_id']) && !empty($filters['category_id'])) {
+            $sql .= " AND c.category_id = :category_id ";
+        }
+        if (isset($filters['min_price']) && !empty($filters['min_price'])) {
+            $sql .= " AND c.price >= :min_price ";
+        }
+        if (isset($filters['max_price']) && !empty($filters['max_price'])) {
+            $sql .= " AND c.price <= :max_price ";
+        }
+    
+        $sql .= " GROUP BY c.id ORDER BY enrollments_count DESC";
+    
         self::$db->query($sql);
-
+    
+        // Bind paramss
+        if (isset($filters['keyword']) && !empty($filters['keyword'])) {
+            self::$db->bind(':keyword', '%' . $filters['keyword'] . '%');
+        }
+        if (isset($filters['category_id']) && !empty($filters['category_id'])) {
+            self::$db->bind(':category_id', $filters['category_id']);
+        }
+        if (isset($filters['min_price']) && !empty($filters['min_price'])) {
+            self::$db->bind(':min_price', $filters['min_price']);
+        }
+        if (isset($filters['max_price']) && !empty($filters['max_price'])) {
+            self::$db->bind(':max_price', $filters['max_price']);
+        }
+    
         $results = self::$db->results();
-
+    
         $courses = [];
         foreach ($results as $result) {
             $course = new self(
@@ -277,18 +305,19 @@ class Course extends BaseClass {
                 $result["created_at"],
                 $result["updated_at"]
             );
-
+    
             $course->setEnrollmentsCount($result['enrollments_count']);
             $course->setRate(number_format($result['rate'], 2));
             $course->setRatesCount($result['rates_count']);
             $course->setTeacherName($result['teacher_name']);
             $course->setCategoryName($result['category_name']);
-
+    
             $courses[] = $course;
         }
-
+    
         return $courses;
     }
+    
 
     // Get n courses
     public static function limit(int $n)
