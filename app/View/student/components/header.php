@@ -25,17 +25,28 @@
                 </div>
 
                 <div class="hidden md:flex items-center space-x-8">
-                    <a href="#" class="text-gray-700 hover:text-indigo-600 flex items-center">
-                        <i class="fas fa-compass mr-2"></i>
-                        Explore
+                    <a href="/home" class="text-gray-700 hover:text-indigo-600 flex items-center">
+                        <i class="fas fa-home mr-2"></i>
+                        Home
                     </a>
-                    <a href="#" class="text-gray-700 hover:text-indigo-600 flex items-center">
-                        <i class="fas fa-graduation-cap mr-2"></i>
-                        My Learning
+                    <a href="/courses" class="text-gray-700 hover:text-indigo-600 flex items-center">
+                        <i class="fas fa-book mr-2"></i>
+                        Courses
                     </a>
+                    <?php if(isLoggedIn() && user()->isStudent()): ?>
+                    <a href="/my-courses" class="text-gray-700 hover:text-indigo-600 flex items-center">
+                        <i class="fas fa-user-graduate mr-2"></i>
+                        My Courses
+                    </a>
+                    <a href="/logout" class="text-gray-700 hover:text-indigo-600 flex items-center">
+                        <i class="fas fa-sign-out-alt mr-2"></i>
+                        Logout
+                    </a>
+                    <?php else: ?>
                     <button class="bg-indigo-600 text-white px-6 py-2 rounded-full font-medium hover:bg-indigo-700 transition">
                         Get Started
                     </button>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
@@ -44,8 +55,10 @@
             <div class="px-4 py-2 border-b border-gray-200">
                 <input type="text" class="w-full px-4 py-2 rounded-md bg-gray-100 focus:ring-2 focus:ring-indigo-500" placeholder="Search...">
             </div>
-            <a href="#" class="block px-4 py-3 text-gray-800 hover:bg-gray-100 border-b border-gray-200">Explore</a>
-            <a href="#" class="block px-4 py-3 text-gray-800 hover:bg-gray-100 border-b border-gray-200">My Learning</a>
+            <a href="/home" class="block px-4 py-3 text-gray-800 hover:bg-gray-100 border-b border-gray-200">Home</a>
+            <a href="/courses" class="block px-4 py-3 text-gray-800 hover:bg-gray-100 border-b border-gray-200">Courses</a>
+            <a href="/my-courses" class="block px-4 py-3 text-gray-800 hover:bg-gray-100 border-b border-gray-200">My Courses</a>
+            <a href="/logout" class="block px-4 py-3 text-gray-800 hover:bg-gray-100 border-b border-gray-200">Logout</a>
             <button class="block w-full px-4 py-3 text-center bg-indigo-600 text-white font-medium hover:bg-indigo-700 transition">
                 Get Started
             </button>

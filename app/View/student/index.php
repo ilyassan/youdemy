@@ -1,6 +1,6 @@
 <main>
     <!-- Improved Hero Section with AI Learning Assistant -->
-    <div class="pt-20 bg-gradient-to-r from-indigo-600 to-blue-500">
+    <div class="bg-gradient-to-r from-indigo-600 to-blue-500">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 grid md:grid-cols-2 gap-12 items-center">
             <div class="text-white">
                 <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-6">Personalized Learning, Powered by AI</h1>
@@ -40,8 +40,8 @@
                             <i class="fas fa-laptop-code text-2xl text-indigo-600"></i>
                         </div>
                         <div>
-                            <h3 class="text-lg font-semibold text-gray-900 group-hover:text-indigo-600">Programming</h3>
-                            <p class="text-sm text-gray-500">1,200+ courses</p>
+                            <h3 class="text-lg font-semibold text-gray-900 group-hover:text-indigo-600"><?= $categories[0]["name"] ?></h3>
+                            <p class="text-sm text-gray-500"><?= $categories[0]["courses_count"] ?>+ courses</p>
                         </div>
                     </div>
                 </div>
@@ -54,8 +54,8 @@
                             <i class="fas fa-chart-pie text-2xl text-blue-600"></i>
                         </div>
                         <div>
-                            <h3 class="text-lg font-semibold text-gray-900 group-hover:text-blue-600">Business</h3>
-                            <p class="text-sm text-gray-500">850+ courses</p>
+                            <h3 class="text-lg font-semibold text-gray-900 group-hover:text-blue-600"><?= $categories[1]["name"] ?></h3>
+                            <p class="text-sm text-gray-500"><?= $categories[1]["courses_count"] ?>+ courses</p>
                         </div>
                     </div>
                 </div>
@@ -68,8 +68,8 @@
                             <i class="fas fa-paint-brush text-2xl text-purple-600"></i>
                         </div>
                         <div>
-                            <h3 class="text-lg font-semibold text-gray-900 group-hover:text-purple-600">Design</h3>
-                            <p class="text-sm text-gray-500">750+ courses</p>
+                            <h3 class="text-lg font-semibold text-gray-900 group-hover:text-purple-600"><?= $categories[2]["name"] ?></h3>
+                            <p class="text-sm text-gray-500"><?= $categories[2]["courses_count"] ?>+ courses</p>
                         </div>
                     </div>
                 </div>
@@ -82,8 +82,8 @@
                             <i class="fas fa-language text-2xl text-green-600"></i>
                         </div>
                         <div>
-                            <h3 class="text-lg font-semibold text-gray-900 group-hover:text-green-600">Languages</h3>
-                            <p class="text-sm text-gray-500">500+ courses</p>
+                            <h3 class="text-lg font-semibold text-gray-900 group-hover:text-green-600"><?= $categories[3]["name"] ?></h3>
+                            <p class="text-sm text-gray-500"><?= $categories[3]["courses_count"] ?>+ courses</p>
                         </div>
                     </div>
                 </div>
@@ -96,12 +96,24 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h3 class="text-xl font-semibold text-gray-900 mb-6">Popular Topics</h3>
             <div class="flex flex-wrap gap-3">
-                <a href="#" class="px-6 py-2 bg-white text-indigo-600 rounded-full text-sm font-medium border border-indigo-100 hover:bg-indigo-50 hover:border-indigo-200 transition-all">Python</a>
-                <a href="#" class="px-6 py-2 bg-white text-blue-600 rounded-full text-sm font-medium border border-blue-100 hover:bg-blue-50 hover:border-blue-200 transition-all">Web Development</a>
-                <a href="#" class="px-6 py-2 bg-white text-purple-600 rounded-full text-sm font-medium border border-purple-100 hover:bg-purple-50 hover:border-purple-200 transition-all">UI/UX Design</a>
-                <a href="#" class="px-6 py-2 bg-white text-green-600 rounded-full text-sm font-medium border border-green-100 hover:bg-green-50 hover:border-green-200 transition-all">Digital Marketing</a>
-                <a href="#" class="px-6 py-2 bg-white text-red-600 rounded-full text-sm font-medium border border-red-100 hover:bg-red-50 hover:border-red-200 transition-all">Data Science</a>
-                <a href="#" class="px-6 py-2 bg-white text-orange-600 rounded-full text-sm font-medium border border-orange-100 hover:bg-orange-50 hover:border-orange-200 transition-all">Machine Learning</a>
+            <?php
+            // Define an array of colors
+            $colors = ['indigo', 'blue', 'purple', 'green', 'red', 'orange'];
+
+            ?>
+
+            <div class="flex flex-wrap gap-3">
+                <?php foreach ($topTags as $key => $tag): ?>
+                    <?php 
+                        // Pick a random color from the colors array
+                        $color = $colors[$key];
+                    ?>
+                    <a href="#" 
+                        class="px-6 py-2 bg-white text-<?= $color ?>-600 rounded-full text-sm font-medium border border-<?= $color ?>-100 hover:bg-<?= $color ?>-50 hover:border-<?= $color ?>-200 transition-all">
+                        <?= htmlspecialchars($tag->getName()) ?>
+                    </a>
+                <?php endforeach; ?>
+            </div>
             </div>
         </div>
     </div>
@@ -110,19 +122,11 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10">
         <div class="flex justify-between items-center mb-8">
             <h2 class="text-3xl font-bold text-gray-900">Featured Courses</h2>
-            <div class="flex items-center space-x-4">
-                <button class="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition">
-                    <i class="fas fa-chevron-left text-gray-600"></i>
-                </button>
-                <button class="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition">
-                    <i class="fas fa-chevron-right text-gray-600"></i>
-                </button>
-            </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-            <!-- Course Card -->
+            <?php foreach($topThreeCourses as $course): ?>
             <div class="bg-white flex flex-col rounded-xl shadow-lg overflow-hidden group hover:shadow-xl transition-all">
                 <div class="relative">
                     <img src="https://placehold.co/400x225" alt="UI/UX Design" class="w-full h-48 object-cover">
@@ -140,18 +144,18 @@
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
                             </div>
-                            <span class="text-sm text-gray-500 ml-2">(5.0) · 3,421 ratings</span>
+                            <span class="text-sm text-gray-500 ml-2">(<?= $course->getRate() ?>) · <?= $course->getRatesCount() ?> ratings</span>
                         </div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-indigo-600">UI/UX Design Masterclass 2025</h3>
-                        <p class="text-gray-600 text-sm mb-4">Learn modern UI/UX design principles and create stunning user interfaces using Figma and Adobe XD.</p>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-indigo-600"><?= $course->getTitle() ?></h3>
+                        <p class="text-gray-600 text-sm mb-4"><?= $course->getDescription() ?></p>
                     </div>
                     <div>
                         <div class="flex items-center justify-between">
                             <div class="flex items-center space-x-2">
                                 <img src="https://placehold.co/32x32" alt="Instructor" class="w-8 h-8 rounded-full">
-                                <span class="text-sm text-gray-600">Alex Chen</span>
+                                <span class="text-sm text-gray-600"><?= $course->getTeacherName() ?></span>
                             </div>
-                            <span class="text-2xl font-bold text-gray-900">$79.99</span>
+                            <span class="text-2xl font-bold text-gray-900">$<?= number_format($course->getPrice(), 2) ?></span>
                         </div>
                         <button class="w-full mt-6 bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition">
                             Add to Cart
@@ -159,82 +163,7 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Course Card -->
-            <div class="bg-white flex flex-col rounded-xl shadow-lg overflow-hidden group hover:shadow-xl transition-all">
-                <div class="relative">
-                    <img src="https://placehold.co/400x225" alt="UI/UX Design" class="w-full h-48 object-cover">
-                    <div class="absolute top-4 right-4 bg-white px-3 py-1 rounded-full text-sm font-medium text-green-600">
-                        New
-                    </div>
-                </div>
-                <div class="p-6 flex-1 flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center mb-2">
-                            <div class="flex text-yellow-400">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                            <span class="text-sm text-gray-500 ml-2">(5.0) · 3,421 ratings</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-indigo-600">UI/UX Design Masterclass 2025</h3>
-                        <p class="text-gray-600 text-sm mb-4">Learn modern UI/UX design principles and create stunning user interfaces using Figma and Adobe XD.</p>
-                    </div>
-                    <div>
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center space-x-2">
-                                <img src="https://placehold.co/32x32" alt="Instructor" class="w-8 h-8 rounded-full">
-                                <span class="text-sm text-gray-600">Alex Chen</span>
-                            </div>
-                            <span class="text-2xl font-bold text-gray-900">$79.99</span>
-                        </div>
-                        <button class="w-full mt-6 bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition">
-                            Add to Cart
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Course Card -->
-            <div class="bg-white flex flex-col rounded-xl shadow-lg overflow-hidden group hover:shadow-xl transition-all">
-                <div class="relative">
-                    <img src="https://placehold.co/400x225" alt="UI/UX Design" class="w-full h-48 object-cover">
-                    <div class="absolute top-4 right-4 bg-white px-3 py-1 rounded-full text-sm font-medium text-green-600">
-                        New
-                    </div>
-                </div>
-                <div class="p-6 flex-1 flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center mb-2">
-                            <div class="flex text-yellow-400">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
-                            <span class="text-sm text-gray-500 ml-2">(5.0) · 3,421 ratings</span>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-indigo-600">UI/UX Design Masterclass 2025</h3>
-                        <p class="text-gray-600 text-sm mb-4">Learn modern UI/UX design principles and create stunning user interfaces using Figma and Adobe XD.</p>
-                    </div>
-                    <div>
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center space-x-2">
-                                <img src="https://placehold.co/32x32" alt="Instructor" class="w-8 h-8 rounded-full">
-                                <span class="text-sm text-gray-600">Alex Chen</span>
-                            </div>
-                            <span class="text-2xl font-bold text-gray-900">$79.99</span>
-                        </div>
-                        <button class="w-full mt-6 bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition">
-                            Add to Cart
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <?php endforeach; ?>
             
         </div>
 
