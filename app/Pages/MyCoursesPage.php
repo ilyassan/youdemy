@@ -4,7 +4,9 @@
     {
         public function index()
         {
-            $courses = Course::findByStudentId(user()->getId());
+            $keyword = $_GET['keyword'] ?? '';
+
+            $courses = Course::findByStudentId(user()->getId(), $keyword);
             
             $this->render("/my-courses/index", compact("courses"));
         }
