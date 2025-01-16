@@ -4,6 +4,8 @@
     {
         public function index()
         {
-            $this->render("/my-courses/index");
+            $courses = Course::findByStudentId(user()->getId());
+            
+            $this->render("/my-courses/index", compact("courses"));
         }
     }

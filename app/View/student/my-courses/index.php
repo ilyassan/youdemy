@@ -39,94 +39,63 @@
 
     <!-- Course Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <!-- Course Card -->
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden group hover:shadow-xl transition-all">
-            <div class="relative">
-                <img src="https://placehold.co/400x225" alt="Course Thumbnail" class="w-full h-48 object-cover">
-                <div class="absolute top-4 right-4 bg-white px-3 py-1 rounded-full text-sm font-medium text-indigo-600">
-                    Enrolled
+
+        <?php if (! empty($courses)):?>
+        <?php foreach ($courses as $course):?>
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden group hover:shadow-xl transition-all">
+                <div class="relative">
+                    <img src="https://placehold.co/400x225" alt="Course Thumbnail" class="w-full h-48 object-cover">
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-indigo-600"><?= $course->getTitle() ?></h3>
+                    <div class="flex flex-wrap gap-4 text-sm mb-4">
+                        <div class="flex items-center text-gray-600">
+                            <i class="fas fa-calendar-alt mr-2"></i>
+                            <span>Enrolled: <?= (new DateTime($course->getCreatedAt()))->format('F d, Y') ?></span>
+                        </div>
+                        <div class="flex items-center text-gray-600">
+                            <i class="fas fa-user mr-2"></i>
+                            <span><?= $course->getTeacherName() ?></span>
+                        </div>
+                    </div>
+                    <div class="flex items-center mb-4">
+                        <button class="text-yellow-400 hover:text-yellow-500">
+                            <i class="fas fa-star"></i>
+                        </button>
+                        <button class="text-yellow-400 hover:text-yellow-500">
+                            <i class="fas fa-star"></i>
+                        </button>
+                        <button class="text-yellow-400 hover:text-yellow-500">
+                            <i class="fas fa-star"></i>
+                        </button>
+                        <button class="text-yellow-400 hover:text-yellow-500">
+                            <i class="fas fa-star"></i>
+                        </button>
+                        <button class="text-yellow-400 hover:text-yellow-500">
+                            <i class="fas fa-star"></i>
+                        </button>
+                        <span class="ml-2 text-sm text-gray-600">Your rating: <?= number_format($course->getRate(), 2) ?></span>
+                    </div>
+                    <button class="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition">
+                        Watch Course
+                    </button>
                 </div>
             </div>
-            <div class="p-6">
-                <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-indigo-600">UI/UX Design Masterclass</h3>
-                <div class="flex flex-wrap gap-4 text-sm mb-4">
-                    <div class="flex items-center text-gray-600">
-                        <i class="fas fa-calendar-alt mr-2"></i>
-                        <span>Enrolled: Jan 15, 2025</span>
-                    </div>
-                    <div class="flex items-center text-gray-600">
-                        <i class="fas fa-user mr-2"></i>
-                        <span>Alex Chen</span>
-                    </div>
+        <?php endforeach; ?>
+        <?php else:?>
+            <!-- Empty State (shown when no courses) -->
+            <div class="bg-gray-50 rounded-xl p-8 text-center">
+                <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-book-open text-2xl text-indigo-600"></i>
                 </div>
-                <div class="flex items-center mb-4">
-                    <button class="text-yellow-400 hover:text-yellow-500">
-                        <i class="fas fa-star"></i>
-                    </button>
-                    <button class="text-yellow-400 hover:text-yellow-500">
-                        <i class="fas fa-star"></i>
-                    </button>
-                    <button class="text-yellow-400 hover:text-yellow-500">
-                        <i class="fas fa-star"></i>
-                    </button>
-                    <button class="text-gray-300 hover:text-yellow-500">
-                        <i class="fas fa-star"></i>
-                    </button>
-                    <button class="text-gray-300 hover:text-yellow-500">
-                        <i class="fas fa-star"></i>
-                    </button>
-                    <span class="ml-2 text-sm text-gray-600">Rate this course</span>
-                </div>
-                <button class="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition">
-                    Watch Course
+                <h3 class="text-xl font-bold text-gray-900 mb-2">No courses yet</h3>
+                <p class="text-gray-600 mb-6">Start your learning journey by enrolling in a course</p>
+                <button class="bg-indigo-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-indigo-700 transition">
+                    Browse Courses
                 </button>
             </div>
-        </div>
-
-        <!-- Course Card with Rating -->
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden group hover:shadow-xl transition-all">
-            <div class="relative">
-                <img src="https://placehold.co/400x225" alt="Course Thumbnail" class="w-full h-48 object-cover">
-                <div class="absolute top-4 right-4 bg-blue-500 px-3 py-1 rounded-full text-sm font-medium text-white">
-                    Recently Viewed
-                </div>
-            </div>
-            <div class="p-6">
-                <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-indigo-600">Python for Beginners</h3>
-                <div class="flex flex-wrap gap-4 text-sm mb-4">
-                    <div class="flex items-center text-gray-600">
-                        <i class="fas fa-calendar-alt mr-2"></i>
-                        <span>Enrolled: Jan 10, 2025</span>
-                    </div>
-                    <div class="flex items-center text-gray-600">
-                        <i class="fas fa-user mr-2"></i>
-                        <span>Sarah Johnson</span>
-                    </div>
-                </div>
-                <div class="flex items-center mb-4">
-                    <button class="text-yellow-400 hover:text-yellow-500">
-                        <i class="fas fa-star"></i>
-                    </button>
-                    <button class="text-yellow-400 hover:text-yellow-500">
-                        <i class="fas fa-star"></i>
-                    </button>
-                    <button class="text-yellow-400 hover:text-yellow-500">
-                        <i class="fas fa-star"></i>
-                    </button>
-                    <button class="text-yellow-400 hover:text-yellow-500">
-                        <i class="fas fa-star"></i>
-                    </button>
-                    <button class="text-yellow-400 hover:text-yellow-500">
-                        <i class="fas fa-star"></i>
-                    </button>
-                    <span class="ml-2 text-sm text-gray-600">Your rating: 5.0</span>
-                </div>
-                <button class="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition">
-                    Watch Course
-                </button>
-            </div>
-        </div>
-
+        <?php endif;?>
+        
         <!-- Course Card Unrated -->
         <div class="bg-white rounded-xl shadow-lg overflow-hidden group hover:shadow-xl transition-all">
             <div class="relative">
@@ -170,18 +139,6 @@
                 </button>
             </div>
         </div>
-    </div>
-
-    <!-- Empty State (shown when no courses) -->
-    <div class="hidden bg-gray-50 rounded-xl p-8 text-center">
-        <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <i class="fas fa-book-open text-2xl text-indigo-600"></i>
-        </div>
-        <h3 class="text-xl font-bold text-gray-900 mb-2">No courses yet</h3>
-        <p class="text-gray-600 mb-6">Start your learning journey by enrolling in a course</p>
-        <button class="bg-indigo-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-indigo-700 transition">
-            Browse Courses
-        </button>
     </div>
 
 </div>
