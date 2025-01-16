@@ -1,5 +1,5 @@
 <!-- My Courses Hero Section -->
-<div class="bg-gradient-to-r from-indigo-600 to-blue-500 pt-16">
+<div class="bg-gradient-to-r from-indigo-600 to-blue-500 pt-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <h1 class="text-3xl md:text-4xl font-bold text-white mb-4">My Courses</h1>
         <div class="flex flex-wrap gap-4 text-white mb-6">
@@ -17,25 +17,26 @@
 
 <!-- Course Filters -->
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+    <form class="flex flex-wrap items-center justify-between gap-4 mb-8">
         <div class="relative">
             <input 
                 type="text" 
+                autocomplete="off"
+                value="<?= $_GET['keyword'] ?? '' ?>"
+                name="keyword"
                 placeholder="Search your courses..." 
-                class="pl-10 pr-4 py-2 border rounded-lg w-full md:w-80"
+                class="pl-10 outline-none focus:ring-2 focus:ring-indigo-500 pr-4 py-2 border rounded-lg w-full md:w-80"
             >
             <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
         </div>
-        <div class="flex items-center gap-3">
-            <span class="text-gray-600">Sort by:</span>
-            <select class="border rounded-lg px-4 py-2 bg-white">
-                <option>Most Recent</option>
-                <option>Course Name</option>
-                <option>Enrollment Date</option>
-                <option>Rating</option>
-            </select>
+        
+        <!-- Filter Button -->
+        <div class="col-span-1 md:col-span-4 flex justify-center">
+            <button class="px-10 bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition-colors">
+                <i class="fas fa-filter mr-2"></i> Filter
+            </button>
         </div>
-    </div>
+    </form>
 
     <!-- Course Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -101,7 +102,7 @@
             <div class="relative">
                 <img src="https://placehold.co/400x225" alt="Course Thumbnail" class="w-full h-48 object-cover">
                 <div class="absolute top-4 right-4 bg-white px-3 py-1 rounded-full text-sm font-medium text-indigo-600">
-                    Enrolled
+                    Completed
                 </div>
             </div>
             <div class="p-6">

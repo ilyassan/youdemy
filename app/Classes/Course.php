@@ -535,7 +535,7 @@ class Course extends BaseClass {
     }
 
     // Get student courses
-    public static function findByStudentId(int $student_id)
+    public static function findByStudentId(int $student_id, $keyword = "")
     {
         $sql = "SELECT c.*, ra.rate as rate, CONCAT(u.first_name, ' ', u.last_name) AS teacher_name
                 FROM enrollments e
@@ -544,8 +544,16 @@ class Course extends BaseClass {
                 JOIN users u ON c.teacher_id = u.id
                 WHERE e.student_id = :student_id";
                 
+        if (isset($keyword) && !empty($keyword)) {
+            $sql .= " AND (c.title LIKE :keyword OR c.description LIKE :keyword) ";
+        }
+
         self::$db->query($sql);
         self::$db->bind(':student_id', $student_id);
+
+        if (isset($keyword) && !empty($keyword)) {
+            self::$db->bind(':keyword', '%' . $keyword . '%');
+        }
 
         $results = self::$db->results();
 
