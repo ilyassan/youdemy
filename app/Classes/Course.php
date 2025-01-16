@@ -16,6 +16,7 @@ class Course extends BaseClass {
     private $rate;
     private $rates_count;
     private $teacher_name;
+    private $category_name;
 
     public function __construct($id, $title, $description, $price, $thumbnail, $document_name, $video_name, $is_deleted, $teacher_id, $category_id, $created_at, $updated_at)
     {
@@ -109,6 +110,11 @@ class Course extends BaseClass {
         return $this->teacher_name;
     }
 
+    public function getCategoryName()
+    {
+        return $this->category_name;
+    }
+
     public function setRate($rate)
     {
         $this->rate = $rate;
@@ -122,6 +128,11 @@ class Course extends BaseClass {
     public function setTeacherName($teacher_name)
     {
         $this->teacher_name = $teacher_name;
+    }
+
+    public function setCategoryName($category_name)
+    {
+        $this->category_name = $category_name;
     }
 
     // Save a new course to the database
@@ -178,15 +189,29 @@ class Course extends BaseClass {
     // Get all courses
     public static function all()
     {
-        $sql = "SELECT * FROM courses";
+        $sql = "SELECT
+                    c.*,
+                    COUNT(e.id) AS enrollments_count,
+                    COUNT(r.id) AS rates_count,
+                    AVG(r.rate) AS rate,
+                    CONCAT(u.first_name, ' ', u.last_name) AS teacher_name,
+                    ca.name AS category_name
+                FROM courses c
+                LEFT JOIN enrollments e ON c.id = e.course_id
+                LEFT JOIN rates r ON c.id = r.course_id
+                JOIN users u ON c.teacher_id = u.id
+                JOIN categories ca ON c.category_id = ca.id
+                GROUP BY c.id
+                ORDER BY enrollments_count DESC
+                ";
+
         self::$db->query($sql);
-        self::$db->execute();
 
         $results = self::$db->results();
 
         $courses = [];
         foreach ($results as $result) {
-            $courses[] = new self(
+            $course = new self(
                 $result["id"],
                 $result["title"],
                 $result["description"],
@@ -200,6 +225,13 @@ class Course extends BaseClass {
                 $result["created_at"],
                 $result["updated_at"]
             );
+
+            $course->setRate(number_format($result['rate'], 2));
+            $course->setRatesCount($result['rates_count']);
+            $course->setTeacherName($result['teacher_name']);
+            $course->setCategoryName($result['category_name']);
+
+            $courses[] = $course;
         }
 
         return $courses;
