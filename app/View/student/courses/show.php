@@ -4,15 +4,15 @@
         <div class="mb-12 lg:flex lg:items-start lg:justify-between gap-12">
             <!-- Course Details -->
             <div class="lg:w-1/2">
-                <h1 class="text-4xl font-extrabold text-gray-900 mb-4 leading-tight">The Complete Guide to Web Development</h1>
-                <p class="text-indigo-600 font-medium text-lg mb-6">Technology</p>
+                <h1 class="text-4xl font-extrabold text-gray-900 mb-4 leading-tight"><?= $course->getTitle() ?></h1>
+                <p class="text-indigo-600 font-medium text-lg mb-6"><?= $course->getCategoryName() ?></p>
                 <p class="text-gray-700 text-base leading-relaxed mb-6">
-                    Embark on your journey to becoming a full-stack web developer! This comprehensive course covers all the essential skills and technologies for building modern, interactive websites and web applications.
+                    <?= $course->getDescription() ?>
                 </p>
 
                 <div class="mb-6">
-                    <span class="text-3xl font-bold text-indigo-600">$79.99</span>
-                    <span class="text-gray-500 line-through ml-3">$129.99</span>
+                    <span class="text-3xl font-bold text-indigo-600">$<?= number_format($course->getPrice(), 2) ?></span>
+                    <span class="text-gray-500 line-through ml-3">$<?= number_format($course->getPrice() * 1.25, 2) ?></span>
                 </div>
 
                 <button class="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium text-lg hover:bg-indigo-700 transition duration-300 shadow-lg mb-6">
@@ -22,7 +22,7 @@
                 <div class="flex flex-wrap items-center gap-4 mb-6 text-gray-600">
                     <div class="flex items-center">
                         <i class="fas fa-users mr-2"></i>
-                        <span>1,542 students</span>
+                        <span><?= $course->getEnrollmentsCount() ?> students</span>
                     </div>
                     <div class="flex items-center text-yellow-400">
                         <i class="fas fa-star"></i>
@@ -69,12 +69,12 @@
                 </div>
 
                 <!-- Instructor Info -->
-                <div class="mb-12">
+                <div class="mb-6">
                     <h2 class="text-2xl font-semibold text-gray-900 mb-4">Meet your instructor</h2>
                     <div class="flex items-center gap-6">
                         <img src="https://placehold.co/100x100" alt="Instructor" class="w-20 h-20 rounded-full object-cover shadow-lg">
                         <div>
-                            <h3 class="text-xl font-medium text-gray-900">John Doe</h3>
+                            <h3 class="text-xl font-medium text-gray-900"><?= $course->getTeacherName() ?></h3>
                             <p class="text-gray-600">Full-Stack Developer & Educator</p>
                             <p class="text-gray-700 mt-2 text-sm leading-relaxed">
                                 John has over 10 years of experience in web development and a passion for teaching. He specializes in creating dynamic and engaging learning experiences.
@@ -106,17 +106,38 @@
 
         <!-- Related Courses -->
         <div class="mt-16">
-            <h2 class="text-2xl font-semibold text-gray-900 mb-6">Related courses</h2>
+            <h2 class="text-2xl font-semibold text-gray-900 mb-4">Related courses</h2>
+            <?php
+            // Define an array of colors
+            $colors = ['indigo', 'blue', 'purple', 'green', 'red', 'orange'];
+
+            ?>
+
+            <div class="flex flex-wrap gap-3 mb-4">
+                <?php foreach ($course->getTags() as $key => $tag): ?>
+                    <?php 
+                        // Pick a random color from the colors array
+                        $color = $colors[$key];
+                    ?>
+                    <a href="#" 
+                        class="px-6 py-2 bg-white text-<?= $color ?>-600 rounded-full text-sm font-medium border border-<?= $color ?>-100 hover:bg-<?= $color ?>-50 hover:border-<?= $color ?>-200 transition-all">
+                        <?= htmlspecialchars($tag) ?>
+                    </a>
+                <?php endforeach; ?>
+            </div>
+
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Course Cards -->
+                
+                <?php foreach ($relatedCourses as $course):?>
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300">
                     <img src="https://placehold.co/400x225" alt="Course" class="w-full object-cover h-48">
                     <div class="p-6">
-                        <h3 class="text-lg font-bold text-gray-900">Introduction to JavaScript</h3>
-                        <p class="text-gray-600 text-sm mt-2">Learn the fundamentals of JavaScript programming.</p>
+                        <h3 class="text-lg font-bold text-gray-900"><?= $course->getTitle() ?></h3>
+                        <p class="text-gray-600 text-sm mt-2"><?= $course->getDescription() ?></p>
                         <a href="#" class="text-indigo-600 font-medium hover:text-indigo-700 mt-4 block">Learn More</a>
                     </div>
                 </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>
