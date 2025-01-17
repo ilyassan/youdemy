@@ -1,4 +1,4 @@
-<form action="#" method="POST" enctype="multipart/form-data" class="bg-white shadow-lg rounded-lg p-6 max-w-3xl mx-auto">
+<form action="<?= URLROOT . 'courses/store' ?>" method="POST" enctype="multipart/form-data" class="bg-white shadow-lg rounded-lg p-6 max-w-3xl mx-auto">
     <h1 class="text-2xl font-semibold text-gray-800 mb-6">Create a New Course</h1>
 
     <!-- Thumbnail Upload with Dynamic Behavior -->
@@ -8,7 +8,6 @@
             <img
                 id="thumbnail-preview"
                 class="w-full h-full object-cover opacity-0"
-                src="https://via.placeholder.com/300x200?text=Thumbnail+Preview"
                 alt="Thumbnail Preview"
             >
             <!-- Title Overlay -->
@@ -20,7 +19,7 @@
             </span>
             <!-- Hidden File Input -->
             <label for="thumbnail" class="absolute inset-0 cursor-pointer rounded-lg">
-                <input type="file" id="thumbnail" name="thumbnail" class="hidden" accept="image/*" required>
+                <input type="file" id="thumbnail" name="thumbnail" class="hidden" accept="image/*">
             </label>
         </div>
     </div>
@@ -28,30 +27,72 @@
     <!-- Course Title -->
     <div class="mb-4">
         <label for="title" class="block mb-2 text-sm font-medium text-gray-700">Course Title</label>
-        <input type="text" id="title" name="title" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Enter course title" required>
+        <input type="text" autocomplete="off" id="title" name="title" class="bg-gray-50 outline-none border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Enter course title">
     </div>
 
     <!-- Description -->
     <div class="mb-4">
         <label for="description" class="block mb-2 text-sm font-medium text-gray-700">Description</label>
-        <textarea id="description" name="description" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Write a brief description" required></textarea>
+        <textarea id="description" name="description" rows="4" class="bg-gray-50 outline-none border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Write a brief description"></textarea>
     </div>
 
-    <!-- Category Dropdown -->
-    <div class="mb-4">
+    <!-- Categories (Custom Dropdown) -->
+    <div class="relative mb-4">
         <label for="category" class="block mb-2 text-sm font-medium text-gray-700">Category</label>
-        <select id="category" name="category" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5 focus:ring-indigo-500 focus:border-indigo-500" required>
-            <option value="">Select a category</option>
-            <option value="web-development">Web Development</option>
-            <option value="design">Design</option>
-            <option value="data-science">Data Science</option>
-        </select>
+        <input id="selectedCategories_value" type="hidden" name="category_id" value="">
+        <button
+            type="button"
+            id="categoriesDropdown"
+            class="flex items-center border border-gray-300 rounded-md px-4 py-2 w-full bg-white text-gray-500 focus:outline-none"
+        >
+            <i class="fas fa-layer-group text-gray-500 mr-2"></i>
+            <span id="selectedCategories">
+                <?= htmlspecialchars(($category = current(array_filter($categories, fn($cat) => $cat->getId() == ($_GET['category_id'] ?? 0)))) ? $category->getName() : "Categories") ?>
+            </span>
+            <i class="fas fa-chevron-down ml-auto text-gray-400"></i>
+        </button>
+        <!-- Dropdown Options -->
+        <ul
+            id="categoriesDropdownMenu"
+            class="absolute dropdown-menu hidden bg-white shadow-md rounded-md w-full mt-2 z-10"
+        >
+            <?php foreach ($categories as $category): ?>
+                <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" onclick="selectOption('categoriesDropdown', 'selectedCategories', '<?= htmlspecialchars($category->getName()) ?>', '<?= htmlspecialchars($category->getId()) ?>')"><?= htmlspecialchars($category->getName()) ?></li>
+            <?php endforeach; ?>
+        </ul>
     </div>
 
-    <!-- Tags -->
+    <!-- Course Title -->
     <div class="mb-4">
-        <label for="tags" class="block mb-2 text-sm font-medium text-gray-700">Tags</label>
-        <input type="text" id="tags" name="tags" class="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Add tags separated by commas" required>
+        <label for="price" class="block mb-2 text-sm font-medium text-gray-700">Price</label>
+        <input type="number" autocomplete="off" id="price" name="price" class="bg-gray-50 outline-none border border-gray-300 text-gray-900 rounded-lg block w-full p-2.5 focus:ring-indigo-500 focus:border-indigo-500" placeholder="Enter course title">
+    </div>
+
+    <!-- Tags (Custom Dropdown) -->
+    <div class="mb-4">
+        <label for="price" class="block mb-2 text-sm font-medium text-gray-700">Tags</label>
+        <div class="relative">
+            <button
+                type="button"
+                id="tagsDropdown"
+                class="flex items-center border border-gray-300 rounded-md px-4 py-3 w-full bg-white text-gray-500 focus:outline-none"
+            >
+                <span id="selectedTags">Select Tags</span>
+                <i class="fas fa-chevron-down ml-auto text-gray-400"></i>
+            </button>
+            <!-- Dropdown Options -->
+            <ul
+                id="tagsDropdownMenu"
+                class="absolute dropdown-menu hidden bg-white shadow-md rounded-md w-full mt-2 z-10"
+            >
+                <?php foreach ($tags as $tag): ?>
+                    <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" onclick="selectTag(<?= $tag->getId() ?>)"><?= htmlspecialchars($tag->getName()) ?></li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+
+        <div id="tagsContainer" class="flex mt-3 gap-2">
+        </div>
     </div>
 
     <!-- Course Content Section -->
@@ -105,6 +146,11 @@
     </button>
 </form>
 
+<?php
+    foreach($tags as $key => $tag){
+        $tags[$key] = ["id" => $tag->getId(), "name" => $tag->getName()];
+    }
+?>
 <script>
     const thumbnailInput = document.getElementById('thumbnail');
     const thumbnailPreview = document.getElementById('thumbnail-preview');
@@ -170,4 +216,85 @@
     documentInput.addEventListener('change', () => {
         documentFileName.textContent = documentInput.files[0]?.name || 'Choose a document file';
     });
+
+    function toggleDropdown(dropdownId, menuId) {
+        closeAllDropdowns();
+        
+        const menu = document.getElementById(menuId);
+        menu.classList.toggle('hidden');
+    }
+
+    function selectOption(dropdownId, labelId, value, id = '') {
+        document.getElementById(labelId + "_value").value = id;
+        document.getElementById(labelId).innerText = value;
+        document.getElementById(dropdownId).classList.remove("text-gray-500");
+        document.getElementById(`${dropdownId}Menu`).classList.add('hidden');
+    }
+
+    function closeAllDropdowns() {
+        document.querySelectorAll('.dropdown-menu').forEach(menu => {
+            menu.classList.add('hidden');
+        });
+    }
+
+    // Event listeners for dropdown toggles
+    document.getElementById('tagsDropdown').addEventListener('click', function (event) {
+        event.stopPropagation();
+        toggleDropdown('tagsDropdown', 'tagsDropdownMenu');
+    });
+
+    document.getElementById('categoriesDropdown').addEventListener('click', function (event) {
+        event.stopPropagation();
+        toggleDropdown('categoriesDropdown', 'categoriesDropdownMenu');
+    });
+
+    document.addEventListener('click', function () {
+        closeAllDropdowns();
+    });
+
+
+
+    let tags = <?= json_encode($tags) ?>;
+    let selectedTags = [];
+    let tagsContainer = document.getElementById("tagsContainer");
+    let tagsInput = document.getElementById("tags");
+
+    function selectTag(id){
+        let i = tags.findIndex(tag => tag.id == id);
+        let tag = tags.splice(i, 1)[0];
+        selectedTags.push(tag);
+        refreshTags();  
+    }
+
+    function removeTag(id){
+        let i = selectedTags.findIndex(tag => tag.id == id);
+        let tag = selectedTags.splice(i, 1)[0];
+        tags.push(tag);
+        refreshTags();           
+    }
+
+
+    function refreshTags(){
+        tagsContainer.innerHTML = "";
+
+        for (let tag of selectedTags) {
+            tagsContainer.innerHTML += `
+                <span class="inline-flex items-center px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200">
+                    #${tag.name}
+                    <button type="button" onclick="removeTag('${tag.id}')" class="ml-2 text-gray-500 hover:text-red-500">
+                        <i class="fas fa-times text-primary"></i>
+                    </button>
+                    <input type="hidden" name="tag_ids[]" value="${tag.id}" >
+                </span>
+            `
+        }
+
+        document.getElementById("tagsDropdownMenu").innerHTML = "";
+        
+        for (let tag of tags) {
+            document.getElementById("tagsDropdownMenu").innerHTML += `
+                <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" onclick="selectTag(${tag.id})">${tag.name}</li>
+            `;
+        }
+    }
 </script>
