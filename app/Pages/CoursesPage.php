@@ -29,4 +29,19 @@
 
             $this->render("/courses/show", compact('course', 'relatedCourses'));
         }
+
+        public function enroll($courseId)
+        {
+            $enrollment = new Enrollment();
+            $enrollment->setStudentId(user()->getId());
+            $enrollment->setCourseId($courseId);
+
+            if ($enrollment->save()) {
+                flash("success", "You enrolled in the course successfully.");
+                redirect("my-courses");
+            }
+
+            flash("error", "Something went wrong.");
+            back();
+        }
     }

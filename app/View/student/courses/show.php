@@ -15,9 +15,11 @@
                     <span class="text-gray-500 line-through ml-3">$<?= number_format($course->getPrice() * 1.25, 2) ?></span>
                 </div>
 
-                <button class="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium text-lg hover:bg-indigo-700 transition duration-300 shadow-lg mb-6">
-                    Enroll Now
-                </button>
+                <form action="<?= URLROOT . 'courses/enroll/' . $course->getId() ?>" method="POST">
+                    <button class="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium text-lg hover:bg-indigo-700 transition duration-300 shadow-lg mb-6">
+                        Enroll Now
+                    </button>
+                </form>
 
                 <div class="flex flex-wrap items-center gap-4 mb-6 text-gray-600">
                     <div class="flex items-center">
