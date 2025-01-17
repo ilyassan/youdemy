@@ -164,7 +164,6 @@
                                 })
                             });
 
-                            console.log(await res.json());
                         }
                         
                         currentRating = ratingToSet;

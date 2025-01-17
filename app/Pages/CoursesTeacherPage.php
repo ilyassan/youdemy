@@ -4,7 +4,15 @@
     {
         public function index()
         {
-            $this->render("/courses/index");
+            $filters['keyword'] = $_GET['keyword'] ?? '';
+            $filters['category_id'] = $_GET['category_id'] ?? '';
+            $filters['teacher_id'] = user()->getId();
+
+            $coursesTotalCount = Course::countByFilter($filters);
+            $courses = Course::all($filters);
+            $categories = Category::all();
+            
+            $this->render("/courses/index", compact('courses', 'categories', 'coursesTotalCount'));
         }
 
         public function create()
