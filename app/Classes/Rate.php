@@ -5,13 +5,18 @@
     private $rate;
     private $student_id;
     private $course_id;
+    private $created_at;
 
-    public function __construct($id, $rate, $student_id, $course_id)
+    private $course_title;
+
+    public function __construct($id, $rate, $student_id, $course_id, $created_at, $course_title = null)
     {
         $this->id = $id;
         $this->rate = $rate;
         $this->student_id = $student_id;
         $this->course_id = $course_id;
+        $this->course_title = $course_title;
+        $this->created_at = $created_at;
     }
 
     public function getId()
@@ -34,9 +39,24 @@
         return $this->course_id;
     }
 
+    public function getCreatedAt()
+    {
+        return $this->created_at;
+    }
+
+    public function getCourseTitle()
+    {
+        return $this->course_title;
+    }
+
     public function setRate($rate)
     {
         $this->rate = $rate;
+    }
+
+    public function setCourseTitle($course_title)
+    {
+        $this->course_title = $course_title;
     }
 
 
@@ -103,9 +123,9 @@
 
     public static function getRecentRates($limit)
     {
-        $sql = "SELECT r.*, v.name as vehicle_name
+        $sql = "SELECT r.*, c.title as course_title
                 FROM rates r
-                JOIN vehicles v ON r.course_id = v.id
+                JOIN courses c ON r.course_id = c.id
                 ORDER BY r.created_at DESC
                 LIMIT :limit";
 
@@ -114,17 +134,28 @@
 
         $results = self::$db->results();
 
-        return $results;
+        $rates = [];
+        foreach ($results as $rate) {
+            $obj = new self($rate["id"], $rate["rate"], $rate["student_id"], $rate["course_id"], $rate["created_at"]);
+            $obj->setCourseTitle($rate["course_title"]);
+            $rates[] = $obj;
+        }
+        return $rates;
     }
 
-    public static function avg()
+    public static function teacherAvgRate($teacherId)
     {
-        $sql = "SELECT AVG(rate) as avg_rate FROM rates";
+        $sql = "SELECT AVG(r.rate) as avg_rate
+                FROM rates r
+                JOIN courses c ON c.id = r.course_id
+                WHERE c.teacher_id = :teacher_id";
+
         self::$db->query($sql);
-        self::$db->execute();
+        self::$db->bind(':teacher_id', $teacherId);
 
         $result = self::$db->single();
-        return $result->avg_rate;
+
+        return $result["avg_rate"] ?? 0;
     }
 
 }

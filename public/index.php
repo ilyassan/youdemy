@@ -13,6 +13,7 @@
     BaseClass::setDatabase($db);
 
     require_all_files(__DIR__ . '/../app/Helpers');
+    require_once __DIR__ . '/../app/Classes/User.php';
     require_all_files(__DIR__ . '/../app/Classes');
 
     // Define the routes
