@@ -53,11 +53,11 @@
                 </div>
 
                 <!-- Mark as Completed Button -->
-                <div>
+                <form action="<?= URLROOT . 'courses/completed/' . $course->getId() ?>" method="POST">
                     <button class="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition">
                         Mark Course as Completed
                     </button>
-                </div>
+                </form>
             </div>
 
             <!-- Sidebar: Course Details -->

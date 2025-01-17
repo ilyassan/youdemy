@@ -32,6 +32,12 @@
 
         public function enroll($courseId)
         {
+            $enrollment = Enrollment::find(user()->getId(), $courseId);
+
+            if ($enrollment) {
+                flash("warning", "You already enrolled in this course.");
+                back();
+            }
             $enrollment = new Enrollment();
             $enrollment->setStudentId(user()->getId());
             $enrollment->setCourseId($courseId);
@@ -40,6 +46,27 @@
                 flash("success", "You enrolled in the course successfully.");
                 redirect("my-courses");
             }
+
+            flash("error", "Something went wrong.");
+            back();
+        }
+
+        public function completed($courseId)
+        {
+            $enrollment = Enrollment::find(user()->getId(), $courseId);
+
+            if (! $enrollment) {
+                flash("error", "Something went wrong.");
+                back();
+            }
+            
+            $enrollment->setIsCompleted(1);
+
+            if ($enrollment->update()) {
+                flash("success", "Congrutlations, you finished the course.");
+                redirect("my-courses");
+            }
+
 
             flash("error", "Something went wrong.");
             back();
