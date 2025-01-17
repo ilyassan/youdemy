@@ -5,6 +5,52 @@
         <p class="mt-4 text-xl text-gray-600">Manage and view your courses here</p>
     </div>
 
+        <!-- Filter Section -->
+        <form class="bg-white rounded-xl shadow-lg p-6 mb-12">
+        <div class="flex flex-wrap items-center justify-between gap-6">
+            <!-- Search Input -->
+            <div class="relative flex-1 min-w-44">
+                <input type="text" value="<?= $_GET['keyword'] ?? '' ?>" autocomplete="off" name="keyword" placeholder="Search courses..." class="w-full outline-none pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                    <i class="fas fa-search"></i>
+                </span>
+            </div>
+            <div class="flex gap-6 items-center justify-center flex-wrap">
+                <!-- Categories (Custom Dropdown) -->
+                <div class="relative flex-1">
+                    <input id="category_id" type="hidden" name="category_id" value="">
+                    <button
+                        type="button"
+                        id="categoriesDropdown"
+                        class="flex items-center border border-gray-300 rounded-md px-4 py-2 w-full bg-white text-gray-500 focus:outline-none"
+                    >
+                        <i class="fas fa-layer-group text-gray-500 mr-2"></i>
+                        <span id="selectedCategories">
+                            <?= htmlspecialchars(($category = current(array_filter($categories, fn($cat) => $cat->getId() == ($_GET['category_id'] ?? 0)))) ? $category->getName() : "Categories") ?>
+                        </span>
+                        <i class="fas fa-chevron-down ml-2 text-gray-400"></i>
+                    </button>
+                    <!-- Dropdown Options -->
+                    <ul
+                        id="categoriesDropdownMenu"
+                        class="absolute dropdown-menu hidden bg-white shadow-md rounded-md w-full mt-2 z-10"
+                    >
+                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" onclick="selectOption('categoriesDropdown', 'selectedCategories', '<?= htmlspecialchars('All') ?>')"><?= htmlspecialchars("All") ?></li>
+                        <?php foreach ($categories as $category): ?>
+                            <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" onclick="selectOption('categoriesDropdown', 'selectedCategories', '<?= htmlspecialchars($category->getName()) ?>', '<?= htmlspecialchars($category->getId()) ?>')"><?= htmlspecialchars($category->getName()) ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+
+                <!-- Filter Button -->
+                <div class="flex justify-center flex-1 whitespace-nowrap">
+                    <button class="px-10 bg-indigo-600 text-white py-2.5 rounded-lg font-medium hover:bg-indigo-700 transition-colors">
+                        <i class="fas fa-filter mr-2"></i> Filter
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
 
     <!-- Course Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
