@@ -13,6 +13,7 @@ class Course extends BaseClass {
     private $category_id;
     private $created_at;
     private $updated_at;
+
     private $rate;
     private $rates_count;
     private $teacher_name;
@@ -20,7 +21,7 @@ class Course extends BaseClass {
     private $enrollments_count;
     private $tags;
 
-    public function __construct($id, $title, $description, $price, $thumbnail, $document_name, $video_name, $is_deleted, $teacher_id, $category_id, $created_at, $updated_at)
+    public function __construct($id = null, $title = null, $description = null, $price = null, $thumbnail = null, $document_name = null, $video_name = null, $is_deleted = null, $teacher_id = null, $category_id = null, $created_at = null, $updated_at = null)
     {
         $this->id = $id;
         $this->title = $title;
@@ -129,6 +130,46 @@ class Course extends BaseClass {
 
     // Setters
 
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+    public function setPrice($price)
+    {
+        $this->price = $price;
+    }
+
+    public function setCategoryId($category_id)
+    {
+        $this->category_id = $category_id;
+    }
+
+    public function setTeacherId($teacher_id)
+    {
+        $this->teacher_id = $teacher_id;
+    }
+
+    public function setThumbnail($thumbnail)
+    {
+        $this->thumbnail = $thumbnail;
+    }
+
+    public function setDocumentName($document_name)
+    {
+        $this->document_name = $document_name;
+    }
+
+    public function setVideoName($video_name)
+    {
+        $this->video_name = $video_name;
+    }
+
     public function setRate($rate)
     {
         $this->rate = $rate;
@@ -174,7 +215,12 @@ class Course extends BaseClass {
         self::$db->bind(':teacher_id', $this->teacher_id);
         self::$db->bind(':category_id', $this->category_id);
 
-        return self::$db->execute();
+        if (self::$db->execute()) {
+            $this->id = self::$db->lastInsertId();
+            return true;
+        } else {
+            return false;
+        } 
     }
 
     // Delete a course from the database
@@ -183,6 +229,26 @@ class Course extends BaseClass {
         $sql = "DELETE FROM courses WHERE id = :id";
         self::$db->query($sql);
         self::$db->bind(':id', $this->id);
+        return self::$db->execute();
+    }
+
+    // Attach tags to a course
+    public function attachTags($ids)
+    {
+        $sql = "INSERT INTO courses_tags (course_id, tag_id) VALUES ";
+        $values = [];
+        $params = [];
+        foreach ($ids as $index => $tag_id) {
+            $values[] = "(:course_id_{$index}, :tag_id_{$index})";
+            $params[":course_id_{$index}"] = $this->id;
+            $params[":tag_id_{$index}"] = $tag_id;
+        }
+        $sql .= implode(", ", $values);
+        self::$db->query($sql);
+        foreach ($params as $key => $value) {
+            self::$db->bind($key, $value);
+        }
+
         return self::$db->execute();
     }
 
