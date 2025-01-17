@@ -99,7 +99,7 @@ class Course extends BaseClass {
 
     public function getRate()
     {
-        return $this->rate;
+        return number_format($this->rate, 2);
     }
 
     public function getRatesCount()
@@ -229,7 +229,7 @@ class Course extends BaseClass {
             );
 
         $course->setEnrollmentsCount($result['enrollments_count']);
-        $course->setRate(number_format($result['rate'], 2));
+        $course->setRate($result['rate']);
         $course->setRatesCount($result['rates_count']);
         $course->setTeacherName($result['teacher_name']);
         $course->setCategoryName($result['category_name']);
@@ -346,7 +346,7 @@ class Course extends BaseClass {
             );
     
             $course->setEnrollmentsCount($result['enrollments_count']);
-            $course->setRate(number_format($result['rate'], 2));
+            $course->setRate($result['rate']);
             $course->setRatesCount($result['rates_count']);
             $course->setTeacherName($result['teacher_name']);
             $course->setCategoryName($result['category_name']);
@@ -431,7 +431,7 @@ class Course extends BaseClass {
             );
     
             $course->setEnrollmentsCount($result['enrollments_count']);
-            $course->setRate(number_format($result['rate'], 2));
+            $course->setRate($result['rate']);
             $course->setRatesCount($result['rates_count']);
             $course->setTeacherName($result['teacher_name']);
             $course->setCategoryName($result['category_name']);
@@ -623,7 +623,7 @@ class Course extends BaseClass {
             );
 
             $course->setEnrollmentsCount($result['enrollments_count']);
-            $course->setRate(number_format($result['rate'], 2));
+            $course->setRate($result['rate']);
             $course->setRatesCount($result['rates_count']);
             $course->setTeacherName($result['teacher_name']);
 
@@ -633,4 +633,71 @@ class Course extends BaseClass {
         return $courses;
     }
 
+
+    public static function getProfitsBetween($startDate, $endDate)
+    {
+        $sql = "SELECT SUM(c.price) AS total_profit
+                FROM courses c
+                JOIN enrollments en ON en.course_id = c.id
+                WHERE en.created_at >= :start_date
+                AND en.created_at <= :end_date";
+    
+        self::$db->query($sql);
+        self::$db->bind(':start_date', $startDate);
+        self::$db->bind(':end_date', $endDate);
+    
+        if (! self::$db->execute()) {
+            return false;
+        }
+    
+        $result = self::$db->single();
+    
+        if ($result && isset($result["total_profit"])) {
+            return $result["total_profit"];
+        } else {
+            return 0;
+        }
+    }
+
+    public static function topTeacherCourse(int $teacherId)
+    {
+        $sql = "SELECT
+                    c.*,
+                    COUNT(*) as enrollments_count,
+                    ca.name as category_name,
+                    AVG(r.rate) AS rate
+                FROM courses c
+                JOIN enrollments en ON en.course_id = c.id
+                JOIN categories ca ON ca.id = c.category_id
+                LEFT JOIN rates r ON c.id = r.course_id
+                WHERE c.teacher_id = :teacher_id
+                GROUP BY c.id
+                ORDER BY enrollments_count DESC
+                LIMIT 1";
+            
+        self::$db->query($sql);
+        self::$db->bind(':teacher_id', $teacherId);
+
+        $result = self::$db->single();
+
+        $course = new self(
+            $result["id"],
+            $result["title"],
+            $result["description"],
+            $result["price"],
+            $result["thumbnail"],
+            $result["document_name"],
+            $result["video_name"],
+            $result["is_deleted"],
+            $result["teacher_id"],
+            $result["category_id"],
+            $result["created_at"],
+            $result["updated_at"]
+        );
+
+        $course->setRate($result["rate"]);
+        $course->setCategoryName($result["category_name"]);
+
+        return $course;
+    }
 }
