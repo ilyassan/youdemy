@@ -40,49 +40,42 @@
 
     <!-- Course Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-
         <?php if (! empty($courses)):?>
-        <?php foreach ($courses as $course):?>
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden group hover:shadow-xl transition-all">
-                <div class="relative">
-                    <img src="https://placehold.co/400x225" alt="Course Thumbnail" class="w-full h-48 object-cover">
-                </div>
-                <div class="p-6">
-                    <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-indigo-600"><?= $course->getTitle() ?></h3>
-                    <div class="flex flex-wrap gap-4 text-sm mb-4">
-                        <div class="flex items-center text-gray-600">
-                            <i class="fas fa-calendar-alt mr-2"></i>
-                            <span>Enrolled: <?= (new DateTime($course->getCreatedAt()))->format('F d, Y') ?></span>
-                        </div>
-                        <div class="flex items-center text-gray-600">
-                            <i class="fas fa-user mr-2"></i>
-                            <span><?= $course->getTeacherName() ?></span>
-                        </div>
+            <?php foreach ($courses as $course):?>
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden group hover:shadow-xl transition-all">
+                    <div class="relative">
+                        <img src="https://placehold.co/400x225" alt="Course Thumbnail" class="w-full h-48 object-cover">
                     </div>
-                    <div class="flex items-center mb-4">
-                        <button class="text-yellow-400 hover:text-yellow-500">
-                            <i class="fas fa-star"></i>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-indigo-600"><?= $course->getTitle() ?></h3>
+                        <div class="flex flex-wrap gap-4 text-sm mb-4">
+                            <div class="flex items-center text-gray-600">
+                                <i class="fas fa-calendar-alt mr-2"></i>
+                                <span>Enrolled: <?= (new DateTime($course->getCreatedAt()))->format('F d, Y') ?></span>
+                            </div>
+                            <div class="flex items-center text-gray-600">
+                                <i class="fas fa-user mr-2"></i>
+                                <span><?= $course->getTeacherName() ?></span>
+                            </div>
+                        </div>
+                        <div class="rating-container flex items-center mb-4" data-course-id="<?= $course->getId() ?>" data-initial-rating="<?= $course->getRate() ?>">
+                            <div class="stars flex">
+                                <?php for($i = 1; $i <= 5; $i++): ?>
+                                    <button class="star-btn p-1 transition-colors <?= $i <= $course->getRate() ? 'text-yellow-400' : 'text-gray-300' ?> hover:text-yellow-500" data-rating="<?= $i ?>">
+                                        <i class="fas fa-star"></i>
+                                    </button>
+                                <?php endfor; ?>
+                            </div>
+                            <span class="rating-text ml-2 text-sm text-gray-600">
+                                <?= $course->getRate() > 0 ? 'Your rating: ' . number_format($course->getRate(), 2) : 'Rate this course' ?>
+                            </span>
+                        </div>
+                        <button class="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition">
+                            Watch Course
                         </button>
-                        <button class="text-yellow-400 hover:text-yellow-500">
-                            <i class="fas fa-star"></i>
-                        </button>
-                        <button class="text-yellow-400 hover:text-yellow-500">
-                            <i class="fas fa-star"></i>
-                        </button>
-                        <button class="text-yellow-400 hover:text-yellow-500">
-                            <i class="fas fa-star"></i>
-                        </button>
-                        <button class="text-yellow-400 hover:text-yellow-500">
-                            <i class="fas fa-star"></i>
-                        </button>
-                        <span class="ml-2 text-sm text-gray-600">Your rating: <?= number_format($course->getRate(), 2) ?></span>
                     </div>
-                    <button class="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition">
-                        Watch Course
-                    </button>
                 </div>
-            </div>
-        <?php endforeach; ?>
+            <?php endforeach; ?>
         <?php else:?>
             <!-- Empty State (shown when no courses) -->
             <div class="bg-gray-50 rounded-xl p-8 text-center">
@@ -96,50 +89,110 @@
                 </button>
             </div>
         <?php endif;?>
-        
-        <!-- Course Card Unrated -->
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden group hover:shadow-xl transition-all">
-            <div class="relative">
-                <img src="https://placehold.co/400x225" alt="Course Thumbnail" class="w-full h-48 object-cover">
-                <div class="absolute top-4 right-4 bg-white px-3 py-1 rounded-full text-sm font-medium text-indigo-600">
-                    Completed
-                </div>
-            </div>
-            <div class="p-6">
-                <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-indigo-600">Web Development Basics</h3>
-                <div class="flex flex-wrap gap-4 text-sm mb-4">
-                    <div class="flex items-center text-gray-600">
-                        <i class="fas fa-calendar-alt mr-2"></i>
-                        <span>Enrolled: Jan 5, 2025</span>
-                    </div>
-                    <div class="flex items-center text-gray-600">
-                        <i class="fas fa-user mr-2"></i>
-                        <span>Mike Peters</span>
-                    </div>
-                </div>
-                <div class="flex items-center mb-4">
-                    <button class="text-gray-300 hover:text-yellow-500">
-                        <i class="fas fa-star"></i>
-                    </button>
-                    <button class="text-gray-300 hover:text-yellow-500">
-                        <i class="fas fa-star"></i>
-                    </button>
-                    <button class="text-gray-300 hover:text-yellow-500">
-                        <i class="fas fa-star"></i>
-                    </button>
-                    <button class="text-gray-300 hover:text-yellow-500">
-                        <i class="fas fa-star"></i>
-                    </button>
-                    <button class="text-gray-300 hover:text-yellow-500">
-                        <i class="fas fa-star"></i>
-                    </button>
-                    <span class="ml-2 text-sm text-gray-600">Rate this course</span>
-                </div>
-                <button class="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition">
-                    Watch Course
-                </button>
-            </div>
-        </div>
     </div>
 
 </div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize all rating containers
+        document.querySelectorAll('.rating-container').forEach(container => {
+            const courseId = container.dataset.courseId;
+            const stars = container.querySelectorAll('.star-btn');
+            const ratingText = container.querySelector('.rating-text');
+            let currentRating = parseFloat(container.dataset.initialRating) || 0;
+            let isLoading = false;
+
+            // Function to update star appearance
+            function updateStars(rating, isHover = false) {
+                stars.forEach((star, index) => {
+                    if (index < rating) {
+                        star.classList.remove('text-gray-300');
+                        star.classList.add('text-yellow-400');
+                    } else {
+                        star.classList.remove('text-yellow-400');
+                        star.classList.add('text-gray-300');
+                    }
+                });
+
+                // Update rating text
+                if (!isHover) {
+                    ratingText.textContent = rating > 0 ? `Your rating: ${rating.toFixed(2)}` : 'Rate this course';
+                }
+            }
+
+            // Handle click events
+            stars.forEach(star => {
+                star.addEventListener('click', async function() {
+                    if (isLoading) return;
+                    
+                    const newRating = parseInt(this.dataset.rating);
+                    // If clicking the same rating, remove it
+                    const ratingToSet = currentRating === newRating ? 0 : newRating;
+                    
+                    isLoading = true;
+                    // Add loading state
+                    container.style.opacity = '0.7';
+                    
+                    try {
+                        if (ratingToSet === 0) {
+                            // Delete rating
+                            await fetch(`<?= URLROOT ?>api/rate/delete`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                },
+                                body: JSON.stringify({
+                                    courseId, 
+                                    csrf_token: "<?= generateCsrfToken()?>"
+                                })
+                            });
+                        } else {
+                            // Create/update rating
+                            const res = await fetch(`<?= URLROOT ?>api/rate/create`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                },
+                                body: JSON.stringify({
+                                    rating: ratingToSet,
+                                    courseId,
+                                    csrf_token: "<?= generateCsrfToken()?>"
+                                })
+                            });
+
+                            console.log(await res.json());
+                        }
+                        
+                        currentRating = ratingToSet;
+                        updateStars(currentRating);
+                    } catch (error) {
+                        console.error('Error updating rating:', error);
+                        // Revert to previous state on error
+                        updateStars(currentRating);
+                    } finally {
+                        isLoading = false;
+                        container.style.opacity = '1';
+                    }
+                });
+
+                // Handle hover events
+                star.addEventListener('mouseenter', function() {
+                    if (!isLoading) {
+                        const hoverRating = parseInt(this.dataset.rating);
+                        updateStars(hoverRating, true);
+                    }
+                });
+
+                star.addEventListener('mouseleave', function() {
+                    if (!isLoading) {
+                        updateStars(currentRating);
+                    }
+                });
+            });
+        });
+    });
+</script>

@@ -25,6 +25,8 @@
     $router->add('GET', '/courses/{id}', 'CoursesPage@show', ["visitor", "student"]);
     $router->add('GET', '/my-courses', 'MyCoursesPage@index', ["student"]);
 
+    $router->add('POST', '/api/rate/create', 'MyCoursesPage@rateCourse', ["student"]);
+    $router->add('POST', '/api/rate/delete', 'MyCoursesPage@deleteCourseRate', ["student"]);
 
     $router->add('GET', '/', 'DashboardTeacherPage@index', ["teacher"]);
     $router->add('GET', '/courses', 'CoursesTeacherPage@index', ["teacher"]);
