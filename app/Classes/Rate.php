@@ -107,18 +107,7 @@
         self::$db->bind(':course_id', $course_id);
 
         $result = self::$db->single();
-        return $result ? new self($result["id"], $result["rate"], $result["student_id"], $result["course_id"]) : null;
-    }
-
-    public static function find(int $id) {
-        $sql = "SELECT * FROM rates
-                WHERE id = :id";
-        self::$db->query($sql);
-        self::$db->bind(':id', $id);
-        self::$db->execute();
-
-        $result = self::$db->single();
-        return $result ? new self($result->id, $result->rate, $result->student_id, $result->course_id) : null;
+        return $result ? new self($result["id"], $result["rate"], $result["student_id"], $result["course_id"], $result["created_at"]) : null;
     }
 
     public static function getRecentRates($limit)

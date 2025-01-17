@@ -307,6 +307,9 @@ class Course extends BaseClass {
         if (isset($filters['max_price']) && !empty($filters['max_price'])) {
             $sql .= " AND c.price <= :max_price ";
         }
+        if (isset($filters['teacher_id']) && !empty($filters['teacher_id'])) {
+            $sql .= " AND c.teacher_id <= :teacher_id ";
+        }
     
         $sql .= " GROUP BY c.id ORDER BY enrollments_count DESC";
     
@@ -324,6 +327,9 @@ class Course extends BaseClass {
         }
         if (isset($filters['max_price']) && !empty($filters['max_price'])) {
             self::$db->bind(':max_price', $filters['max_price']);
+        }
+        if (isset($filters['teacher_id']) && !empty($filters['teacher_id'])) {
+            self::$db->bind(':teacher_id', $filters['teacher_id']);
         }
     
         $results = self::$db->results();
