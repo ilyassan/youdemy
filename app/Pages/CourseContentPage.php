@@ -4,6 +4,9 @@
     {
         public function index($id)
         {
-            $this->render("/course-content/index");
+            $course = Course::find($id);
+            $relatedCourses = Course::limit(4);
+
+            $this->render("/course-content/index", compact('course', 'relatedCourses'));
         }
     }
