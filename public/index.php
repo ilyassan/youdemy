@@ -22,6 +22,7 @@
     $router->add('GET', '/', 'HomePage@index', ["visitor", "student"]);
     $router->add('GET', '/courses', 'CoursesPage@index', ["visitor", "student"]);
     $router->add('POST', '/courses/enroll/{id}', 'CoursesPage@enroll', ["student"]);
+    $router->add('POST', '/courses/completed/{id}', 'CoursesPage@completed', ["student"]);
     $router->add('GET', '/courses/content/{id}', 'CourseContentPage@index', ["visitor", "student"]);
     $router->add('GET', '/courses/{id}', 'CoursesPage@show', ["visitor", "student"]);
     $router->add('GET', '/my-courses', 'MyCoursesPage@index', ["student"]);
