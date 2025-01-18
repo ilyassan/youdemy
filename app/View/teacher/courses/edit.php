@@ -1,5 +1,9 @@
 <form action="<?= URLROOT . 'courses/update/' . $course->getId() ?>" method="POST" enctype="multipart/form-data" class="bg-white shadow-lg rounded-lg p-6 max-w-3xl mx-auto">
-    <h1 class="text-2xl font-semibold text-gray-800 mb-6">Edit Course</h1>
+    <div class="flex justify-end">
+        <button type="button" class="text-gray-400 hover:text-red-500" onclick="confirmArticleDelete('<?= $course->getTitle() ?>', '<?= $course->getId() ?>')">
+            <i class="far fa-trash-alt text-xl"></i>
+        </button>
+    </div>
 
     <!-- Thumbnail Upload with Dynamic Behavior -->
     <div class="flex justify-center mb-6">
@@ -162,6 +166,31 @@
         </button>
     </div>
 </form>
+
+    <!-- Delete Article Confirmation -->
+    <div id="deleteCourseModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 w-full max-w-sm mx-4">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Delete Course</h3>
+            <p class="text-gray-600 mb-6">Are you sure you want to delete "<span id="courseToDelete"></span>" Course?</p>
+            
+            <div class="flex justify-end gap-4">
+                <button 
+                    onclick="closeCourseDeleteModal()"
+                    class="px-4 py-2 text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                >
+                    Cancel
+                </button>
+                <form action="<?= URLROOT . 'courses/delete/' . $course->getId() ?>" method="POST">
+                    <button
+                        type="submit"
+                        class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                    >
+                        Delete
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
 
 <?php
 $temp = [];
@@ -333,4 +362,28 @@ $availableTags = array_map(fn($tag) => ["id" => $tag->getId(), "name" => $tag->g
 
     // Initialize tags on page load
     refreshTags();
+
+
+    let courseToDelete = '';
+
+    function confirmArticleDelete(courseToDelete) {
+        courseToDelete = courseToDelete;
+
+        document.getElementById('courseToDelete').textContent = courseToDelete;
+        document.getElementById('deleteCourseModal').classList.remove('hidden');
+        document.getElementById('deleteCourseModal').classList.add('flex');
+    }
+
+    function closeCourseDeleteModal() {
+        document.getElementById('deleteCourseModal').classList.remove('flex');
+        document.getElementById('deleteCourseModal').classList.add('hidden');
+        courseToDelete = '';
+        document.getElementById('article_id').value = '';
+    }
+
+    document.getElementById('deleteCourseModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeCourseDeleteModal();
+        }
+    });
 </script>
