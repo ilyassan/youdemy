@@ -641,10 +641,6 @@ video {
   left: 0.75rem;
 }
 
-.right-1\/2 {
-  right: 50%;
-}
-
 .right-2 {
   right: 0.5rem;
 }
@@ -1119,6 +1115,10 @@ video {
 
 .overflow-x-auto {
   overflow-x: auto;
+}
+
+.overflow-y-scroll {
+  overflow-y: scroll;
 }
 
 .whitespace-nowrap {
@@ -1878,6 +1878,15 @@ video {
 
 .ease-in-out {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 html {
