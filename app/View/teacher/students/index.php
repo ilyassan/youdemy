@@ -1,7 +1,19 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <!-- Student Table Section -->
     <div class="overflow-x-auto bg-white shadow-lg rounded-lg p-6">        
-
+        <!-- Table Header -->
+        <form class="flex items-center justify-between mb-4">
+            <div class="flex items-center">
+                <div class="relative">
+                    <input type="text" name="keyword" value="<?=$_GET['keyword'] ?? ''?>" autocomplete="off" placeholder="Search by name or email" class="bg-white border border-gray-300 rounded-lg px-4 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-indigo-600">
+                    <i class="fas fa-search absolute right-2 -translate-y-1/2 top-1/2 text-gray-500"></i>
+                </div>
+            </div>
+            <div class="flex space-x-4">
+                <button class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none">Filter</button>
+                <button class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 focus:outline-none">Export</button>
+            </div>
+        </form>
         
         <!-- Table -->
         <table class="w-full text-left table-auto">
