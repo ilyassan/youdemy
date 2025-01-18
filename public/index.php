@@ -37,6 +37,7 @@
     $router->add('GET', '/courses/create', 'CoursesTeacherPage@create', ["teacher"]);
     $router->add('POST', '/courses/store', 'CoursesTeacherPage@store', ["teacher"]);
     $router->add('GET', '/courses/edit/{id}', 'CoursesTeacherPage@edit', ["teacher"]);
+    $router->add('POST', '/courses/update/{id}', 'CoursesTeacherPage@update', ["teacher"]);
     $router->add('GET', '/students', 'StudentsTeacherPage@index', ["teacher"]);
 
     $router->add('GET', '/', 'DashboardAdminPage@index', ["admin"]);

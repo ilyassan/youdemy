@@ -1,35 +1,31 @@
 <?php
-class Course extends BaseClass {
+abstract class Course extends BaseClass {
 
-    private $id;
-    private $title;
-    private $description;
-    private $price;
-    private $thumbnail;
-    private $document_name;
-    private $video_name;
-    private $is_deleted;
-    private $teacher_id;
-    private $category_id;
-    private $created_at;
-    private $updated_at;
+    protected $id;
+    protected $title;
+    protected $description;
+    protected $price;
+    protected $thumbnail;
+    protected $is_deleted;
+    protected $teacher_id;
+    protected $category_id;
+    protected $created_at;
+    protected $updated_at;
 
-    private $rate;
-    private $rates_count;
-    private $teacher_name;
-    private $category_name;
-    private $enrollments_count;
-    private $tags;
+    protected $rate;
+    protected $rates_count;
+    protected $teacher_name;
+    protected $category_name;
+    protected $enrollments_count;
+    protected $tags;
 
-    public function __construct($id = null, $title = null, $description = null, $price = null, $thumbnail = null, $document_name = null, $video_name = null, $is_deleted = null, $teacher_id = null, $category_id = null, $created_at = null, $updated_at = null)
+    public function __construct($id = null, $title = null, $description = null, $price = null, $thumbnail = null, $is_deleted = null, $teacher_id = null, $category_id = null, $created_at = null, $updated_at = null)
     {
         $this->id = $id;
         $this->title = $title;
         $this->description = $description;
         $this->price = $price;
         $this->thumbnail = $thumbnail;
-        $this->document_name = $document_name;
-        $this->video_name = $video_name;
         $this->is_deleted = $is_deleted;
         $this->teacher_id = $teacher_id;
         $this->category_id = $category_id;
@@ -61,16 +57,6 @@ class Course extends BaseClass {
     public function getThumbnail()
     {
         return $this->thumbnail;
-    }
-
-    public function getDocumentName()
-    {
-        return $this->document_name;
-    }
-
-    public function getVideoName()
-    {
-        return $this->video_name;
     }
 
     public function getIsDeleted()
@@ -130,6 +116,11 @@ class Course extends BaseClass {
 
     // Setters
 
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
     public function setTitle($title)
     {
         $this->title = $title;
@@ -160,14 +151,19 @@ class Course extends BaseClass {
         $this->thumbnail = $thumbnail;
     }
 
-    public function setDocumentName($document_name)
+    public function setIsDeleted($is_deleted)
     {
-        $this->document_name = $document_name;
+        $this->is_deleted = $is_deleted;
     }
 
-    public function setVideoName($video_name)
+    public function setCreatedAt($created_at)
     {
-        $this->video_name = $video_name;
+        $this->created_at = $created_at;
+    }
+
+    public function setUpdatedAt($updated_at)
+    {
+        $this->updated_at = $updated_at;
     }
 
     public function setRate($rate)
@@ -200,28 +196,12 @@ class Course extends BaseClass {
         $this->tags = $tags;
     }
 
-    // Save a new course to the database
-    public function save()
-    {
-        $sql = "INSERT INTO courses (title, description, price, thumbnail, document_name, video_name, teacher_id, category_id) 
-                VALUES (:title, :description, :price, :thumbnail, :document_name, :video_name, :teacher_id, :category_id)";
-        self::$db->query($sql);
-        self::$db->bind(':title', $this->title);
-        self::$db->bind(':description', $this->description);
-        self::$db->bind(':price', $this->price);
-        self::$db->bind(':thumbnail', $this->thumbnail);
-        self::$db->bind(':document_name', $this->document_name);
-        self::$db->bind(':video_name', $this->video_name);
-        self::$db->bind(':teacher_id', $this->teacher_id);
-        self::$db->bind(':category_id', $this->category_id);
+    abstract public function getContent();
+    abstract public function getContentType();
+    abstract public function setContent($content);
 
-        if (self::$db->execute()) {
-            $this->id = self::$db->lastInsertId();
-            return true;
-        } else {
-            return false;
-        } 
-    }
+    abstract public function save();
+    abstract public function update();
 
     // Delete a course from the database
     public function delete()
@@ -252,6 +232,17 @@ class Course extends BaseClass {
         return self::$db->execute();
     }
 
+    // Unattach tags to a course
+    public function unattachTags()
+    {
+        $sql = "DELETE FROM courses_tags WHERE course_id = :id ";
+        
+        self::$db->query($sql);
+        self::$db->bind(':id', $this->id);
+
+        return self::$db->execute();
+    }
+
     // Find a course by ID
     public static function find(int $id)
     {
@@ -271,38 +262,49 @@ class Course extends BaseClass {
                 LEFT JOIN courses_tags ct ON ct.course_id = c.id
                 LEFT JOIN tags t ON t.id = ct.tag_id
                 WHERE c.id = :id
-                GROUP BY c.id
-                ";
-
+                GROUP BY c.id";
+    
         self::$db->query($sql);
         self::$db->bind(':id', $id);
-
+    
         $result = self::$db->single();
-
-        $course = new self(
-                $result["id"],
-                $result["title"],
-                $result["description"],
-                $result["price"],
-                $result["thumbnail"],
-                $result["document_name"],
-                $result["video_name"],
-                $result["is_deleted"],
-                $result["teacher_id"],
-                $result["category_id"],
-                $result["created_at"],
-                $result["updated_at"]
-            );
-
+    
+        if (!$result) {
+            return null;
+        }
+    
+        // Instantiate the appropriate class based on the course type
+        if (!empty($result["video_name"])) {
+            $course = new CourseVideo();
+            $course->setContent($result["video_name"]);
+        } else {
+            $course = new CourseDocument();
+            $course->setContent($result["document_name"]);
+        }
+    
+        // Set common properties
+        $course->setId($result["id"]);
+        $course->setTitle($result["title"]);
+        $course->setDescription($result["description"]);
+        $course->setPrice($result["price"]);
+        $course->setThumbnail($result["thumbnail"]);
+        $course->setIsDeleted($result["is_deleted"]);
+        $course->setTeacherId($result["teacher_id"]);
+        $course->setCategoryId($result["category_id"]);
+        $course->setCreatedAt($result["created_at"]);
+        $course->setUpdatedAt($result["updated_at"]);
+    
+        // Set additional attributes
         $course->setEnrollmentsCount($result['enrollments_count']);
         $course->setRate($result['rate']);
         $course->setRatesCount($result['rates_count']);
         $course->setTeacherName($result['teacher_name']);
         $course->setCategoryName($result['category_name']);
         $course->setTags(explode(',', $result["tags"]) ?? []);
-
+    
         return $course;
     }
+    
 
     public static function countByFilter($filters = [])
     {
@@ -402,21 +404,26 @@ class Course extends BaseClass {
     
         $courses = [];
         foreach ($results as $result) {
-            $course = new self(
-                $result["id"],
-                $result["title"],
-                $result["description"],
-                $result["price"],
-                $result["thumbnail"],
-                $result["document_name"],
-                $result["video_name"],
-                $result["is_deleted"],
-                $result["teacher_id"],
-                $result["category_id"],
-                $result["created_at"],
-                $result["updated_at"]
-            );
-    
+            if (!empty($result["video_name"])) {
+                $course = new CourseVideo();
+                $course->setContent($result["video_name"]);
+            } else {
+                $course = new CourseDocument();
+                $course->setContent($result["document_name"]);
+            }
+        
+            $course->setId($result["id"]);
+            $course->setTitle($result["title"]);
+            $course->setDescription($result["description"]);
+            $course->setPrice($result["price"]);
+            $course->setThumbnail($result["thumbnail"]);
+            $course->setIsDeleted($result["is_deleted"]);
+            $course->setTeacherId($result["teacher_id"]);
+            $course->setCategoryId($result["category_id"]);
+            $course->setCreatedAt($result["created_at"]);
+            $course->setUpdatedAt($result["updated_at"]);
+        
+            // Set additional attributes
             $course->setEnrollmentsCount($result['enrollments_count']);
             $course->setRate($result['rate']);
             $course->setRatesCount($result['rates_count']);
@@ -487,21 +494,26 @@ class Course extends BaseClass {
     
         $courses = [];
         foreach ($results as $result) {
-            $course = new self(
-                $result["id"],
-                $result["title"],
-                $result["description"],
-                $result["price"],
-                $result["thumbnail"],
-                $result["document_name"],
-                $result["video_name"],
-                $result["is_deleted"],
-                $result["teacher_id"],
-                $result["category_id"],
-                $result["created_at"],
-                $result["updated_at"]
-            );
-    
+            if (!empty($result["video_name"])) {
+                $course = new CourseVideo();
+                $course->setContent($result["video_name"]);
+            } else {
+                $course = new CourseDocument();
+                $course->setContent($result["document_name"]);
+            }
+        
+            $course->setId($result["id"]);
+            $course->setTitle($result["title"]);
+            $course->setDescription($result["description"]);
+            $course->setPrice($result["price"]);
+            $course->setThumbnail($result["thumbnail"]);
+            $course->setIsDeleted($result["is_deleted"]);
+            $course->setTeacherId($result["teacher_id"]);
+            $course->setCategoryId($result["category_id"]);
+            $course->setCreatedAt($result["created_at"]);
+            $course->setUpdatedAt($result["updated_at"]);
+        
+            // Set additional attributes
             $course->setEnrollmentsCount($result['enrollments_count']);
             $course->setRate($result['rate']);
             $course->setRatesCount($result['rates_count']);
@@ -526,20 +538,26 @@ class Course extends BaseClass {
 
         $courses = [];
         foreach ($results as $result) {
-            $courses[] = new self(
-                $result["id"],
-                $result["title"],
-                $result["description"],
-                $result["price"],
-                $result["thumbnail"],
-                $result["document_name"],
-                $result["video_name"],
-                $result["is_deleted"],
-                $result["teacher_id"],
-                $result["category_id"],
-                $result["created_at"],
-                $result["updated_at"]
-            );
+            if (!empty($result["video_name"])) {
+                $course = new CourseVideo();
+                $course->setContent($result["video_name"]);
+            } else {
+                $course = new CourseDocument();
+                $course->setContent($result["document_name"]);
+            }
+        
+            $course->setId($result["id"]);
+            $course->setTitle($result["title"]);
+            $course->setDescription($result["description"]);
+            $course->setPrice($result["price"]);
+            $course->setThumbnail($result["thumbnail"]);
+            $course->setIsDeleted($result["is_deleted"]);
+            $course->setTeacherId($result["teacher_id"]);
+            $course->setCategoryId($result["category_id"]);
+            $course->setCreatedAt($result["created_at"]);
+            $course->setUpdatedAt($result["updated_at"]);
+    
+            $courses[] = $course;
         }
 
         return $courses;
@@ -557,20 +575,26 @@ class Course extends BaseClass {
 
         $courses = [];
         foreach ($results as $result) {
-            $courses[] = new self(
-                $result["id"],
-                $result["title"],
-                $result["description"],
-                $result["price"],
-                $result["thumbnail"],
-                $result["document_name"],
-                $result["video_name"],
-                $result["is_deleted"],
-                $result["teacher_id"],
-                $result["category_id"],
-                $result["created_at"],
-                $result["updated_at"]
-            );
+            if (!empty($result["video_name"])) {
+                $course = new CourseVideo();
+                $course->setContent($result["video_name"]);
+            } else {
+                $course = new CourseDocument();
+                $course->setContent($result["document_name"]);
+            }
+        
+            $course->setId($result["id"]);
+            $course->setTitle($result["title"]);
+            $course->setDescription($result["description"]);
+            $course->setPrice($result["price"]);
+            $course->setThumbnail($result["thumbnail"]);
+            $course->setIsDeleted($result["is_deleted"]);
+            $course->setTeacherId($result["teacher_id"]);
+            $course->setCategoryId($result["category_id"]);
+            $course->setCreatedAt($result["created_at"]);
+            $course->setUpdatedAt($result["updated_at"]);
+    
+            $courses[] = $course;
         }
 
         return $courses;
@@ -587,20 +611,26 @@ class Course extends BaseClass {
 
         $courses = [];
         foreach ($results as $result) {
-            $courses[] = new self(
-                $result["id"],
-                $result["title"],
-                $result["description"],
-                $result["price"],
-                $result["thumbnail"],
-                $result["document_name"],
-                $result["video_name"],
-                $result["is_deleted"],
-                $result["teacher_id"],
-                $result["category_id"],
-                $result["created_at"],
-                $result["updated_at"]
-            );
+            if (!empty($result["video_name"])) {
+                $course = new CourseVideo();
+                $course->setContent($result["video_name"]);
+            } else {
+                $course = new CourseDocument();
+                $course->setContent($result["document_name"]);
+            }
+        
+            $course->setId($result["id"]);
+            $course->setTitle($result["title"]);
+            $course->setDescription($result["description"]);
+            $course->setPrice($result["price"]);
+            $course->setThumbnail($result["thumbnail"]);
+            $course->setIsDeleted($result["is_deleted"]);
+            $course->setTeacherId($result["teacher_id"]);
+            $course->setCategoryId($result["category_id"]);
+            $course->setCreatedAt($result["created_at"]);
+            $course->setUpdatedAt($result["updated_at"]);
+    
+            $courses[] = $course;
         }
 
         return $courses;
@@ -631,20 +661,25 @@ class Course extends BaseClass {
 
         $courses = [];
         foreach ($results as $result) {
-            $course = new self(
-                $result["id"],
-                $result["title"],
-                $result["description"],
-                $result["price"],
-                $result["thumbnail"],
-                $result["document_name"],
-                $result["video_name"],
-                $result["is_deleted"],
-                $result["teacher_id"],
-                $result["category_id"],
-                $result["created_at"],
-                $result["updated_at"]
-            );
+            if (!empty($result["video_name"])) {
+                $course = new CourseVideo();
+                $course->setContent($result["video_name"]);
+            } else {
+                $course = new CourseDocument();
+                $course->setContent($result["document_name"]);
+            }
+        
+            $course->setId($result["id"]);
+            $course->setTitle($result["title"]);
+            $course->setDescription($result["description"]);
+            $course->setPrice($result["price"]);
+            $course->setThumbnail($result["thumbnail"]);
+            $course->setIsDeleted($result["is_deleted"]);
+            $course->setTeacherId($result["teacher_id"]);
+            $course->setCategoryId($result["category_id"]);
+            $course->setCreatedAt($result["created_at"]);
+            $course->setUpdatedAt($result["updated_at"]);
+    
             $course->setRate($result["rate"]);
             $course->setTeacherName($result['teacher_name']);
 
@@ -673,27 +708,30 @@ class Course extends BaseClass {
 
         self::$db->query($sql);
         self::$db->bind(':n', $n);
-        self::$db->execute();
 
         $results = self::$db->results();
 
         $courses = [];
         foreach ($results as $result) {
-            $course = new self(
-                $result["id"],
-                $result["title"],
-                $result["description"],
-                $result["price"],
-                $result["thumbnail"],
-                $result["document_name"],
-                $result["video_name"],
-                $result["is_deleted"],
-                $result["teacher_id"],
-                $result["category_id"],
-                $result["created_at"],
-                $result["updated_at"]
-            );
-
+            if (!empty($result["video_name"])) {
+                $course = new CourseVideo();
+                $course->setContent($result["video_name"]);
+            } else {
+                $course = new CourseDocument();
+                $course->setContent($result["document_name"]);
+            }
+        
+            $course->setId($result["id"]);
+            $course->setTitle($result["title"]);
+            $course->setDescription($result["description"]);
+            $course->setPrice($result["price"]);
+            $course->setThumbnail($result["thumbnail"]);
+            $course->setIsDeleted($result["is_deleted"]);
+            $course->setTeacherId($result["teacher_id"]);
+            $course->setCategoryId($result["category_id"]);
+            $course->setCreatedAt($result["created_at"]);
+            $course->setUpdatedAt($result["updated_at"]);
+    
             $course->setEnrollmentsCount($result['enrollments_count']);
             $course->setRate($result['rate']);
             $course->setRatesCount($result['rates_count']);
@@ -752,20 +790,24 @@ class Course extends BaseClass {
 
         $result = self::$db->single();
 
-        $course = new self(
-            $result["id"],
-            $result["title"],
-            $result["description"],
-            $result["price"],
-            $result["thumbnail"],
-            $result["document_name"],
-            $result["video_name"],
-            $result["is_deleted"],
-            $result["teacher_id"],
-            $result["category_id"],
-            $result["created_at"],
-            $result["updated_at"]
-        );
+        if (!empty($result["video_name"])) {
+            $course = new CourseVideo();
+            $course->setContent($result["video_name"]);
+        } else {
+            $course = new CourseDocument();
+            $course->setContent($result["document_name"]);
+        }
+    
+        $course->setId($result["id"]);
+        $course->setTitle($result["title"]);
+        $course->setDescription($result["description"]);
+        $course->setPrice($result["price"]);
+        $course->setThumbnail($result["thumbnail"]);
+        $course->setIsDeleted($result["is_deleted"]);
+        $course->setTeacherId($result["teacher_id"]);
+        $course->setCategoryId($result["category_id"]);
+        $course->setCreatedAt($result["created_at"]);
+        $course->setUpdatedAt($result["updated_at"]);
 
         $course->setRate($result["rate"]);
         $course->setCategoryName($result["category_name"]);
