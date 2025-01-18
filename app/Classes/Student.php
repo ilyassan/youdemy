@@ -2,16 +2,34 @@
 class Student extends User
 {
     private $is_banned;
+    private $total_courses;
+    private $total_spents;
 
 
     public function getIsBanned()
     {
         return $this->is_banned;
     }
+    public function getTotalCourses()
+    {
+        return $this->total_courses;
+    }
+    public function getTotalSpents()
+    {
+        return $this->total_spents;
+    }
     
     public function setIsBanned($is_banned)
     {
         $this->is_banned = $is_banned;
+    }
+    public function setTotalCourses($total_courses)
+    {
+        $this->total_courses = $total_courses;
+    }
+    public function setTotalSpents($total_spents)
+    {
+        $this->total_spents = $total_spents;
     }
 
     public static function studentsCountOfTeacher($teacherId)
@@ -29,4 +47,71 @@ class Student extends User
 
         return $result["count"];
     }
+
+    public static function all()
+    {
+        $sql = "SELECT * FROM users WHERE role_id = :role_id";
+
+        self::$db->query($sql);
+        self::$db->bind(":role_id", self::$studentRoleId);
+
+        $results = self::$db->results();
+
+        $students = [];
+        foreach ($results as $student) {
+            $students[] = new self($student["id"], $student["first_name"], $student["last_name"], $student["email"], $student["password"], $student["role_id"]);
+        }
+
+        return $students;
+    }
+
+    public static function teacherStudents($teacherId, $keyword = "")
+    {
+        $sql = "SELECT 
+                    u.*,
+                    COUNT(en.course_id) AS total_courses,
+                    SUM(c.price) AS total_spents
+                FROM users u
+                JOIN enrollments en ON en.student_id = u.id
+                JOIN courses c ON c.id = en.course_id
+                WHERE c.teacher_id = :teacher_id AND u.role_id = :role_id
+                GROUP BY u.id, u.first_name, u.last_name ";
+
+        if (!empty($keyword)) {
+            $sql .= "HAVING u.first_name LIKE :keyword
+                    OR u.last_name LIKE :keyword
+                    OR total_courses LIKE :keyword
+                    OR total_spents LIKE :keyword";
+        }
+
+        self::$db->query($sql);
+        self::$db->bind(":teacher_id", $teacherId);
+        self::$db->bind(":role_id", self::$studentRoleId);
+
+        if (!empty($keyword)) {
+            self::$db->bind(":keyword", "%". $keyword ."%");
+        }
+    
+        $results = self::$db->results();
+    
+        $students = [];
+        foreach ($results as $student) {
+            $obj = new self(
+                $student["id"],
+                $student["first_name"],
+                $student["last_name"],
+                $student["email"],
+                $student["password"],
+                $student["role_id"]
+            );
+
+            $obj->setTotalCourses($student["total_courses"]);
+            $obj->setTotalSpents($student["total_spents"]);
+
+            $students[] = $obj;
+        }
+    
+        return $students;
+    }
+    
 }

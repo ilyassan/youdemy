@@ -3,6 +3,10 @@
     {
         public function index()
         {
-            $this->render("/students/index");
+            $keyword = $_GET['keyword'] ?? '';
+
+            $students = Student::teacherStudents(user()->getId(), $keyword);
+
+            $this->render("/students/index", compact('students'));
         }
     }
