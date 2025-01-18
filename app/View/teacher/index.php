@@ -30,8 +30,8 @@
                     <i class="fas fa-user-plus text-blue-500 text-xl"></i>
                 </div>
             </div>
-            <span class="text-sm font-medium text-green-600 flex items-center gap-1 mt-1">
-                <i class="fas fa-arrow-up text-xs"></i> <?= $diffEnrollments ?> from last month
+            <span class="text-sm font-medium <?= $diffEnrollments > 0 ? 'text-green-600' : 'text-red-600' ?> flex items-center gap-1 mt-1">
+                <i class="fas fa-arrow-<?= $diffEnrollments > 0 ? 'up' : 'down' ?> text-xs"></i> <?= $diffEnrollments ?> from last month
             </span>
         </div>
 

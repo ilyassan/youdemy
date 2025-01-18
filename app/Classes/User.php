@@ -7,12 +7,13 @@ class User extends BaseClass
     private $email;
     private $password;
     private $role_id;
+    private $created_at;
 
     static public $adminRoleId = 1;
     static public $teacherRoleId = 2;
     static public $studentRoleId = 3;
 
-    public function __construct($id = null, $first_name = null, $last_name = null, $email = null, $password = null, $role_id = null)
+    public function __construct($id = null, $first_name = null, $last_name = null, $email = null, $password = null, $role_id = null, $created_at = null)
     {
         $this->id = $id;
         $this->first_name = $first_name;
@@ -50,6 +51,11 @@ class User extends BaseClass
     public function getPassword()
     {
         return $this->password;
+    }
+    
+    public function getCreatedAt()
+    {
+        return $this->created_at;
     }
     
     public function getRoleId()
@@ -94,6 +100,11 @@ class User extends BaseClass
     public function setRoleId($role_id)
     {
         $this->role_id = $role_id;
+    }
+
+    public function setCreatedAt($created_at)
+    {
+        $this->created_at = $created_at;
     }
 
     public function isAdmin()

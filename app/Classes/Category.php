@@ -3,11 +3,13 @@
 
     private $id;
     private $name;
+    private $created_at;
 
-    public function __construct($id, $name)
+    public function __construct($id, $name, $created_at)
     {
         $this->id = $id;
         $this->name = $name;
+        $this->created_at = $created_at;
     }
 
     public function getId()
@@ -18,6 +20,11 @@
     public function getName()
     {
         return $this->name;
+    }
+
+    public function getCreatedAt()
+    {
+        return $this->created_at;
     }
 
     public function save()
@@ -45,7 +52,7 @@
 
         $result = self::$db->single();
 
-        return new self($result["id"], $result["name"]);
+        return new self($result["id"], $result["name"], $result["created_at"]);
     }
     
     public static function all()
@@ -59,7 +66,7 @@
 
         $categories = [];
         foreach ($result as $category) {
-            $categories[] = new self($category["id"], $category["name"]);
+            $categories[] = new self($category["id"], $category["name"], $result["created_at"]);
         }
     
         return $categories;
@@ -71,7 +78,7 @@
                 JOIN courses co ON co.category_id = ca.id
                 GROUP BY ca.name
                 ORDER BY courses_count DESC
-                LIMIT 4";
+                LIMIT 5";
 
         self::$db->query($sql);
 
@@ -79,4 +86,23 @@
         return $results;
     }
 
+    public static function getRecentCategories($limit)
+    {
+        $sql = "SELECT *
+                FROM categories
+                ORDER BY created_at DESC
+                LIMIT :limit";
+
+        self::$db->query($sql);
+        self::$db->bind(':limit', $limit);
+
+        $results = self::$db->results();
+
+        $categories = [];
+        foreach ($results as $category) {
+            $categories[] = new self($category["id"], $category["name"], $category["created_at"]);
+        }
+
+        return $categories;
+    }
 }

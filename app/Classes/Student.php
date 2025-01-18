@@ -114,4 +114,50 @@ class Student extends User
         return $students;
     }
     
+    public static function activeStudentsBetween($startDate, $endDate)
+    {
+        $sql = "SELECT COUNT(*) as active_students_count
+                FROM users u
+                JOIN enrollments en ON en.student_id = u.id
+                WHERE u.role_id = :role_id AND en.created_at BETWEEN :start_date AND :end_date";
+        
+        self::$db->query($sql);
+        self::$db->bind(':role_id', self::$studentRoleId);
+        self::$db->bind(':start_date', $startDate);
+        self::$db->bind(':end_date', $endDate);
+
+        $result = self::$db->single();
+
+        return $result["active_students_count"];
+    }
+
+    public static function bannedStudentsCount()
+    {
+        $sql = "SELECT COUNT(*) as banned_students_count
+                FROM users
+                WHERE role_id = :role_id AND is_banned = 1";
+        
+        self::$db->query($sql);
+        self::$db->bind(':role_id', self::$studentRoleId);
+
+        $result = self::$db->single();
+
+        return $result["banned_students_count"];
+    }
+
+    public static function getInscriptionsBetween($startDate, $endDate)
+    {
+        $sql = "SELECT COUNT(*) as students_count
+                FROM users
+                WHERE role_id = :role_id AND created_at BETWEEN :start_date AND :end_date";
+        
+        self::$db->query($sql);
+        self::$db->bind(':role_id', self::$studentRoleId);
+        self::$db->bind(':start_date', $startDate);
+        self::$db->bind(':end_date', $endDate);
+
+        $result = self::$db->single();
+
+        return $result["students_count"];
+    }
 }
