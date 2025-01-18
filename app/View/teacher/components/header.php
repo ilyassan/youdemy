@@ -11,7 +11,7 @@
 <body class="bg-gray-100">
 
     <!-- Sidebar -->
-    <aside id="sidebar" class="fixed top-0 left-0 h-screen w-64 bg-white shadow-lg transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40">
+    <aside id="sidebar" class="fixed overflow-y-scroll no-scrollbar top-0 left-0 h-screen w-64 bg-white shadow-lg transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40">
         <!-- Logo -->
         <div class="flex items-center justify-center h-16 border-b">
             <span class="text-indigo-600 font-bold text-2xl">YouDemy</span>
@@ -75,13 +75,13 @@
                 </div>
     
                 <!-- Logout Section -->
-                <div class="space-y-1 pt-2">
+                <form action="<?= URLROOT . 'logout' ?>" method="POST" class="space-y-1 pt-2">
                     <p class="px-4 text-xs font-semibold text-gray-400 uppercase">Logout</p>
-                    <a href="/logout" class="flex items-center gap-3 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg">
+                    <button class="w-full flex items-center gap-3 px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg">
                         <i class="fas fa-sign-out-alt"></i>
                         <span>Logout</span>
-                    </a>
-                </div>
+                    </button>
+                </form>
             </div>
         </nav>
     </aside>

@@ -44,7 +44,7 @@
                     redirect("login");
                 }
 
-                $user->createSession();
+                $_SESSION['user_id'] = $user->getId();
                 redirect("");
             }
             else{
@@ -52,5 +52,10 @@
                 flash("error", array_first_not_null_value($errors));
                 redirect('login');
             }
+        }
+
+        public function logout(){
+            session_destroy();
+            redirect("login");
         }
     }

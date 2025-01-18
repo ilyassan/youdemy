@@ -153,17 +153,4 @@ class User extends BaseClass
             return false;
         }
     }
-
-    public function createSession()
-    {
-        $_SESSION['user_id'] = $this->id;
-    }
-
-    public function destroySession()
-    {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            unset($_SESSION['user_id']);
-            session_destroy();
-        }
-    }
 }

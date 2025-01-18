@@ -55,5 +55,7 @@
     $router->add('POST', '/login', 'LoginPage@login', ["visitor"]);
     $router->add('GET', '/signup', 'SignupPage@index', ["visitor"]);
     $router->add('POST', '/signup', 'SignupPage@signup', ["visitor"]);
+    
+    $router->add('POST', '/logout', 'LoginPage@logout', ["student", "teacher", "admin"]);
 
     $router->dispatch($request);
