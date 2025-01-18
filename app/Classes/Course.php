@@ -814,4 +814,43 @@ abstract class Course extends BaseClass {
 
         return $course;
     }
+
+    public static function getRecentCourses($limit)
+    {
+        $sql = "SELECT *
+                FROM courses
+                ORDER BY created_at DESC
+                LIMIT :limit";
+            
+        self::$db->query($sql);
+        self::$db->bind(':limit', $limit);
+
+        $results = self::$db->results();
+
+        $courses = [];
+        foreach ($results as $result) {
+            if (!empty($result["video_name"])) {
+                $course = new CourseVideo();
+                $course->setContent($result["video_name"]);
+            } else {
+                $course = new CourseDocument();
+                $course->setContent($result["document_name"]);
+            }
+        
+            $course->setId($result["id"]);
+            $course->setTitle($result["title"]);
+            $course->setDescription($result["description"]);
+            $course->setPrice($result["price"]);
+            $course->setThumbnail($result["thumbnail"]);
+            $course->setIsDeleted($result["is_deleted"]);
+            $course->setTeacherId($result["teacher_id"]);
+            $course->setCategoryId($result["category_id"]);
+            $course->setCreatedAt($result["created_at"]);
+            $course->setUpdatedAt($result["updated_at"]);
+    
+            $courses[] = $course;
+        }
+
+        return $courses;
+    }
 }
