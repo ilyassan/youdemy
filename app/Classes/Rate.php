@@ -9,7 +9,7 @@
 
     private $course_title;
 
-    public function __construct($id, $rate, $student_id, $course_id, $created_at, $course_title = null)
+    public function __construct($id = null, $rate = null, $student_id = null, $course_id = null, $created_at = null, $course_title = null)
     {
         $this->id = $id;
         $this->rate = $rate;

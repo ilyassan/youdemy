@@ -6,12 +6,9 @@
                 <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-6">Personalized Learning, Powered by AI</h1>
                 <p class="text-lg md:text-xl mb-8 text-indigo-100">Experience adaptive learning paths tailored to your goals, pace, and learning style.</p>
                 <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                    <button class="bg-white text-indigo-600 px-8 py-3 rounded-full font-medium hover:bg-indigo-50 transition">
+                    <a href="<?= URLROOT . 'courses' ?>" class="bg-white text-indigo-600 px-8 py-3 rounded-full font-medium hover:bg-indigo-50 transition">
                         Start Learning
-                    </button>
-                    <button class="border-2 border-white text-white px-8 py-3 rounded-full font-medium hover:bg-white hover:text-indigo-600 transition">
-                        Take Assessment
-                    </button>
+                    </a>
                 </div>
             </div>
             <div class="relative hidden md:block">
@@ -30,10 +27,10 @@
     </div>
 
     <!-- Enhanced Categories Section -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16">
         <h2 class="text-3xl font-bold text-gray-900 mb-8">Browse by Category</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            <a href="#" class="group">
+            <a href="<?= URLROOT . 'courses?category_id='. $categories[0]['id'] ?>" class="group">
                 <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1 border border-gray-100">
                     <div class="flex items-center space-x-4">
                         <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
@@ -47,7 +44,7 @@
                 </div>
             </a>
 
-            <a href="#" class="group">
+            <a href="<?= URLROOT . 'courses?category_id='. $categories[1]['id'] ?>" class="group">
                 <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1 border border-gray-100">
                     <div class="flex items-center space-x-4">
                         <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
@@ -61,7 +58,7 @@
                 </div>
             </a>
 
-            <a href="#" class="group">
+            <a href="<?= URLROOT . 'courses?category_id='. $categories[2]['id'] ?>" class="group">
                 <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1 border border-gray-100">
                     <div class="flex items-center space-x-4">
                         <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
@@ -75,7 +72,7 @@
                 </div>
             </a>
 
-            <a href="#" class="group">
+            <a href="<?= URLROOT . 'courses?category_id='. $categories[3]['id'] ?>" class="group">
                 <div class="bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1 border border-gray-100">
                     <div class="flex items-center space-x-4">
                         <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
@@ -108,7 +105,7 @@
                         // Pick a random color from the colors array
                         $color = $colors[$key];
                     ?>
-                    <a href="#" 
+                    <a href="<?= URLROOT . 'courses?keyword='. $tag->getName() ?>" 
                         class="px-6 py-2 bg-white text-<?= $color ?>-600 rounded-full text-sm font-medium border border-<?= $color ?>-100 hover:bg-<?= $color ?>-50 hover:border-<?= $color ?>-200 transition-all">
                         <?= htmlspecialchars($tag->getName()) ?>
                     </a>
@@ -130,19 +127,26 @@
             <div class="bg-white flex flex-col rounded-xl shadow-lg overflow-hidden group hover:shadow-xl transition-all">
                 <div class="relative">
                     <img src="https://placehold.co/400x225" alt="UI/UX Design" class="w-full h-48 object-cover">
-                    <div class="absolute top-4 right-4 bg-white px-3 py-1 rounded-full text-sm font-medium text-green-600">
-                        New
-                    </div>
                 </div>
                 <div class="p-6 flex-1 flex flex-col justify-between">
                     <div>
                         <div class="flex items-center mb-2">
                             <div class="flex text-yellow-400">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
+                                <?php
+                                    $fullStars = floor($course->getRate());
+                                    $halfStar = ($course->getRate() - $fullStars) >= 0.5 ? 1 : 0;
+                                    $emptyStars = 5 - $fullStars - $halfStar;
+
+                                    for ($i = 0; $i < $fullStars; $i++) {
+                                        echo '<i class="fas fa-star"></i>';
+                                    }
+                                    if ($halfStar) {
+                                        echo '<i class="fas fa-star-half-alt"></i>';
+                                    }
+                                    for ($i = 0; $i < $emptyStars; $i++) {
+                                        echo '<i class="far fa-star"></i>';
+                                    }
+                                ?>
                             </div>
                             <span class="text-sm text-gray-500 ml-2">(<?= $course->getRate() ?>) · <?= $course->getRatesCount() ?> ratings</span>
                         </div>
@@ -157,9 +161,9 @@
                             </div>
                             <span class="text-2xl font-bold text-gray-900">$<?= number_format($course->getPrice(), 2) ?></span>
                         </div>
-                        <button class="w-full mt-6 bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition">
-                            Add to Cart
-                        </button>
+                        <a href="<?= URLROOT . 'courses/' . $course->getId() ?>" class="w-full block text-center mt-6 bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition">
+                            Enroll
+                        </a>
                     </div>
                 </div>
             </div>
@@ -168,9 +172,9 @@
         </div>
 
         <div class="text-center mt-12">
-            <button class="px-8 py-3 bg-white text-indigo-600 rounded-lg font-medium border border-indigo-200 hover:bg-indigo-50 transition-all">
+            <a href="<?= URLROOT . 'courses' ?>" class="px-8 py-3 bg-white text-indigo-600 rounded-lg font-medium border border-indigo-200 hover:bg-indigo-50 transition-all">
                 View All Courses
-            </button>
+            </a>
         </div>
     </div>
 

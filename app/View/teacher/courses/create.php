@@ -91,7 +91,7 @@
             </ul>
         </div>
 
-        <div id="tagsContainer" class="flex mt-3 gap-2">
+        <div id="tagsContainer" class="flex mt-3 gap-2 flex-wrap">
         </div>
     </div>
 

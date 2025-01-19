@@ -17,20 +17,28 @@
             <span class="text-indigo-600 font-bold text-2xl">YouDemy</span>
         </div>
     
+        <?php
+            function isActive($path, $useBase = true)
+            {
+                $reference = $useBase ? baseUrl() : requestPath();
+                return (URLROOT . $path) == $reference ? 'text-indigo-600 bg-indigo-50' : 'text-gray-600 hover:bg-gray-100';
+            }
+        ?>
+
         <!-- Navigation Menu -->
         <nav class="py-4">
             <!-- User Info -->
             <div class="px-4 mb-3">
                 <div class="flex items-center gap-3 px-4 py-2 text-gray-600">
                     <i class="fas fa-user-circle text-xl"></i>
-                    <span class="font-medium">Teacher Name</span>
+                    <span class="font-medium"><?= user()->getFullName() ?></span>
                 </div>
             </div>
     
             <!-- Sidebar Links -->
             <div class="px-4 space-y-1">
                 <!-- Dashboard -->
-                <a href="/teacher/dashboard" class="flex items-center gap-3 px-4 py-2 text-indigo-600 bg-indigo-100 rounded-lg">
+                <a href="<?= URLROOT ?>" class="<?= isActive("") ?> flex items-center gap-3 px-4 py-2 rounded-lg">
                     <i class="fas fa-tachometer-alt"></i>
                     <span>Dashboard</span>
                 </a>
@@ -38,11 +46,11 @@
                 <!-- Course Management Section -->
                 <div class="space-y-1 pt-2">
                     <p class="px-4 text-xs font-semibold text-gray-400 uppercase">Courses</p>
-                    <a href="/teacher/courses" class="flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+                    <a href="<?= URLROOT . 'courses' ?>" class="<?= isActive("courses", false) ?> flex items-center gap-3 px-4 py-2 rounded-lg">
                         <i class="fas fa-book"></i>
                         <span>My Courses</span>
                     </a>
-                    <a href="/teacher/courses/create" class="flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+                    <a href="<?= URLROOT . 'courses/create' ?>" class="<?= isActive("courses/create", false) ?> flex items-center gap-3 px-4 py-2 rounded-lg">
                         <i class="fas fa-plus-circle"></i>
                         <span>Create Course</span>
                     </a>
@@ -51,26 +59,9 @@
                 <!-- Student Management Section -->
                 <div class="space-y-1 pt-2">
                     <p class="px-4 text-xs font-semibold text-gray-400 uppercase">Students</p>
-                    <a href="/teacher/students" class="flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+                    <a href="<?= URLROOT . 'students' ?>" class="<?= isActive("students") ?> flex items-center gap-3 px-4 py-2 rounded-lg">
                         <i class="fas fa-users"></i>
                         <span>All Students</span>
-                    </a>
-                    <a href="/teacher/students/grades" class="flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
-                        <i class="fas fa-clipboard-list"></i>
-                        <span>Gradebook</span>
-                    </a>
-                </div>
-    
-                <!-- Resources Section -->
-                <div class="space-y-1 pt-2">
-                    <p class="px-4 text-xs font-semibold text-gray-400 uppercase">Resources</p>
-                    <a href="/teacher/resources" class="flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
-                        <i class="fas fa-folder-open"></i>
-                        <span>My Resources</span>
-                    </a>
-                    <a href="/teacher/resources/upload" class="flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg">
-                        <i class="fas fa-upload"></i>
-                        <span>Upload Resources</span>
                     </a>
                 </div>
     

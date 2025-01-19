@@ -94,7 +94,7 @@
                     </div>
                 </div>
                 <div class="flex justify-center mt-4 text-indigo-700">
-                    <a href="<?= URLROOT . 'courses/' . $course->getId() ?>" class="hover:underline underline-offset-4">View Details</a>
+                    <a href="<?= URLROOT . 'courses/edit/' . $course->getId() ?>" class="hover:underline underline-offset-4">View Details</a>
                 </div>
             </div>
         </div>

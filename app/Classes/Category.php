@@ -73,7 +73,7 @@
 
     public static function popularCategories()
     {
-        $sql = "SELECT ca.name, COUNT(*) as courses_count FROM categories ca
+        $sql = "SELECT ca.*, COUNT(*) as courses_count FROM categories ca
                 JOIN courses co ON co.category_id = ca.id
                 GROUP BY ca.name
                 ORDER BY courses_count DESC

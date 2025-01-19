@@ -27,12 +27,22 @@
                         <span><?= $course->getEnrollmentsCount() ?> students</span>
                     </div>
                     <div class="flex items-center text-yellow-400">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star-half-alt"></i>
-                        <span class="ml-2 text-gray-600">(4.6)</span>
+                    <?php
+                        $fullStars = floor($course->getRate());
+                        $halfStar = ($course->getRate() - $fullStars) >= 0.5 ? 1 : 0;
+                        $emptyStars = 5 - $fullStars - $halfStar;
+
+                        for ($i = 0; $i < $fullStars; $i++) {
+                            echo '<i class="fas fa-star"></i>';
+                        }
+                        if ($halfStar) {
+                            echo '<i class="fas fa-star-half-alt"></i>';
+                        }
+                        for ($i = 0; $i < $emptyStars; $i++) {
+                            echo '<i class="far fa-star"></i>';
+                        }
+                    ?>
+                        <span class="ml-2 text-gray-600">(<?= $course->getRate() ?>)</span>
                     </div>
                 </div>
 
@@ -129,14 +139,13 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                
                 <?php foreach ($relatedCourses as $course):?>
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300">
                     <img src="https://placehold.co/400x225" alt="Course" class="w-full object-cover h-48">
                     <div class="p-6">
                         <h3 class="text-lg font-bold text-gray-900"><?= $course->getTitle() ?></h3>
                         <p class="text-gray-600 text-sm mt-2"><?= $course->getDescription() ?></p>
-                        <a href="#" class="text-indigo-600 font-medium hover:text-indigo-700 mt-4 block">Learn More</a>
+                        <a href="<?= URLROOT . 'courses/' . $course->getId() ?>" class="text-indigo-600 font-medium hover:text-indigo-700 mt-4 block">Learn More</a>
                     </div>
                 </div>
                 <?php endforeach; ?>

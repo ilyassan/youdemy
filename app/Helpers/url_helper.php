@@ -15,5 +15,5 @@
     }
 
     function baseUrl(){
-        return implode("/", array_slice(explode('/', requestPath()), 0, count(explode('/', requestPath())) - 1));
+        return implode("/", array_slice(explode('/', requestPath()), 0, 6));
     }
