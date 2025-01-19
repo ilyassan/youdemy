@@ -67,7 +67,7 @@
                             Enrolled Courses
                         </th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Status
+                            Action
                         </th>
                     </tr>
                 </thead>
@@ -92,9 +92,9 @@
                             <div class="text-sm text-gray-900"><?= $student->getTotalCourses() ?> courses</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                Active
-                            </span>
+                            <form action="<?= URLROOT . 'students/ban/' . $student->getId() ?>" method="POST" class="w-fit bg-red-500 px-2 py-1 rounded-lg text-white">
+                                <button class="flex gap-1 items-center"><i class="fas fa-ban"></i>Ban</button>
+                            </form>
                         </td>
                     </tr>
                     <?php endforeach; ?>
