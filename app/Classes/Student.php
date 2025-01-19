@@ -48,18 +48,63 @@ class Student extends User
         return $result["count"];
     }
 
-    public static function all()
+    public static function all($filters = [])
     {
-        $sql = "SELECT * FROM users WHERE role_id = :role_id";
+        $sql = "SELECT
+                    u.*,
+                    COUNT(en.course_id) AS total_courses
+                FROM users u
+                JOIN enrollments en ON en.student_id = u.id
+                WHERE u.role_id = :role_id ";
+
+        if (!empty($filters["keyword"])) {
+            $sql .= "AND (
+                        u.first_name LIKE :keyword
+                        OR u.last_name LIKE :keyword
+                        OR u.email LIKE :keyword
+                    ) ";
+        }
+
+        if (isset($filters["banned"])) {
+            if ($filters["banned"]) {
+                $sql .= "AND u.is_banned = 1 ";
+            }else{
+                $sql .= "AND u.is_banned = 0 ";
+            }
+        }
+
+        $sql .= "GROUP BY u.id ";
+
+        if (!empty($filters["status"])) {
+            if ($filters["status"] == "Active") {
+                $sql .= "HAVING total_courses > 0";
+            }elseif ($filters["status"] == "Unactive") {
+                $sql .= "HAVING total_courses = 0";
+            }
+        }
 
         self::$db->query($sql);
         self::$db->bind(":role_id", self::$studentRoleId);
+        if (!empty($filters["keyword"])) {
+            self::$db->bind(':keyword', "%". $filters["keyword"] ."%");
+        }
 
         $results = self::$db->results();
 
         $students = [];
         foreach ($results as $student) {
-            $students[] = new self($student["id"], $student["first_name"], $student["last_name"], $student["email"], $student["password"], $student["role_id"]);
+            $obj = new self(
+                $student["id"],
+                $student["first_name"],
+                $student["last_name"],
+                $student["email"],
+                $student["password"],
+                $student["role_id"]
+            );
+
+            $obj->setTotalCourses($student["total_courses"]);
+
+            $students[] = $obj;
         }
 
         return $students;

@@ -13,7 +13,7 @@
                 <!-- Search Bar -->
                 <div class="flex-1">
                     <div class="relative">
-                        <input type="text" name="keyword" autocomplete="off" placeholder="Search teachers..." class="w-full pl-10 pr-4 py-2 border rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none">
+                        <input type="text" name="keyword" value="<?= $_GET['keyword'] ?? '' ?>" autocomplete="off" placeholder="Search teachers..." class="w-full pl-10 pr-4 py-2 border rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none">
                         <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
                         >
                             <i class="fas fa-layer-group text-gray-500 mr-2"></i>
                             <span id="selectedStatus">
-                                All
+                                <?= $_GET['status'] ?? 'All' ?>
                             </span>
                             <i class="fas fa-chevron-down ml-2 text-gray-400"></i>
                         </button>
