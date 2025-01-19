@@ -254,6 +254,19 @@ abstract class Course extends BaseClass {
         return self::$db->execute();
     }
 
+    public function isStudentEnrolled($student_id)
+    {
+        $sql = "SELECT * FROM enrollments
+                WHERE course_id = :course_id AND student_id = :student_id";
+
+        self::$db->query($sql);
+        self::$db->bind(':course_id', $this->id);
+        self::$db->bind(':student_id', $student_id);
+
+        self::$db->execute();
+        return self::$db->rowCount() > 0;
+    }
+
     // Find a course by ID
     public static function find(int $id)
     {

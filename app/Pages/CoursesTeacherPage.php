@@ -25,6 +25,11 @@
         public function edit($id)
         {
             $course = Course::find($id);
+
+            if ($course->getTeacherId() != user()->getId()) {
+                redirect("courses");
+            }
+
             $categories = Category::all();
             $tags = Tag::all();
 
@@ -172,7 +177,7 @@
             
             // Get existing course
             $course = Course::find($id);
-            if (!$course) {
+            if (!$course || $course->getTeacherId() != user()->getId()) {
                 flash("error", "Course not found.");
                 redirect('courses');
             }
@@ -324,7 +329,8 @@
         {
             // Get existing course
             $course = Course::find($id);
-            if (!$course) {
+            
+            if (!$course || $course->getTeacherId() != user()->getId()) {
                 flash("error", "Course not found.");
                 redirect('courses');
             }
