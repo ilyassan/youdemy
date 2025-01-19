@@ -48,6 +48,8 @@
     $router->add('GET', '/teachers', 'TeachersAdminPage@index', ["admin"]);
     $router->add('GET', '/students', 'StudentsAdminPage@index', ["admin"]);
     $router->add('GET', '/banned-students', 'BannedStudentsAdminPage@index', ["admin"]);
+    $router->add('POST', '/students/ban/{id}', 'BannedStudentsAdminPage@ban', ["admin"]);
+    $router->add('POST', '/students/unban/{id}', 'BannedStudentsAdminPage@unBan', ["admin"]);
     $router->add('GET', '/unverified-teachers', 'UnverifiedTeachersAdminPage@index', ["admin"]);
     $router->add('POST', '/teachers/verify/{id}', 'UnverifiedTeachersAdminPage@verify', ["admin"]);
     $router->add('GET', '/categories', 'CategoriesAdminPage@index', ["admin"]);

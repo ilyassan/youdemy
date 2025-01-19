@@ -32,6 +32,30 @@ class Student extends User
         $this->total_spents = $total_spents;
     }
 
+    public function ban()
+    {
+        $sql = "UPDATE users 
+                SET is_banned = 1
+                WHERE id = :id";
+
+        self::$db->query($sql);
+        self::$db->bind(':id', $this->id);
+
+        return self::$db->execute();
+    }
+
+    public function unBan()
+    {
+        $sql = "UPDATE users 
+                SET is_banned = 0
+                WHERE id = :id";
+
+        self::$db->query($sql);
+        self::$db->bind(':id', $this->id);
+
+        return self::$db->execute();
+    }
+
     public static function studentsCountOfTeacher($teacherId)
     {
         $sql = "SELECT COUNT(*) as count
