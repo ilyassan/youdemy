@@ -3,6 +3,8 @@
     {
         public function index()
         {
-            $this->render("/teachers/index");
+            $teachers = Teacher::all();
+
+            $this->render("/teachers/index", compact('teachers'));
         }
     }
