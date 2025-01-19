@@ -60,13 +60,12 @@
         $sql = "SELECT * FROM categories";
 
         self::$db->query($sql);
-        self::$db->execute();
     
-        $result = self::$db->results();
+        $results = self::$db->results();
 
         $categories = [];
-        foreach ($result as $category) {
-            $categories[] = new self($category["id"], $category["name"], $result["created_at"]);
+        foreach ($results as $category) {
+            $categories[] = new self($category["id"], $category["name"], $category["created_at"]);
         }
     
         return $categories;
