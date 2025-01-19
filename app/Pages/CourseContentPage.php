@@ -7,6 +7,10 @@
             $course = Course::find($id);
             $relatedCourses = Course::limit(4);
 
-            $this->render("/course-content/index", compact('course', 'relatedCourses'));
+            if ($course->getContentType() == "video") {
+                $this->render("/course-content/video", compact('course', 'relatedCourses'));
+            }else{
+                $this->render("/course-content/document", compact('course', 'relatedCourses'));
+            }
         }
     }

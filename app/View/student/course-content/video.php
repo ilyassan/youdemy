@@ -69,7 +69,7 @@
                             <img src="https://placehold.co/80x80" alt="Course Image" class="w-20 h-20 rounded-lg object-cover">
                             <div>
                                 <h5 class="text-sm font-medium text-gray-900"><?= $course->getTitle() ?></h5>
-                                <a href="#" class="text-indigo-600 text-sm hover:underline">View Course</a>
+                                <a href="<?= URLROOT . 'courses/' . $course->getId() ?>" class="text-indigo-600 text-sm hover:underline">View Course</a>
                             </div>
                         </div>
                         <?php endforeach;?>

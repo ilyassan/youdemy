@@ -17,6 +17,7 @@ abstract class Course extends BaseClass {
     protected $teacher_name;
     protected $category_name;
     protected $enrollments_count;
+    protected $is_completed;
     protected $tags;
 
     public function __construct($id = null, $title = null, $description = null, $price = null, $thumbnail = null, $is_deleted = null, $teacher_id = null, $category_id = null, $created_at = null, $updated_at = null)
@@ -109,6 +110,11 @@ abstract class Course extends BaseClass {
         return $this->enrollments_count;
     }
 
+    public function getIsCompleted()
+    {
+        return $this->is_completed;
+    }
+
     public function getTags()
     {
         return $this->tags;
@@ -181,6 +187,11 @@ abstract class Course extends BaseClass {
         $this->teacher_name = $teacher_name;
     }
 
+    public function setIsCompleted($is_completed)
+    {
+        $this->is_completed = $is_completed;
+    }
+
     public function setCategoryName($category_name)
     {
         $this->category_name = $category_name;
@@ -248,8 +259,8 @@ abstract class Course extends BaseClass {
     {
         $sql = "SELECT
                     c.*,
-                    COUNT(e.id) AS enrollments_count,
-                    COUNT(r.id) AS rates_count,
+                    COUNT(DISTINCT e.id) AS enrollments_count,
+                    COUNT(DISTINCT r.id) AS rates_count,
                     AVG(r.rate) AS rate,
                     CONCAT(u.first_name, ' ', u.last_name) AS teacher_name,
                     ca.name AS category_name,
@@ -350,8 +361,8 @@ abstract class Course extends BaseClass {
     {
         $sql = "SELECT
                     c.*,
-                    COUNT(e.id) AS enrollments_count,
-                    COUNT(r.id) AS rates_count,
+                    COUNT(DISTINCT e.id) AS enrollments_count,
+                    COUNT(DISTINCT r.id) AS rates_count,
                     AVG(r.rate) AS rate,
                     CONCAT(u.first_name, ' ', u.last_name) AS teacher_name,
                     ca.name AS category_name
@@ -442,8 +453,8 @@ abstract class Course extends BaseClass {
         
         $sql = "SELECT
                     c.*,
-                    COUNT(e.id) AS enrollments_count,
-                    COUNT(r.id) AS rates_count,
+                    COUNT(DISTINCT e.id) AS enrollments_count,
+                    COUNT(DISTINCT r.id) AS rates_count,
                     AVG(r.rate) AS rate,
                     CONCAT(u.first_name, ' ', u.last_name) AS teacher_name,
                     ca.name AS category_name
@@ -639,7 +650,11 @@ abstract class Course extends BaseClass {
     // Get student courses
     public static function findByStudentId(int $student_id, $keyword = "")
     {
-        $sql = "SELECT c.*, ra.rate as rate, CONCAT(u.first_name, ' ', u.last_name) AS teacher_name
+        $sql = "SELECT
+                    c.*,
+                    ra.rate as rate,
+                    CONCAT(u.first_name, ' ', u.last_name) AS teacher_name,
+                    e.is_completed
                 FROM enrollments e
                 JOIN courses c ON c.id = e.course_id
                 LEFT JOIN rates ra ON ra.course_id = c.id AND ra.student_id = :student_id
@@ -675,6 +690,7 @@ abstract class Course extends BaseClass {
             $course->setPrice($result["price"]);
             $course->setThumbnail($result["thumbnail"]);
             $course->setIsDeleted($result["is_deleted"]);
+            $course->setIsCompleted($result["is_completed"]);
             $course->setTeacherId($result["teacher_id"]);
             $course->setCategoryId($result["category_id"]);
             $course->setCreatedAt($result["created_at"]);

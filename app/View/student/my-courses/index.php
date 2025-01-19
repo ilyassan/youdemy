@@ -70,9 +70,15 @@
                                 <?= $course->getRate() > 0 ? 'Your rating: ' . number_format($course->getRate(), 2) : 'Rate this course' ?>
                             </span>
                         </div>
-                        <button class="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition">
-                            Watch Course
-                        </button>
+                        <?php if (! $course->getIsCompleted()): ?>
+                            <a href="<?= URLROOT . 'courses/content/' . $course->getId() ?>" class="w-full block text-center bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition">
+                                Access Content
+                            </a>
+                        <?php else: ?>
+                            <a href="<?= URLROOT . 'courses/content/' . $course->getId() ?>" class="w-full block text-center bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition">
+                                Completed
+                            </a>
+                        <?php endif; ?>
                     </div>
                 </div>
             <?php endforeach; ?>

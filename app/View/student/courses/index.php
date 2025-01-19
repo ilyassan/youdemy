@@ -12,7 +12,7 @@
             <div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-4 gap-6 items-center">
                 <!-- Search Input -->
                 <div class="relative">
-                    <input type="text" value="<?= $_GET['keyword'] ?? '' ?>" name="keyword" placeholder="Search courses..." class="w-full outline-none pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    <input type="text" autocomplete="off" value="<?= $_GET['keyword'] ?? '' ?>" name="keyword" placeholder="Search courses..." class="w-full outline-none pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                     <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
                         <i class="fas fa-search"></i>
                     </span>
@@ -86,6 +86,21 @@
         <!-- Course Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             
+        <?php if (empty($courses)): ?>
+            <div class="col-span-1 md:col-span-2 lg:col-span-3">
+                <div class="rounded-xl p-8 text-center">
+                    <div class="flex justify-center mb-6">
+                        <i class="fas fa-book-open text-6xl text-indigo-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3">
+                        No Courses Found
+                    </h3>
+                    <p class="text-gray-600 mb-6 max-w-md mx-auto">
+                        We couldn't find any courses matching your criteria. Try adjusting your filters or search terms.
+                    </p>
+                </div>
+            </div>
+        <?php else: ?>
             <?php foreach ($courses as $course): ?>
             <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
                 <div class="relative">
@@ -103,10 +118,6 @@
                     </div>
                     <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
                         <span class="flex items-center">
-                            <i class="fas fa-clock mr-2"></i>
-                            12 hours
-                        </span>
-                        <span class="flex items-center">
                             <i class="fas fa-user-graduate mr-2"></i>
                             <?= $course->getEnrollmentsCount() ?> students
                         </span>
@@ -114,11 +125,21 @@
                     <div class="flex items-center justify-between">
                         <div class="flex items-center">
                             <div class="flex text-yellow-400">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
+                            <?php
+                                    $fullStars = floor($course->getRate());
+                                    $halfStar = ($course->getRate() - $fullStars) >= 0.5 ? 1 : 0;
+                                    $emptyStars = 5 - $fullStars - $halfStar;
+
+                                    for ($i = 0; $i < $fullStars; $i++) {
+                                        echo '<i class="fas fa-star"></i>';
+                                    }
+                                    if ($halfStar) {
+                                        echo '<i class="fas fa-star-half-alt"></i>';
+                                    }
+                                    for ($i = 0; $i < $emptyStars; $i++) {
+                                        echo '<i class="far fa-star"></i>';
+                                    }
+                                ?>
                             </div>
                             <span class="ml-2 text-sm text-gray-600">(<?= $course->getRate() ?>)</span>
                         </div>
@@ -126,12 +147,13 @@
                     </div>
                 </div>
                 <div class="px-6 pb-6">
-                    <button class="w-full bg-indigo-600 text-white py-2 rounded-lg font-medium hover:bg-indigo-700 transition-colors">
+                    <a href="<?= URLROOT . 'courses/' . $course->getId() ?>" class="w-full block text-center bg-indigo-600 text-white py-2 rounded-lg font-medium hover:bg-indigo-700 transition-colors">
                         Enroll Now
-                    </button>
+                    </a>
                 </div>
             </div>
             <?php endforeach; ?>
+        <?php endif; ?>
         </div>
 
         <!-- Pagination -->
