@@ -1,372 +1,138 @@
-<!-- Search and Filters Section -->
-<section class="mb-6">
-    <div class="bg-white rounded-xl shadow-sm p-6">
-        <div class="flex flex-col md:flex-row gap-4 justify-between">
-            <!-- Search Bar -->
-            <div class="flex-1">
-                <div class="relative">
-                    <input type="text" placeholder="Search students..." class="w-full pl-10 pr-4 py-2 border rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none">
-                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- Search and Filters Section -->
+    <section class="mb-6">
+        <div class="bg-white rounded-xl shadow-sm p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-semibold text-gray-800"><?= htmlspecialchars("Students") ?></h3>
+                <span class="px-4 py-2 bg-gray-100 text-gray-600 rounded-full text-sm font-medium">
+                    <?= count($students) ?> Students
+                </span>
+            </div>
+            <form class="flex flex-col md:flex-row gap-4 justify-between">
+                <!-- Search Bar -->
+                <div class="flex-1">
+                    <div class="relative">
+                        <input type="text" name="keyword" value="<?= $_GET['keyword'] ?? '' ?>" autocomplete="off" placeholder="Search students..." class="w-full pl-10 pr-4 py-2 border rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none">
+                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                    </div>
                 </div>
-            </div>
-            <!-- Filters -->
-            <div class="flex flex-wrap gap-3">
-                <select class="border rounded-lg px-4 py-2 bg-white">
-                    <option value="">Status</option>
-                    <option value="active">Active</option>
-                    <option value="inactive">Inactive</option>
-                    <option value="banned">Banned</option>
-                </select>
-                <select class="border rounded-lg px-4 py-2 bg-white">
-                    <option value="">Sort By</option>
-                    <option value="name">Name</option>
-                    <option value="date">Join Date</option>
-                    <option value="courses">Courses</option>
-                </select>
-                <button class="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600">
-                    <i class="fas fa-filter mr-2"></i>Apply Filters
-                </button>
-            </div>
+                <!-- Filters -->
+                <div class="flex flex-wrap gap-3">
+                    <!-- Categories (Custom Dropdown) -->
+                    <div class="relative">
+                        <input id="selectedStatus_value" type="hidden" name="status" value="<?= $_GET['status'] ?? 'All' ?>">
+                        <button
+                            type="button"
+                            id="statusDropdown"
+                            class="flex items-center border border-gray-300 rounded-md px-4 py-2 w-full bg-white text-gray-500 focus:outline-none"
+                        >
+                            <i class="fas fa-layer-group text-gray-500 mr-2"></i>
+                            <span id="selectedStatus">
+                                <?= $_GET['status'] ?? 'All' ?>
+                            </span>
+                            <i class="fas fa-chevron-down ml-2 text-gray-400"></i>
+                        </button>
+                        <!-- Dropdown Options -->
+                        <ul
+                            id="statusDropdownMenu"
+                            class="absolute dropdown-menu hidden bg-white shadow-md rounded-md w-full mt-2 z-10"
+                        >
+                            <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" onclick="selectOption('statusDropdown', 'selectedStatus', '<?= htmlspecialchars('All') ?>')"><?= htmlspecialchars("All") ?></li>
+                            <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" onclick="selectOption('statusDropdown', 'selectedStatus', '<?= htmlspecialchars('Active') ?>')"><?= htmlspecialchars("Active") ?></li>
+                            <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" onclick="selectOption('statusDropdown', 'selectedStatus', '<?= htmlspecialchars('Unactive') ?>')"><?= htmlspecialchars("Unactive") ?></li>
+                        </ul>
+                    </div>
+                    <button class="bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600">
+                        <i class="fas fa-filter mr-2"></i>Apply Filters
+                    </button>
+                </div>
+            </form>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- Students Table -->
-<section class="bg-white rounded-xl shadow-sm overflow-hidden">
-    <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-                <tr>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Student
-                    </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Joined Date
-                    </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Enrolled Courses
-                    </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Status
-                    </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Actions
-                    </th>
-                </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-                <!-- Student Row 1 -->
-                <tr>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="flex items-center">
-                            <div class="h-10 w-10 flex-shrink-0">
-                                <img class="h-10 w-10 rounded-full" src="https://placehold.co/40x40" alt="Student">
+    <!-- Students Table -->
+    <section class="bg-white rounded-xl shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Student
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Joined Date
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Enrolled Courses
+                        </th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                            Status
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    <?php foreach ($students as $student): ?>
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div class="h-10 w-10 flex-shrink-0">
+                                    <img class="h-10 w-10 rounded-full" src="https://placehold.co/40x40" alt="Student">
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-gray-900"><?= $student->getFullName() ?></div>
+                                    <div class="text-sm text-gray-500"><?= $student->getEmail() ?></div>
+                                </div>
                             </div>
-                            <div class="ml-4">
-                                <div class="text-sm font-medium text-gray-900">John Smith</div>
-                                <div class="text-sm text-gray-500">john.smith@example.com</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">Jan 15, 2024</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">4 courses</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                            Active
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm">
-                        <div class="flex gap-2">
-                            <button class="text-blue-600 hover:text-blue-900">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="text-indigo-600 hover:text-indigo-900">
-                                <i class="fas fa-ban"></i>
-                            </button>
-                            <button class="text-gray-600 hover:text-gray-900">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900"><?= (new DateTime($student->getCreatedAt()))->format('F d, Y') ?></div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-900"><?= $student->getTotalCourses() ?> courses</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                Active
+                            </span>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+    </section>
 
-                <!-- Student Row 2 -->
-                <tr>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="flex items-center">
-                            <div class="h-10 w-10 flex-shrink-0">
-                                <img class="h-10 w-10 rounded-full" src="https://placehold.co/40x40" alt="Student">
-                            </div>
-                            <div class="ml-4">
-                                <div class="text-sm font-medium text-gray-900">Sarah Johnson</div>
-                                <div class="text-sm text-gray-500">sarah.j@example.com</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">Feb 1, 2024</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">2 courses</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                            Inactive
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm">
-                        <div class="flex gap-2">
-                            <button class="text-blue-600 hover:text-blue-900">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="text-indigo-600 hover:text-indigo-900">
-                                <i class="fas fa-ban"></i>
-                            </button>
-                            <button class="text-gray-600 hover:text-gray-900">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
+</div>
 
-                <!-- Student Row 3 -->
-                <tr>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="flex items-center">
-                            <div class="h-10 w-10 flex-shrink-0">
-                                <img class="h-10 w-10 rounded-full" src="https://placehold.co/40x40" alt="Student">
-                            </div>
-                            <div class="ml-4">
-                                <div class="text-sm font-medium text-gray-900">Michael Brown</div>
-                                <div class="text-sm text-gray-500">m.brown@example.com</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">Jan 25, 2024</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">6 courses</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-100 text-indigo-800">
-                            Banned
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm">
-                        <div class="flex gap-2">
-                            <button class="text-blue-600 hover:text-blue-900">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="text-green-600 hover:text-green-900">
-                                <i class="fas fa-undo"></i>
-                            </button>
-                            <button class="text-gray-600 hover:text-gray-900">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
 
-                <!-- Student Row 3 -->
-                <tr>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="flex items-center">
-                            <div class="h-10 w-10 flex-shrink-0">
-                                <img class="h-10 w-10 rounded-full" src="https://placehold.co/40x40" alt="Student">
-                            </div>
-                            <div class="ml-4">
-                                <div class="text-sm font-medium text-gray-900">Michael Brown</div>
-                                <div class="text-sm text-gray-500">m.brown@example.com</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">Jan 25, 2024</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">6 courses</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-100 text-indigo-800">
-                            Banned
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm">
-                        <div class="flex gap-2">
-                            <button class="text-blue-600 hover:text-blue-900">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="text-green-600 hover:text-green-900">
-                                <i class="fas fa-undo"></i>
-                            </button>
-                            <button class="text-gray-600 hover:text-gray-900">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
+<script>
+    function toggleDropdown(dropdownId, menuId) {
+        closeAllDropdowns();
+        
+        const menu = document.getElementById(menuId);
+        menu.classList.toggle('hidden');
+    }
 
-                <!-- Student Row 3 -->
-                <tr>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="flex items-center">
-                            <div class="h-10 w-10 flex-shrink-0">
-                                <img class="h-10 w-10 rounded-full" src="https://placehold.co/40x40" alt="Student">
-                            </div>
-                            <div class="ml-4">
-                                <div class="text-sm font-medium text-gray-900">Michael Brown</div>
-                                <div class="text-sm text-gray-500">m.brown@example.com</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">Jan 25, 2024</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">6 courses</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-100 text-indigo-800">
-                            Banned
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm">
-                        <div class="flex gap-2">
-                            <button class="text-blue-600 hover:text-blue-900">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="text-green-600 hover:text-green-900">
-                                <i class="fas fa-undo"></i>
-                            </button>
-                            <button class="text-gray-600 hover:text-gray-900">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
+    function selectOption(dropdownId, labelId, value) {
+        document.getElementById(labelId + "_value").value = value;
+        document.getElementById(labelId).innerText = value;
+        document.getElementById(dropdownId).classList.remove("text-gray-500");
+        document.getElementById(`${dropdownId}Menu`).classList.add('hidden');
+    }
 
-                <!-- Student Row 3 -->
-                <tr>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="flex items-center">
-                            <div class="h-10 w-10 flex-shrink-0">
-                                <img class="h-10 w-10 rounded-full" src="https://placehold.co/40x40" alt="Student">
-                            </div>
-                            <div class="ml-4">
-                                <div class="text-sm font-medium text-gray-900">Michael Brown</div>
-                                <div class="text-sm text-gray-500">m.brown@example.com</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">Jan 25, 2024</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">6 courses</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-100 text-indigo-800">
-                            Banned
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm">
-                        <div class="flex gap-2">
-                            <button class="text-blue-600 hover:text-blue-900">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="text-green-600 hover:text-green-900">
-                                <i class="fas fa-undo"></i>
-                            </button>
-                            <button class="text-gray-600 hover:text-gray-900">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
+    function closeAllDropdowns() {
+        document.querySelectorAll('.dropdown-menu').forEach(menu => {
+            menu.classList.add('hidden');
+        });
+    }
 
-                <!-- Student Row 3 -->
-                <tr>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="flex items-center">
-                            <div class="h-10 w-10 flex-shrink-0">
-                                <img class="h-10 w-10 rounded-full" src="https://placehold.co/40x40" alt="Student">
-                            </div>
-                            <div class="ml-4">
-                                <div class="text-sm font-medium text-gray-900">Michael Brown</div>
-                                <div class="text-sm text-gray-500">m.brown@example.com</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">Jan 25, 2024</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">6 courses</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-100 text-indigo-800">
-                            Banned
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm">
-                        <div class="flex gap-2">
-                            <button class="text-blue-600 hover:text-blue-900">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="text-green-600 hover:text-green-900">
-                                <i class="fas fa-undo"></i>
-                            </button>
-                            <button class="text-gray-600 hover:text-gray-900">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
+    document.getElementById('statusDropdown').addEventListener('click', function (event) {
+        event.stopPropagation();
+        toggleDropdown('statusDropdown', 'statusDropdownMenu');
+    });
 
-                <!-- Student Row 3 -->
-                <tr>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="flex items-center">
-                            <div class="h-10 w-10 flex-shrink-0">
-                                <img class="h-10 w-10 rounded-full" src="https://placehold.co/40x40" alt="Student">
-                            </div>
-                            <div class="ml-4">
-                                <div class="text-sm font-medium text-gray-900">Michael Brown</div>
-                                <div class="text-sm text-gray-500">m.brown@example.com</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">Jan 25, 2024</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="text-sm text-gray-900">6 courses</div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-100 text-indigo-800">
-                            Banned
-                        </span>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm">
-                        <div class="flex gap-2">
-                            <button class="text-blue-600 hover:text-blue-900">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                            <button class="text-green-600 hover:text-green-900">
-                                <i class="fas fa-undo"></i>
-                            </button>
-                            <button class="text-gray-600 hover:text-gray-900">
-                                <i class="fas fa-ellipsis-v"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</section>
+    document.addEventListener('click', function () {
+        closeAllDropdowns();
+    });
+</script>
