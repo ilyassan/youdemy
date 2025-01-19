@@ -54,6 +54,7 @@
     $router->add('POST', '/teachers/verify/{id}', 'UnverifiedTeachersAdminPage@verify', ["admin"]);
     $router->add('GET', '/categories', 'CategoriesAdminPage@index', ["admin"]);
     $router->add('GET', '/tags', 'TagsAdminPage@index', ["admin"]);
+    $router->add('POST', '/tags/store', 'TagsAdminPage@store', ["admin"]);
 
 
 
