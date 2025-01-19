@@ -42,6 +42,12 @@
     $router->add('GET', '/students', 'StudentsTeacherPage@index', ["teacher"]);
 
     $router->add('GET', '/', 'DashboardAdminPage@index', ["admin"]);
+<<<<<<< Updated upstream
+=======
+    $router->add('GET', '/courses', 'CoursesAdminPage@index', ["admin"]);
+    $router->add('GET', '/courses/{id}', 'CoursesAdminPage@show', ["admin"]);
+    $router->add('POST', '/courses/delete/{id}', 'CoursesAdminPage@delete', ["admin"]);
+>>>>>>> Stashed changes
     $router->add('GET', '/teachers', 'TeachersAdminPage@index', ["admin"]);
     $router->add('GET', '/students', 'StudentsAdminPage@index', ["admin"]);
     $router->add('GET', '/banned-students', 'BannedStudentsAdminPage@index', ["admin"]);
