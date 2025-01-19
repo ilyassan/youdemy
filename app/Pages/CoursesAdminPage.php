@@ -38,5 +38,7 @@
 
             flash("error", "Something went wrong.");
             back();
+
+            $this->render("/courses/edit", compact('course', 'categories', 'tags'));
         }
     }
