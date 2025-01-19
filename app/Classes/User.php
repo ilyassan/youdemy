@@ -1,13 +1,13 @@
 <?php
 class User extends BaseClass
 {
-    private $id;
-    private $first_name;
-    private $last_name;
-    private $email;
-    private $password;
-    private $role_id;
-    private $created_at;
+    protected $id;
+    protected $first_name;
+    protected $last_name;
+    protected $email;
+    protected $password;
+    protected $role_id;
+    protected $created_at;
 
     static public $adminRoleId = 1;
     static public $teacherRoleId = 2;
@@ -136,7 +136,7 @@ class User extends BaseClass
         return self::$db->execute();
     }
 
-    public static function find($id)
+    public static function find($id): Teacher | Student | self | null
     {
         $sql = "SELECT * FROM users WHERE id = :id";
         self::$db->query($sql);
@@ -145,9 +145,16 @@ class User extends BaseClass
         $result = self::$db->single();
 
         if (self::$db->rowCount() > 0) {
-            return new self($result["id"], $result["first_name"], $result["last_name"], $result["email"], $result["password"], $result["role_id"]);
+            switch ($result["role_id"]) {
+                case self::$adminRoleId:
+                    return new self($result["id"], $result["first_name"], $result["last_name"], $result["email"], $result["password"], $result["role_id"]);
+                case self::$teacherRoleId:
+                    return new Teacher($result["id"], $result["first_name"], $result["last_name"], $result["email"], $result["password"], $result["role_id"]);
+                case self::$studentRoleId:
+                    return new Student($result["id"], $result["first_name"], $result["last_name"], $result["email"], $result["password"], $result["role_id"]);
+            }
         } else {
-            return false;
+            return null;
         }
     }
 

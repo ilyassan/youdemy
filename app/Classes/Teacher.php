@@ -41,6 +41,17 @@ class Teacher extends User
         $this->students_count = $students_count;
     }
 
+    public function verify()
+    {
+        $sql = "UPDATE users
+                SET is_verified = 1
+                WHERE id = :id";
+
+        self::$db->query($sql);
+        self::$db->bind(':id', $this->id);
+
+        return self::$db->execute();
+    }
 
     public static function getInscriptionsBetween($startDate, $endDate)
     {
@@ -102,8 +113,8 @@ class Teacher extends User
                     SUM(c.price) AS total_profits,
                     COUNT(DISTINCT en.student_id) AS students_count
                 FROM users u
-                JOIN courses c ON c.teacher_id = u.id
-                JOIN enrollments en ON en.course_id = c.id
+                LEFT JOIN courses c ON c.teacher_id = u.id
+                LEFT JOIN enrollments en ON en.course_id = c.id
                 WHERE u.role_id = :role_id ";
 
         if (!empty($filters["keyword"])) {
@@ -112,6 +123,14 @@ class Teacher extends User
                         OR u.last_name LIKE :keyword
                         OR u.email LIKE :keyword
                     ) ";
+        }
+
+        if (isset($filters["verified"])) {
+            if ($filters["verified"]) {
+                $sql .= "AND u.is_verified = 1 ";
+            }else{
+                $sql .= "AND u.is_verified = 0 ";
+            }
         }
 
         $sql .= "GROUP BY u.id, u.first_name, u.last_name ";
