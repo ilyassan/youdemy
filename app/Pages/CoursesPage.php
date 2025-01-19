@@ -25,6 +25,11 @@
         public function show($id)
         {
             $course = Course::find($id);
+
+            if ($course->isStudentEnrolled(user()->getId())) {
+                redirect("courses/content/" . $course->getId());
+            }
+
             $relatedCourses = Course::limit(4);
 
             $this->render("/courses/show", compact('course', 'relatedCourses'));
