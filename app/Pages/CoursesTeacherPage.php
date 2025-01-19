@@ -8,11 +8,10 @@
             $filters['category_id'] = $_GET['category_id'] ?? '';
             $filters['teacher_id'] = user()->getId();
 
-            $coursesTotalCount = Course::countByFilter($filters);
             $courses = Course::all($filters);
             $categories = Category::all();
             
-            $this->render("/courses/index", compact('courses', 'categories', 'coursesTotalCount'));
+            $this->render("/courses/index", compact('courses', 'categories'));
         }
 
         public function create()
