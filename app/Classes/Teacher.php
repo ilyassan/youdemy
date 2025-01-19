@@ -104,11 +104,31 @@ class Teacher extends User
                 FROM users u
                 JOIN courses c ON c.teacher_id = u.id
                 JOIN enrollments en ON en.course_id = c.id
-                WHERE u.role_id = :role_id
-                GROUP BY u.id, u.first_name, u.last_name";
+                WHERE u.role_id = :role_id ";
+
+        if (!empty($filters["keyword"])) {
+            $sql .= "AND (
+                        u.first_name LIKE :keyword
+                        OR u.last_name LIKE :keyword
+                        OR u.email LIKE :keyword
+                    ) ";
+        }
+
+        $sql .= "GROUP BY u.id, u.first_name, u.last_name ";
+
+        if (!empty($filters["status"])) {
+            if ($filters["status"] == "Active") {
+                $sql .= "HAVING total_courses > 0";
+            }elseif ($filters["status"] == "Unactive") {
+                $sql .= "HAVING total_courses = 0";
+            }
+        }
 
         self::$db->query($sql);
         self::$db->bind(':role_id', self::$teacherRoleId);
+        if (!empty($filters["keyword"])) {
+            self::$db->bind(':keyword', "%". $filters["keyword"] ."%");
+        }
 
         $results = self::$db->results();
 

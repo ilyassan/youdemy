@@ -3,7 +3,10 @@
     {
         public function index()
         {
-            $teachers = Teacher::all();
+            $filters["keyword"] = $_GET['keyword'] ?? '';
+            $filters["status"] = $_GET['status'] ?? '';
+
+            $teachers = Teacher::all($filters);
 
             $this->render("/teachers/index", compact('teachers'));
         }
