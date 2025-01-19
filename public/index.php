@@ -43,6 +43,8 @@
 
     $router->add('GET', '/', 'DashboardAdminPage@index', ["admin"]);
     $router->add('GET', '/courses', 'CoursesAdminPage@index', ["admin"]);
+    $router->add('GET', '/courses/{id}', 'CoursesAdminPage@show', ["admin"]);
+    $router->add('POST', '/courses/delete/{id}', 'CoursesAdminPage@delete', ["admin"]);
     $router->add('GET', '/teachers', 'TeachersAdminPage@index', ["admin"]);
     $router->add('GET', '/students', 'StudentsAdminPage@index', ["admin"]);
     $router->add('GET', '/banned-students', 'BannedStudentsAdminPage@index', ["admin"]);

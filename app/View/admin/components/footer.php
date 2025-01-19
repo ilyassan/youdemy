@@ -13,6 +13,8 @@
         </div>
     </header>
 </main>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
         // Mobile menu toggle functionality
         document.getElementById('sidebarToggle').addEventListener('click', function() {

@@ -1,6 +1,6 @@
 <form action="<?= URLROOT . 'courses/update/' . $course->getId() ?>" method="POST" enctype="multipart/form-data" class="bg-white shadow-lg rounded-lg p-6 max-w-3xl mx-auto">
     <div class="flex justify-end">
-        <button type="button" class="text-gray-400 hover:text-red-500" onclick="confirmArticleDelete('<?= $course->getTitle() ?>', '<?= $course->getId() ?>')">
+        <button type="button" class="text-gray-400 hover:text-red-500" onclick="confirmCourseDelete('<?= $course->getTitle() ?>', '<?= $course->getId() ?>')">
             <i class="far fa-trash-alt text-xl"></i>
         </button>
     </div>
@@ -366,7 +366,7 @@ $availableTags = array_map(fn($tag) => ["id" => $tag->getId(), "name" => $tag->g
 
     let courseToDelete = '';
 
-    function confirmArticleDelete(courseToDelete) {
+    function confirmCourseDelete(courseToDelete) {
         courseToDelete = courseToDelete;
 
         document.getElementById('courseToDelete').textContent = courseToDelete;
@@ -378,7 +378,6 @@ $availableTags = array_map(fn($tag) => ["id" => $tag->getId(), "name" => $tag->g
         document.getElementById('deleteCourseModal').classList.remove('flex');
         document.getElementById('deleteCourseModal').classList.add('hidden');
         courseToDelete = '';
-        document.getElementById('article_id').value = '';
     }
 
     document.getElementById('deleteCourseModal').addEventListener('click', function(e) {
