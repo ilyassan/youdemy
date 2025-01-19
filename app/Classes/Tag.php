@@ -36,7 +36,8 @@
         $sql = "DELETE FROM tags WHERE id = :id";
         self::$db->query($sql);
         self::$db->bind(':id', $this->id);
-        self::$db->execute();
+        
+        return self::$db->execute();
     }
 
     public static function find(int $id) {
