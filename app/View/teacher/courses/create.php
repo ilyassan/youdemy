@@ -1,3 +1,5 @@
+<?php $titlePage = "Create Course" ?>
+
 <form action="<?= URLROOT . 'courses/store' ?>" method="POST" enctype="multipart/form-data" class="bg-white shadow-lg rounded-lg p-6 max-w-3xl mx-auto">
     <h1 class="text-2xl font-semibold text-gray-800 mb-6">Create a New Course</h1>
 

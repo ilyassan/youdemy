@@ -110,15 +110,17 @@
         return $result ? new self($result["id"], $result["rate"], $result["student_id"], $result["course_id"], $result["created_at"]) : null;
     }
 
-    public static function getRecentRates($limit)
+    public static function getRecentRates($limit, $teacher_id)
     {
         $sql = "SELECT r.*, c.title as course_title
                 FROM rates r
                 JOIN courses c ON r.course_id = c.id
+                WHERE c.teacher_id = :teacher_id
                 ORDER BY r.created_at DESC
                 LIMIT :limit";
 
         self::$db->query($sql);
+        self::$db->bind(':teacher_id', $teacher_id);
         self::$db->bind(':limit', $limit);
 
         $results = self::$db->results();

@@ -149,9 +149,13 @@ class User extends BaseClass
                 case self::$adminRoleId:
                     return new self($result["id"], $result["first_name"], $result["last_name"], $result["email"], $result["password"], $result["role_id"]);
                 case self::$teacherRoleId:
-                    return new Teacher($result["id"], $result["first_name"], $result["last_name"], $result["email"], $result["password"], $result["role_id"]);
+                    $teacher = new Teacher($result["id"], $result["first_name"], $result["last_name"], $result["email"], $result["password"], $result["role_id"]);
+                    $teacher->setIsVerified($result["is_verified"]);
+                    return $teacher;
                 case self::$studentRoleId:
-                    return new Student($result["id"], $result["first_name"], $result["last_name"], $result["email"], $result["password"], $result["role_id"]);
+                    $student =  new Student($result["id"], $result["first_name"], $result["last_name"], $result["email"], $result["password"], $result["role_id"]);
+                    $student->setIsBanned($result["is_banned"]);
+                    return $student;
             }
         } else {
             return null;

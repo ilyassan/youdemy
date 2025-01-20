@@ -1,3 +1,4 @@
+<?php $titlePage = "Dashboard" ?>
 
 <!-- Stats Overview Cards -->
 <section class="mb-6">

@@ -1,3 +1,5 @@
+<?php $titlePage = "Teachers" ?>
+
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
     <!-- Search and Filters Section -->
@@ -51,60 +53,85 @@
         </div>
     </section>
 
-    <!-- Teachers Table -->
-    <section class="bg-white rounded-xl shadow-sm overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Teacher
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Courses
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Students
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Profits
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Commission (20%)
-                        </th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    <?php foreach ($teachers as $teacher): ?>
-                    <tr>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center">
-                                <div class="h-10 w-10 flex-shrink-0">
-                                    <img class="h-10 w-10 rounded-full" src="https://placehold.co/40x40" alt="Teacher">
-                                </div>
-                                <div class="ml-4">
-                                    <div class="text-sm font-medium text-gray-900"><?= $teacher->getFullName() ?></div>
-                                    <div class="text-sm text-gray-500"><?= $teacher->getEmail() ?></div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900"><?= $teacher->getTotalCourses() ?> courses</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900"><?= $teacher->getStudentsCount() ?> students</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900">$<?= $teacher->getTotalProfits() ?></div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-green-600">$<?= $teacher->getTotalProfits() * 0.2?></div>
-                        </td>
-                    </tr>
-                    <?php endforeach;?>
-            </table>
+    <?php if (empty($teachers)): ?>
+        <div class="pt-10 px-6">
+            <div class="text-center">
+                <div class="flex justify-center mb-6">
+                    <div class="relative">
+                        <div class="h-24 w-24 bg-indigo-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-chalkboard-teacher text-4xl text-indigo-500"></i>
+                        </div>
+                        <div class="absolute -top-2 -right-2 h-8 w-8 bg-gray-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">No Teachers Found</h3>
+                <p class="text-gray-500 max-w-md mx-auto mb-8">
+                    <?php if (!empty($_GET['keyword']) || !empty($_GET['status'])): ?>
+                        We couldn't find any teachers matching your search criteria. Try adjusting your filters or try a different search term.
+                    <?php else: ?>
+                        There are no teachers registered in the system yet.
+                    <?php endif; ?>
+                </p>
+            </div>
         </div>
-    </section>
+    <?php else: ?>
+        <!-- Teachers Table -->
+        <section class="bg-white rounded-xl shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Teacher
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Courses
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Students
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Profits
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Commission (20%)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <?php foreach ($teachers as $teacher): ?>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="h-10 w-10 flex-shrink-0">
+                                        <img class="h-10 w-10 rounded-full" src="https://placehold.co/40x40" alt="Teacher">
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900"><?= $teacher->getFullName() ?></div>
+                                        <div class="text-sm text-gray-500"><?= $teacher->getEmail() ?></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900"><?= $teacher->getTotalCourses() ?> courses</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900"><?= $teacher->getStudentsCount() ?> students</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">$<?= $teacher->getTotalProfits() ?></div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-green-600">$<?= $teacher->getTotalProfits() * 0.2?></div>
+                            </td>
+                        </tr>
+                        <?php endforeach;?>
+                </table>
+            </div>
+        </section>
+    <?php endif; ?>
     
 </div>
 

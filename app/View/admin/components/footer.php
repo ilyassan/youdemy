@@ -3,7 +3,7 @@
     <!-- Header -->
     <header class="bg-white shadow-sm">
         <div class="flex h-16 items-center justify-between px-4 py-3">
-            <h1 class="text-xl font-semibold text-gray-800">Admin Dashboard</h1>
+            <h1 class="text-xl font-semibold text-gray-800"><?= $titlePage ?? "Dashboard" ?></h1>
             
             <div class="flex items-center gap-4">
                 <button id="sidebarToggle" class="lg:hidden bg-indigo-600 text-white p-2 rounded-lg">

@@ -1,3 +1,5 @@
+<?php $titlePage = "Manage Tags" ?>
+
 <section class="p-6">
     <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
         <h3 class="text-lg font-semibold text-gray-800 mb-4">Add New Tag</h3>

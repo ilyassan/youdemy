@@ -1,7 +1,24 @@
+<?php $titlePage = "Unverified Teachers" ?>
+
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
     <!-- Verification Table -->
     <section class="bg-white rounded-xl shadow-sm overflow-hidden">
+        <?php if (empty($unverifiedTeachers)): ?>
+            <div class="p-6">
+                <div class="text-center">
+                    <div class="flex justify-center mb-6">
+                        <div class="h-24 w-24 bg-green-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-clipboard-check text-4xl text-green-500"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">All Caught Up!</h3>
+                    <p class="text-gray-500 max-w-md mx-auto">
+                        There are no pending teacher verification requests at the moment.
+                    </p>
+                </div>
+            </div>
+        <?php else: ?>
         <div class="overflow-x-auto">
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
@@ -59,6 +76,7 @@
                 </tbody>
             </table>
         </div>
+        <?php endif; ?>
     </section>
 
 </div>

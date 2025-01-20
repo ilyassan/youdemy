@@ -1,3 +1,5 @@
+<?php $titlePage = "Course Details" ?>
+
 <div class="bg-white shadow-lg rounded-lg p-6 max-w-3xl mx-auto">
     <div class="flex justify-end">
         <button type="button" class="text-gray-400 hover:text-red-500" onclick="confirmCourseDelete('<?= $course->getTitle() ?>', '<?= $course->getId() ?>')">

@@ -26,7 +26,7 @@
         {
             $course = Course::find($id);
 
-            if ($course->isStudentEnrolled(user()->getId())) {
+            if (isLoggedIn() && $course->isStudentEnrolled(user()->getId())) {
                 redirect("courses/content/" . $course->getId());
             }
 
@@ -43,6 +43,11 @@
                 flash("warning", "You already enrolled in this course.");
                 back();
             }
+            if (user()->getIsBanned()) {
+                flash("error", "You are banned, you can't enroll in new courses.");
+                back();
+            }
+            
             $enrollment = new Enrollment();
             $enrollment->setStudentId(user()->getId());
             $enrollment->setCourseId($courseId);

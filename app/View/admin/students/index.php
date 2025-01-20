@@ -1,3 +1,5 @@
+<?php $titlePage = "Students" ?>
+
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
     <!-- Search and Filters Section -->
@@ -51,57 +53,82 @@
         </div>
     </section>
 
-    <!-- Students Table -->
-    <section class="bg-white rounded-xl shadow-sm overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Student
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Joined Date
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Enrolled Courses
-                        </th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            Action
-                        </th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    <?php foreach ($students as $student): ?>
-                    <tr>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="flex items-center">
-                                <div class="h-10 w-10 flex-shrink-0">
-                                    <img class="h-10 w-10 rounded-full" src="https://placehold.co/40x40" alt="Student">
-                                </div>
-                                <div class="ml-4">
-                                    <div class="text-sm font-medium text-gray-900"><?= $student->getFullName() ?></div>
-                                    <div class="text-sm text-gray-500"><?= $student->getEmail() ?></div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900"><?= (new DateTime($student->getCreatedAt()))->format('F d, Y') ?></div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-900"><?= $student->getTotalCourses() ?> courses</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <form action="<?= URLROOT . 'students/ban/' . $student->getId() ?>" method="POST" class="w-fit bg-red-500 px-2 py-1 rounded-lg text-white">
-                                <button class="flex gap-1 items-center"><i class="fas fa-ban"></i>Ban</button>
-                            </form>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+    <?php if (empty($teachers)): ?>
+        <div class="pt-10 px-6">
+            <div class="text-center">
+                <div class="flex justify-center mb-6">
+                    <div class="relative">
+                        <div class="h-24 w-24 bg-indigo-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-user text-4xl text-indigo-500"></i>
+                        </div>
+                        <div class="absolute -top-2 -right-2 h-8 w-8 bg-gray-100 rounded-full flex items-center justify-center">
+                            <i class="fas fa-search text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">No Students Found</h3>
+                <p class="text-gray-500 max-w-md mx-auto mb-8">
+                    <?php if (!empty($_GET['keyword']) || !empty($_GET['status'])): ?>
+                        We couldn't find any students matching your search criteria. Try adjusting your filters or try a different search term.
+                    <?php else: ?>
+                        There are no students registered in the system yet.
+                    <?php endif; ?>
+                </p>
+            </div>
         </div>
-    </section>
+    <?php else: ?>
+        <!-- Students Table -->
+        <section class="bg-white rounded-xl shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Student
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Joined Date
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Enrolled Courses
+                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        <?php foreach ($students as $student): ?>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="h-10 w-10 flex-shrink-0">
+                                        <img class="h-10 w-10 rounded-full" src="https://placehold.co/40x40" alt="Student">
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900"><?= $student->getFullName() ?></div>
+                                        <div class="text-sm text-gray-500"><?= $student->getEmail() ?></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900"><?= (new DateTime($student->getCreatedAt()))->format('F d, Y') ?></div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900"><?= $student->getTotalCourses() ?> courses</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <form action="<?= URLROOT . 'students/ban/' . $student->getId() ?>" method="POST" class="w-fit bg-red-500 px-2 py-1 rounded-lg text-white">
+                                    <button class="flex gap-1 items-center"><i class="fas fa-ban"></i>Ban</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    <?php endif; ?>
 
 </div>
 
