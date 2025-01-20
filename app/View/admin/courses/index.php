@@ -74,7 +74,7 @@
             <?php foreach ($courses as $course):?>
             <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
                 <div class="relative">
-                    <img src="https://placehold.co/400x225" alt="Course" class="w-full h-48 object-cover">
+                    <img src="<?= $course->getThumbnail() ?>" alt="Course" class="w-full h-48 object-cover">
                 </div>
                 <div class="p-6">
                     <div class="flex items-start justify-between text-sm text-gray-500 mb-2">

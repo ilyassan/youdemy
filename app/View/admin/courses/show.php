@@ -13,7 +13,7 @@
             <!-- Current Image Preview -->
             <img
                 id="thumbnail-preview"
-                src="<?= URLASSETS . 'images/thumbnails/' . $course->getThumbnail() ?>"
+                src="<?= $course->getThumbnail() ?>"
                 class="w-full h-full object-cover"
                 alt="Current Thumbnail"
             >
@@ -107,7 +107,8 @@
         <div class="p-4 bg-gray-50 rounded-lg">
             <p class="text-gray-600">
                 Current <?= ucfirst($course->getContentType()) ?>: 
-                <span class="font-medium text-gray-800"><?= htmlspecialchars($course->getContent()) ?></span>
+                <?php $temp = explode("/", $course->getContent()); ?>
+                <span class="font-medium text-gray-800"><?= htmlspecialchars(end($temp)) ?></span>
             </p>
         </div>
     </div>

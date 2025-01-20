@@ -6,7 +6,7 @@
 
         public function getContent()
         {
-            return $this->video_name;
+            return URLASSETS . 'videos/' . $this->video_name;
         }
 
         public function getContentType()
@@ -28,6 +28,7 @@
             self::$db->bind(':description', $this->description);
             self::$db->bind(':price', $this->price);
             self::$db->bind(':thumbnail', $this->thumbnail);
+            self::$db->bind(':document_name', null);
             self::$db->bind(':video_name', $this->video_name);
             self::$db->bind(':teacher_id', $this->teacher_id);
             self::$db->bind(':category_id', $this->category_id);

@@ -12,7 +12,7 @@
                 </div>
             </div>
             <div class="relative hidden md:block">
-                <img src="https://placehold.co/600x400" alt="Learning Dashboard" class="rounded-lg shadow-xl">
+                <img src="<?= URLASSETS . 'images/Elearning_platform.jpg' ?>" alt="Learning Dashboard" class="rounded-lg shadow-xl">
                 <div class="absolute -bottom-6 -left-6 bg-white p-4 rounded-lg shadow-lg">
                     <div class="flex items-center space-x-3">
                         <i class="fas fa-robot text-3xl text-indigo-600"></i>
@@ -126,7 +126,7 @@
             <?php foreach($topThreeCourses as $course): ?>
             <div class="bg-white flex flex-col rounded-xl shadow-lg overflow-hidden group hover:shadow-xl transition-all">
                 <div class="relative">
-                    <img src="https://placehold.co/400x225" alt="UI/UX Design" class="w-full h-48 object-cover">
+                    <img src="<?= $course->getThumbnail() ?>" alt="UI/UX Design" class="w-full h-48 object-cover">
                 </div>
                 <div class="p-6 flex-1 flex flex-col justify-between">
                     <div>

@@ -110,7 +110,7 @@
                 <h3 class="text-lg font-semibold text-gray-800 mb-4">Most Popular Course</h3>
                 <div class="flex gap-4">
                     <div class="max-w-[55%]">
-                        <img src="https://placehold.co/150x150" alt="Top Course" class="object-cover rounded-lg">
+                        <img src="<?= $topCourse->getThumbnail() ?>" alt="Top Course" class="object-cover rounded-lg">
                     </div>
                     <div>
                         <h4 class="text-xl font-bold text-gray-800"><?= $topCourse->getTitle() ?></h4>
