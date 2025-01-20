@@ -400,7 +400,7 @@ abstract class Course extends BaseClass {
             $sql .= " AND c.price <= :max_price ";
         }
         if (isset($filters['teacher_id']) && !empty($filters['teacher_id'])) {
-            $sql .= " AND c.teacher_id <= :teacher_id ";
+            $sql .= " AND c.teacher_id = :teacher_id ";
         }
     
         $sql .= " GROUP BY c.id ORDER BY enrollments_count DESC";
@@ -773,15 +773,15 @@ abstract class Course extends BaseClass {
     }
 
 
-    public static function getProfitsBetween($startDate, $endDate)
+    public static function getProfitsOfTeacherBetween($startDate, $endDate, $teacher_id)
     {
         $sql = "SELECT SUM(c.price) AS total_profit
                 FROM courses c
                 JOIN enrollments en ON en.course_id = c.id
-                WHERE en.created_at >= :start_date
-                AND en.created_at <= :end_date";
+                WHERE c.teacher_id = :teacher_id AND en.created_at BETWEEN :start_date AND :end_date";
     
         self::$db->query($sql);
+        self::$db->bind(':teacher_id', $teacher_id);
         self::$db->bind(':start_date', $startDate);
         self::$db->bind(':end_date', $endDate);
     
@@ -818,6 +818,10 @@ abstract class Course extends BaseClass {
         self::$db->bind(':teacher_id', $teacherId);
 
         $result = self::$db->single();
+
+        if (!$result) {
+            return null;
+        }
 
         if (!empty($result["video_name"])) {
             $course = new CourseVideo();

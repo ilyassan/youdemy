@@ -77,4 +77,4 @@
         </nav>
     </aside>
     <main class="lg:ml-64 min-h-screen flex flex-col-reverse">
-        <div class="p-4 bg-gray-100">
+        <div class="p-4 bg-gray-100 min-h-screen">

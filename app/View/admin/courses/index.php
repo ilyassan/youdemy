@@ -1,3 +1,5 @@
+<?php $titlePage = "Courses" ?>
+
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <!-- Page Header -->
     <div class="text-center mb-6">
@@ -54,55 +56,71 @@
     <!-- Course Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         
-        <?php foreach ($courses as $course):?>
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-            <div class="relative">
-                <img src="https://placehold.co/400x225" alt="Course" class="w-full h-48 object-cover">
-            </div>
-            <div class="p-6">
-                <div class="flex items-start justify-between text-sm text-gray-500 mb-2">
-                    <div class="flex items-center mb-2">
-                        <span class="bg-indigo-100 text-indigo-800 text-xs font-medium px-2.5 py-0.5 rounded"><?= $course->getCategoryName() ?></span>
+        <?php if (empty($courses)): ?>
+            <div class="col-span-1 md:col-span-2 lg:col-span-3">
+                <div class="rounded-xl p-8 text-center">
+                    <div class="flex justify-center mb-6">
+                        <i class="fas fa-book-open text-6xl text-indigo-400"></i>
                     </div>
-                    <span class="flex items-center">
-                        <i class="fas fa-user-graduate mr-2"></i>
-                        <?= $course->getEnrollmentsCount() ?> students
-                    </span>
+                    <h3 class="text-2xl font-bold text-gray-900 mb-3">
+                        No Courses Found
+                    </h3>
+                    <p class="text-gray-600 max-w-md mx-auto">
+                        We couldn't find any courses matching your criteria. Try adjusting your filters or search terms.
+                    </p>
                 </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-2"><?= $course->getTitle() ?></h3>
-                <div class="flex items-center justify-between text-sm text-gray-500 mb-3">
-                    <span class="flex items-center">
-                        By <?= $course->getTeacherName() ?>
-                    </span>
+            </div>
+        <?php else: ?>
+            <?php foreach ($courses as $course):?>
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                <div class="relative">
+                    <img src="https://placehold.co/400x225" alt="Course" class="w-full h-48 object-cover">
                 </div>
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <div class="flex text-yellow-400">
-                        <?php
-                            $fullStars = floor($course->getRate());
-                            $halfStar = ($course->getRate() - $fullStars) >= 0.5 ? 1 : 0;
-                            $emptyStars = 5 - $fullStars - $halfStar;
-
-                            for ($i = 0; $i < $fullStars; $i++) {
-                                echo '<i class="fas fa-star"></i>';
-                            }
-                            if ($halfStar) {
-                                echo '<i class="fas fa-star-half-alt"></i>';
-                            }
-                            for ($i = 0; $i < $emptyStars; $i++) {
-                                echo '<i class="far fa-star"></i>';
-                            }
-                        ?>
+                <div class="p-6">
+                    <div class="flex items-start justify-between text-sm text-gray-500 mb-2">
+                        <div class="flex items-center mb-2">
+                            <span class="bg-indigo-100 text-indigo-800 text-xs font-medium px-2.5 py-0.5 rounded"><?= $course->getCategoryName() ?></span>
                         </div>
-                        <span class="ml-2 text-sm text-gray-600">(<?= $course->getRate() ?>)</span>
+                        <span class="flex items-center">
+                            <i class="fas fa-user-graduate mr-2"></i>
+                            <?= $course->getEnrollmentsCount() ?> students
+                        </span>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2"><?= $course->getTitle() ?></h3>
+                    <div class="flex items-center justify-between text-sm text-gray-500 mb-3">
+                        <span class="flex items-center">
+                            By <?= $course->getTeacherName() ?>
+                        </span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="flex text-yellow-400">
+                            <?php
+                                $fullStars = floor($course->getRate());
+                                $halfStar = ($course->getRate() - $fullStars) >= 0.5 ? 1 : 0;
+                                $emptyStars = 5 - $fullStars - $halfStar;
+
+                                for ($i = 0; $i < $fullStars; $i++) {
+                                    echo '<i class="fas fa-star"></i>';
+                                }
+                                if ($halfStar) {
+                                    echo '<i class="fas fa-star-half-alt"></i>';
+                                }
+                                for ($i = 0; $i < $emptyStars; $i++) {
+                                    echo '<i class="far fa-star"></i>';
+                                }
+                            ?>
+                            </div>
+                            <span class="ml-2 text-sm text-gray-600">(<?= $course->getRate() ?>)</span>
+                        </div>
+                    </div>
+                    <div class="flex justify-center mt-4 text-indigo-700">
+                        <a href="<?= URLROOT . 'courses/' . $course->getId() ?>" class="hover:underline underline-offset-4">View Details</a>
                     </div>
                 </div>
-                <div class="flex justify-center mt-4 text-indigo-700">
-                    <a href="<?= URLROOT . 'courses/' . $course->getId() ?>" class="hover:underline underline-offset-4">View Details</a>
-                </div>
             </div>
-        </div>
-        <?php endforeach;?>
+            <?php endforeach;?>
+        <?php endif; ?>
     </div>
 </div>
 

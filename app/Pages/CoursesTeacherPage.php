@@ -16,6 +16,10 @@
 
         public function create()
         {
+            if (! user()->getIsVerified()) {
+                flash("warning", "You can't perfome any action until you are verified.");
+                redirect("");
+            }
             $categories = Category::all();
             $tags = Tag::all();
 
@@ -24,6 +28,10 @@
 
         public function edit($id)
         {
+            if (! user()->getIsVerified()) {
+                flash("warning", "You can't perfome any action until you are verified.");
+                redirect("");
+            }
             $course = Course::find($id);
 
             if ($course->getTeacherId() != user()->getId()) {
@@ -39,6 +47,10 @@
 
         public function store()
         {
+            if (! user()->getIsVerified()) {
+                flash("warning", "You can't perfome any action until you are verified.");
+                redirect("");
+            }
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         
             $data = [
@@ -171,8 +183,13 @@
             flash("error", array_first_not_null_value($errors));
             back();
         }
+        
         public function update($id)
         {
+            if (! user()->getIsVerified()) {
+                flash("warning", "You can't perfome any action until you are verified.");
+                redirect("");
+            }
             $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             
             // Get existing course
@@ -327,6 +344,10 @@
 
         public function delete($id)
         {
+            if (! user()->getIsVerified()) {
+                flash("warning", "You can't perfome any action until you are verified.");
+                redirect("");
+            }
             // Get existing course
             $course = Course::find($id);
             

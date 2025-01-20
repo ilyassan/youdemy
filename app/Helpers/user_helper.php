@@ -1,6 +1,7 @@
 <?php
 
-    function user() {
+    function user(): Teacher | Student | User | null
+    {
         static $cachedUser = null;
 
         // Return cached user if available

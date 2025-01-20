@@ -13,7 +13,7 @@
     <aside id="sidebar" class="fixed overflow-y-scroll no-scrollbar top-0 left-0 h-screen w-64 bg-white shadow-lg transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-40">
         <!-- Logo -->
         <div class="flex items-center justify-center h-16 border-b">
-            <span class="text-indigo-600 font-bold text-2xl">YouDemy ADMIN</span>
+            <span class="text-indigo-600 font-bold text-2xl">YouDemy Admin</span>
         </div>
     
         <!-- Navigation Menu -->

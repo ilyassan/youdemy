@@ -29,12 +29,15 @@
             $lastMonthStart = date('Y-m-01', strtotime('-1 month'));
             $lastMonthEnd = date('Y-m-t', strtotime('-1 month'));
 
-            $monthProfit = Course::getProfitsBetween($startMonth, $endMonth);
-            $lastMonthProfit = Course::getProfitsBetween($lastMonthStart, $lastMonthEnd);
+            $monthProfit = Course::getProfitsOfTeacherBetween($startMonth, $endMonth, user()->getId());
+            $lastMonthProfit = Course::getProfitsOfTeacherBetween($lastMonthStart, $lastMonthEnd, user()->getId());
 
             $ratio = 100;
             if($lastMonthProfit > 0){
                 $ratio = ($monthProfit - $lastMonthProfit) / $lastMonthProfit * 100;
+            }
+            if ($monthProfit == 0) {
+                $ratio = 0;
             }
 
             return [$monthProfit, $ratio];

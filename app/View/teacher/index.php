@@ -1,3 +1,4 @@
+<?php $titlePage = "Dashboard" ?>
 
 <!-- Stats Overview Cards -->
 <section class="mb-6">
@@ -103,28 +104,30 @@
 <!-- Highlights Section -->
 <section>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <!-- Most Popular Course Card -->
-        <div class="bg-white rounded-xl shadow-sm p-6">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Most Popular Course</h3>
-            <div class="flex gap-4">
-                <div class="max-w-[55%]">
-                    <img src="https://placehold.co/150x150" alt="Top Course" class="object-cover rounded-lg">
-                </div>
-                <div>
-                    <h4 class="text-xl font-bold text-gray-800"><?= $topCourse->getTitle() ?></h4>
-                    <div class="flex items-center gap-1 text-yellow-400 mt-2">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star-half-alt"></i>
-                        <span class="ml-2 text-gray-600">(<?= $topCourse->getRate() ?>)</span>
+        <?php if ($topCourse): ?>
+            <!-- Most Popular Course Card -->
+            <div class="bg-white rounded-xl shadow-sm p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Most Popular Course</h3>
+                <div class="flex gap-4">
+                    <div class="max-w-[55%]">
+                        <img src="https://placehold.co/150x150" alt="Top Course" class="object-cover rounded-lg">
                     </div>
-                    <p class="text-gray-600 mt-2">Category: <?= $topCourse->getCategoryName() ?></p>
-                    <p class="text-blue-600 font-semibold mt-2">Price: $<?= $topCourse->getPrice() ?></p>
+                    <div>
+                        <h4 class="text-xl font-bold text-gray-800"><?= $topCourse->getTitle() ?></h4>
+                        <div class="flex items-center gap-1 text-yellow-400 mt-2">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            <span class="ml-2 text-gray-600">(<?= $topCourse->getRate() ?>)</span>
+                        </div>
+                        <p class="text-gray-600 mt-2">Category: <?= $topCourse->getCategoryName() ?></p>
+                        <p class="text-blue-600 font-semibold mt-2">Price: $<?= $topCourse->getPrice() ?></p>
+                    </div>
                 </div>
             </div>
-        </div>
+        <?php endif; ?>
 
         <!-- Recent Educational Activities Card -->
         <div class="bg-white rounded-xl shadow-sm p-6">

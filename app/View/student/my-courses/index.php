@@ -84,7 +84,7 @@
             <?php endforeach; ?>
         <?php else:?>
             <!-- Empty State (shown when no courses) -->
-            <div class="bg-gray-50 rounded-xl p-8 text-center">
+            <div class="bg-gray-50 rounded-xl p-8 text-center col-span-full">
                 <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <i class="fas fa-book-open text-2xl text-indigo-600"></i>
                 </div>
