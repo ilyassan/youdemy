@@ -44,7 +44,7 @@
             <?php foreach ($courses as $course):?>
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden group hover:shadow-xl transition-all">
                     <div class="relative">
-                        <img src="https://placehold.co/400x225" alt="Course Thumbnail" class="w-full h-48 object-cover">
+                        <img src="<?= $course->getThumbnail() ?>" alt="Course Thumbnail" class="w-full h-48 object-cover">
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-indigo-600"><?= $course->getTitle() ?></h3>

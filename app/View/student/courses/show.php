@@ -52,7 +52,7 @@
             <!-- Course Thumbnail -->
             <div class="lg:w-1/2">
                 <div class="rounded-xl overflow-hidden shadow-xl transform hover:scale-105 transition duration-300">
-                    <img src="https://placehold.co/1200x675" alt="The Complete Guide to Web Development" class="w-full object-cover aspect-video">
+                    <img src="<?= $course->getThumbnail() ?>" alt="The Complete Guide to Web Development" class="w-full object-cover aspect-video">
                 </div>
             </div>
         </div>
@@ -122,14 +122,13 @@
             <?php
             // Define an array of colors
             $colors = ['indigo', 'blue', 'purple', 'green', 'red', 'orange'];
-
             ?>
 
             <div class="flex flex-wrap gap-3 mb-4">
                 <?php foreach ($course->getTags() as $key => $tag): ?>
                     <?php 
                         // Pick a random color from the colors array
-                        $color = $colors[$key];
+                        $color = $colors[$key % count($colors)];
                     ?>
                     <a href="#" 
                         class="px-6 py-2 bg-white text-<?= $color ?>-600 rounded-full text-sm font-medium border border-<?= $color ?>-100 hover:bg-<?= $color ?>-50 hover:border-<?= $color ?>-200 transition-all">
@@ -141,7 +140,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <?php foreach ($relatedCourses as $course):?>
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300">
-                    <img src="https://placehold.co/400x225" alt="Course" class="w-full object-cover h-48">
+                    <img src="<?= $course->getThumbnail() ?>" alt="Course" class="w-full object-cover h-48">
                     <div class="p-6">
                         <h3 class="text-lg font-bold text-gray-900"><?= $course->getTitle() ?></h3>
                         <p class="text-gray-600 text-sm mt-2"><?= $course->getDescription() ?></p>

@@ -5,7 +5,7 @@
 
         public function getContent()
         {
-            return $this->document_name;
+            return URLASSETS . 'pdfs/' . $this->document_name;
         }
 
         public function getContentType()
@@ -28,6 +28,7 @@
             self::$db->bind(':price', $this->price);
             self::$db->bind(':thumbnail', $this->thumbnail);
             self::$db->bind(':document_name', $this->document_name);
+            self::$db->bind(':video_name', null);
             self::$db->bind(':teacher_id', $this->teacher_id);
             self::$db->bind(':category_id', $this->category_id);
     

@@ -57,7 +57,7 @@ abstract class Course extends BaseClass {
 
     public function getThumbnail()
     {
-        return $this->thumbnail;
+        return URLASSETS . 'images/thumbnails/' . $this->thumbnail;
     }
 
     public function getIsDeleted()
@@ -277,7 +277,7 @@ abstract class Course extends BaseClass {
                     AVG(r.rate) AS rate,
                     CONCAT(u.first_name, ' ', u.last_name) AS teacher_name,
                     ca.name AS category_name,
-                    GROUP_CONCAT(t.name) as tags
+                    GROUP_CONCAT(DISTINCT t.name) as tags
                 FROM courses c
                 LEFT JOIN enrollments e ON c.id = e.course_id
                 LEFT JOIN rates r ON c.id = r.course_id

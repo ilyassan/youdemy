@@ -185,7 +185,7 @@ class Student extends User
     
     public static function activeStudentsBetween($startDate, $endDate)
     {
-        $sql = "SELECT COUNT(*) as active_students_count
+        $sql = "SELECT COUNT(DISTINCT u.id) as active_students_count
                 FROM users u
                 JOIN enrollments en ON en.student_id = u.id
                 WHERE u.role_id = :role_id AND en.created_at BETWEEN :start_date AND :end_date";

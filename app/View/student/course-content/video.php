@@ -19,7 +19,7 @@
                             controlsList="nodownload"
                             controls
                         >
-                            <source src="<?= URLASSETS . 'videos/sea.mp4' ?>" type="video/mp4">
+                            <source src="<?= $course->getContent() ?>" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
                     </div>
@@ -34,11 +34,11 @@
                 </div>
 
                 <!-- Mark as Completed Button -->
-                <div>
+                <form action="<?= URLROOT . 'courses/completed/' . $course->getId() ?>" method="POST">
                     <button class="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition">
                         Mark Course as Completed
                     </button>
-                </div>
+                </form>
             </div>
 
             <!-- Sidebar: Course Details -->
@@ -66,7 +66,7 @@
                     <div class="space-y-4">
                         <?php foreach ($relatedCourses as $course):?>
                         <div class="flex items-center gap-4">
-                            <img src="https://placehold.co/80x80" alt="Course Image" class="w-20 h-20 rounded-lg object-cover">
+                            <img src="<?= $course->getThumbnail() ?>" alt="Course Image" class="w-20 h-20 rounded-lg object-cover">
                             <div>
                                 <h5 class="text-sm font-medium text-gray-900"><?= $course->getTitle() ?></h5>
                                 <a href="<?= URLROOT . 'courses/' . $course->getId() ?>" class="text-indigo-600 text-sm hover:underline">View Course</a>

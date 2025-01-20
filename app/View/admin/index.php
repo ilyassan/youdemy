@@ -7,14 +7,14 @@
         <div class="bg-white rounded-xl shadow-sm p-6">
             <div class="flex justify-between items-start">
                 <div>
-                    <p class="text-xs font-medium text-gray-500">Total Teachers</p>
+                    <p class="text-xs font-medium text-gray-500">New Teachers</p>
                     <h3 class="text-2xl font-bold text-gray-800 mt-2"><?= $monthlyTeachers ?></h3>
                 </div>
                 <div class="bg-blue-50 p-3 rounded-lg">
                     <i class="fas fa-chalkboard-teacher text-blue-500 text-xl"></i>
                 </div>
             </div>
-            <span class="text-sm font-medium <?= $monthlyTeachersDiff > 0 ? 'text-green-600' : 'text-red-600' ?> flex items-center gap-1 mt-1">
+            <span class="text-sm whitespace-nowrap font-medium <?= $monthlyTeachersDiff > 0 ? 'text-green-600' : 'text-red-600' ?> flex items-center gap-1 mt-1">
                 <i class="fas fa-arrow-<?= $monthlyTeachersDiff > 0 ? 'up' : 'down' ?> text-xs"></i> <?= $monthlyTeachersDiff ?> Compared to last month
             </span>
         </div>
@@ -47,7 +47,7 @@
                 </div>
             </div>
             <span class="text-sm font-medium <?= $activeStudentsRatio > 0 ? 'text-green-600' : 'text-red-600' ?> flex items-center gap-1 mt-1">
-                <i class="fas fa-arrow-<?= $activeStudentsRatio > 0 ? 'up' : 'down' ?> text-xs"></i> <?= $activeStudentsRatio ?>% from last week
+                <i class="fas fa-arrow-<?= $activeStudentsRatio > 0 ? 'up' : 'down' ?> text-xs"></i> <?= number_format($activeStudentsRatio, 2) ?>% from last month
             </span>
         </div>
 
